@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work - HotFuzzJam Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Outfit:wght@300;400;600&family=Syne:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-header {
+            padding: 12rem 0 6rem 0;
+            background-color: var(--brand-white);
+            text-align: center;
+        }
+
+        .work-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-md);
+        }
+
+        .work-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            align-items: center;
+            background: var(--brand-orange-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .work-card:nth-child(even) {
+            background: var(--brand-cream);
+            direction: rtl; /* simple way to reverse layout on desktop */
+        }
+
+        .work-card:nth-child(even) > * {
+            direction: ltr; /* reset text direction internal to columns */
+        }
+
+        .work-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .work-details {
+            padding: var(--spacing-lg);
+        }
+
+        @media (max-width: 900px) {
+            .work-card {
+                grid-template-columns: 1fr;
+            }
+            .work-card:nth-child(even) {
+                direction: ltr;
+            }
+            .work-image {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container text-content">
+            <a href="index.html" class="logo-link">
+                <img src="HFJ-logo-stamp2.png" alt="HotFuzzJam Logo" class="nav-logo">
+                <span class="nav-brand">HOTFUZZJAM</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="folio.html" class="nav-link">Folio</a>
+                <a href="work.html" class="nav-link">Work</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header section">
+        <div class="container text-content">
+            <h1 class="hero-title">Selected <span class="highlight">Projects</span>.</h1>
+            <p class="section-paragraph mx-auto" style="max-width: 600px; margin: 0 auto;">
+                Deep dives into how we solve brand problems, scale digital platforms, and inject soul into every interface we touch.
+            </p>
+        </div>
+    </header>
+
+    <!-- Work List Section -->
+    <section class="section pt-0">
+        <div class="container text-content">
+            <div class="work-list">
+                
+                <!-- Project 1 -->
+                <div class="work-card">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop" alt="Project Cover" class="work-image">
+                    <div class="work-details">
+                        <h2 class="section-title" style="font-size: 2.5rem;">Corporate Redefinition</h2>
+                        <p class="section-paragraph">
+                            We partnered with a top-tier firm to strip away the corporate buzzwords and replace them with a striking, golden-ratio-approved visual identity that builds immediate trust.
+                        </p>
+                        <a href="contact.html" class="cta-button primary">Hire Us For This</a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="work-card">
+                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=800&auto=format&fit=crop" alt="Project Cover" class="work-image">
+                    <div class="work-details">
+                        <h2 class="section-title" style="font-size: 2.5rem;">Consumer Tech Launch</h2>
+                        <p class="section-paragraph">
+                            For this product launch, we deployed our rich textured aesthetics. Hand-stamped logos, warm analog colors, and unapologetic display fonts drove conversions up by 400%.
+                        </p>
+                        <a href="contact.html" class="cta-button primary">Hire Us For This</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content text-content">
+            <div class="footer-logo">
+                <img src="HFJ-logo-stamp2.png" alt="HotFuzzJam Logo" class="footer-stamp">
+                <span class="footer-brand">HotFuzzJam</span>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="folio.html">Folio</a>
+                <a href="work.html">Work</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-legal">
+                &copy; 2026 HotFuzzJam Design Studio. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

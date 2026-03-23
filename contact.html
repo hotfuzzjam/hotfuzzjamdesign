@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - HotFuzzJam Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Outfit:wght@300;400;600&family=Syne:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-header {
+            padding: 12rem 0 6rem 0;
+            background-color: var(--brand-red);
+            color: var(--brand-cream);
+            text-align: center;
+        }
+
+        .page-header .hero-title, .page-header .section-paragraph {
+            color: var(--brand-cream);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+            background: var(--brand-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            margin-top: -6rem; /* overlaps header slightly */
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-block {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .info-block h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-xs);
+            color: var(--brand-red);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 1rem;
+            border: 2px solid rgba(26,26,26,0.1);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border var(--transition-standard);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--brand-orange);
+        }
+
+        @media (max-width: 768px) {
+            .contact-layout {
+                grid-template-columns: 1fr;
+                padding: var(--spacing-lg);
+                margin-top: -3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container text-content">
+            <a href="index.html" class="logo-link">
+                <img src="HFJ-logo-stamp2.png" alt="HotFuzzJam Logo" class="nav-logo" style="filter: brightness(0) invert(1);">
+                <span class="nav-brand" style="color: white;">HOTFUZZJAM</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link" style="color: white; border-color: white;">Home</a>
+                <a href="about.html" class="nav-link" style="color: white;">About</a>
+                <a href="folio.html" class="nav-link" style="color: white;">Folio</a>
+                <a href="work.html" class="nav-link" style="color: white;">Work</a>
+                <a href="contact.html" class="nav-link" style="color: white;">Contact</a>
+            </div>
+            <!-- Mobile Menu Toggle -->
+            <button class="menu-toggle" aria-label="Toggle Menu">
+                <span style="background-color: white;"></span>
+                <span style="background-color: white;"></span>
+                <span style="background-color: white;"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header section">
+        <div class="container text-content">
+            <h1 class="hero-title">Say <span class="highlight" style="color: var(--brand-orange-light);">Hello</span>.</h1>
+            <p class="section-paragraph mx-auto" style="max-width: 600px; margin: 0 auto;">
+                Have a project in mind, want to discuss golden ratios, or just need a coffee? Drop us a line.
+            </p>
+        </div>
+    </header>
+
+    <!-- Contact Form Section -->
+    <section class="section pt-0" style="background-color: var(--brand-cream);">
+        <div class="container text-content">
+            <div class="contact-layout">
+                <div class="contact-info">
+                    <div class="info-block">
+                        <h3>Our Studio</h3>
+                        <p>123 Creative Studio Lane<br>Art District, NY 10012</p>
+                    </div>
+                    <div class="info-block">
+                        <h3>Email Us</h3>
+                        <p><a href="mailto:hello@hotfuzzjam.com" style="color: var(--brand-black);">hello@hotfuzzjam.com</a></p>
+                    </div>
+                    <div class="info-block">
+                        <h3>Call Us</h3>
+                        <p>+1 (555) 987-6543</p>
+                    </div>
+                </div>
+                
+                <form class="contact-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Thanks for reaching out! This operates as a static demo.');">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required placeholder="Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required placeholder="jane@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="5" required placeholder="Tell us about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="cta-button primary large" style="margin-top: 1rem;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content text-content">
+            <div class="footer-logo">
+                <img src="HFJ-logo-stamp2.png" alt="HotFuzzJam Logo" class="footer-stamp">
+                <span class="footer-brand">HotFuzzJam</span>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="folio.html">Folio</a>
+                <a href="work.html">Work</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-legal">
+                &copy; 2026 HotFuzzJam Design Studio. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Custom nav logic for dark header pages
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                // Ensure text goes back to dark when scrolled
+                document.querySelectorAll('.nav-link').forEach(l => l.style.color = 'var(--brand-black)');
+                document.querySelector('.nav-logo').style.filter = 'none';
+                document.querySelectorAll('.menu-toggle span').forEach(s => s.style.backgroundColor = 'var(--brand-black)');
+            } else {
+                // White on top of red
+                document.querySelectorAll('.nav-link').forEach(l => l.style.color = 'white');
+                document.querySelector('.nav-logo').style.filter = 'brightness(0) invert(1)';
+                document.querySelectorAll('.menu-toggle span').forEach(s => s.style.backgroundColor = 'white');
+            }
+        });
+    </script>
+</body>
+</html>
