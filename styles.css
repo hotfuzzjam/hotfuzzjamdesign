@@ -279,17 +279,21 @@ h1, h2, h3, h4, .section-title, .hero-title {
 }
 
 .hero-title .highlight {
+    font-size: 5.3125rem; /* 5 points larger than base 5rem hero text */
     color: var(--brand-red);
     text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.syne-heading {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
+.univers-heading {
+    font-family: 'Oswald', 'Bebas Neue', 'Impact', 'Univers Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 700;
+    font-stretch: condensed;
     text-transform: uppercase;
-    display: inline-block;
-    line-height: 1.1;
+    display: block;
+    line-height: 0.85;
     letter-spacing: -2px;
+    font-size: 8.5rem;
+    color: var(--brand-black);
 }
 
 .skewed-bg {
@@ -985,6 +989,22 @@ h1, h2, h3, h4, .section-title, .hero-title {
     background-color: transparent !important;
     box-shadow: none !important;
     color: var(--brand-black) !important;
+}
+
+/* Hero explicit sticky button 10% size boost & positioning */
+.hero-sticky {
+    padding: 0.85rem 1.7rem !important;
+    font-size: 0.85rem !important;
+    transform: rotate(-8deg) !important;
+    position: absolute !important;
+    bottom: -2.5rem;
+    right: -2rem;
+    z-index: 15 !important;
+    margin: 0 !important;
+}
+
+.hero-sticky:hover {
+    transform: rotate(-3deg) scale(1.05) !important; /* Scale builds intrinsically from the new base padding scale, so no explicit scale multiplier is needed on the base state! */
 }
 
 /* Footer specific sticky button red ink override */
