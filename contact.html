@@ -246,7 +246,7 @@
                     const { data, error } = await supabaseClient
                         .from('customers')
                         .insert([
-                            { name: name, phone: phone, email: email, description: description }
+                            { name: name, phone: phone, email: email, "Description": description }
                         ]);
 
                     if (error) throw error;
