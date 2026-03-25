@@ -139,22 +139,24 @@
                     </div>
                 </div>
                 
-                <form id="contactForm" class="contact-form" action="#" method="POST">
+                <form id="contactForm" class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <input type="hidden" name="form-name" value="contact" />
+                    <p style="display:none;"><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" required placeholder="Jane Doe">
+                        <input type="text" id="name" name="name" required placeholder="Jane Doe">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="tel" id="phone" required placeholder="(555) 555-5555">
+                        <input type="tel" id="phone" name="phone" required placeholder="(555) 555-5555">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" required placeholder="jane@example.com">
+                        <input type="email" id="email" name="email" required placeholder="jane@example.com">
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea id="description" rows="5" style="resize: vertical; overflow-y: auto;" required placeholder="Tell us about your project..."></textarea>
+                        <textarea id="description" name="description" rows="5" style="resize: vertical; overflow-y: auto;" required placeholder="Tell us about your project..."></textarea>
                     </div>
                     <button type="submit" class="cta-button primary large" style="margin-top: 1rem;">Send Message</button>
                     <p id="formStatus" style="display: none; margin-top: 1rem; color: var(--brand-red); font-weight: 600;"></p>
@@ -202,24 +204,8 @@
         });
     </script>
     
-    <!-- Supabase Setup via CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Netlify Form Handling -->
     <script>
-        // 1. Initialize Supabase Client
-        // Note: For a static site, you must replace these with your actual keys directly here.
-        // It cannot read the .env file without a bundler.
-        const _supabaseUrl = 'https://lwjfdayjzfdcmphqnrtc.supabase.co';
-        const _supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3amZkYXlqemZkY21waHFucnRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzOTk2NjgsImV4cCI6MjA4OTk3NTY2OH0.K-rPADwrcdZvZCqk2xkX4mhA_HE1GG_IlUyGTSsqZCA';
-        
-        let initialised = false;
-        let supabaseClient;
-        
-        if (_supabaseUrl !== 'YOUR_SUPABASE_URL_HERE') {
-            supabaseClient = supabase.createClient(_supabaseUrl, _supabaseAnonKey);
-            initialised = true;
-        }
-
-        // 2. Form Submission Handler
         const contactForm = document.getElementById('contactForm');
         const formStatus = document.getElementById('formStatus');
 
@@ -227,33 +213,25 @@
             contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
-                if (!initialised) {
-                    alert('Supabase is not configured yet. Update the credentials in contact.html.');
-                    return;
-                }
-
-                const name = document.getElementById('name').value;
-                const phone = document.getElementById('phone').value;
-                const email = document.getElementById('email').value;
-                const description = document.getElementById('description').value;
+                const formData = new FormData(contactForm);
                 const submitBtn = contactForm.querySelector('button[type="submit"]');
 
                 submitBtn.textContent = 'Sending...';
                 submitBtn.disabled = true;
 
                 try {
-                    // Assuming you have a table called "customers" with these columns
-                    const { data, error } = await supabaseClient
-                        .from('customers')
-                        .insert([
-                            { name: name, phone: phone, email: email, "Description": description }
-                        ]);
+                    // Send directly to Netlify Forms via standard URL encoded submission
+                    const response = await fetch('/', {
+                        method: 'POST',
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams(formData).toString()
+                    });
 
-                    if (error) throw error;
+                    if (!response.ok) throw new Error('Network error. Please try again.');
 
                     formStatus.style.display = 'block';
                     formStatus.style.color = 'green';
-                    formStatus.textContent = 'Thanks for reaching out! Your message was saved.';
+                    formStatus.textContent = 'Thanks for reaching out! Your message was sent successfully.';
                     contactForm.reset();
                 } catch (error) {
                     formStatus.style.display = 'block';
