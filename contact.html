@@ -143,20 +143,25 @@
                     </div>
                 </div>
                 
-                <form class="contact-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Thanks for reaching out! This operates as a static demo.');">
+                <form id="contactForm" class="contact-form" action="#" method="POST">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" required placeholder="Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" required placeholder="(555) 555-5555">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" required placeholder="jane@example.com">
                     </div>
                     <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" rows="5" required placeholder="Tell us about your project..."></textarea>
+                        <label for="description">Description (Scrollable)</label>
+                        <textarea id="description" rows="5" style="resize: vertical; overflow-y: auto;" required placeholder="Tell us about your project..."></textarea>
                     </div>
                     <button type="submit" class="cta-button primary large" style="margin-top: 1rem;">Send Message</button>
+                    <p id="formStatus" style="display: none; margin-top: 1rem; color: var(--brand-red); font-weight: 600;"></p>
                 </form>
             </div>
         </div>
@@ -199,6 +204,71 @@
                 document.querySelectorAll('.menu-toggle span').forEach(s => s.style.backgroundColor = 'white');
             }
         });
+    </script>
+    
+    <!-- Supabase Setup via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 1. Initialize Supabase Client
+        // Note: For a static site, you must replace these with your actual keys directly here.
+        // It cannot read the .env file without a bundler.
+        const _supabaseUrl = 'YOUR_SUPABASE_URL_HERE';
+        const _supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY_HERE';
+        
+        let initialised = false;
+        let supabaseClient;
+        
+        if (_supabaseUrl !== 'YOUR_SUPABASE_URL_HERE') {
+            supabaseClient = supabase.createClient(_supabaseUrl, _supabaseAnonKey);
+            initialised = true;
+        }
+
+        // 2. Form Submission Handler
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (!initialised) {
+                    alert('Supabase is not configured yet. Update the credentials in contact.html.');
+                    return;
+                }
+
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                const description = document.getElementById('description').value;
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+
+                try {
+                    // Assuming you have a table called "customers" with these columns
+                    const { data, error } = await supabaseClient
+                        .from('customers')
+                        .insert([
+                            { name: name, phone: phone, email: email, description: description }
+                        ]);
+
+                    if (error) throw error;
+
+                    formStatus.style.display = 'block';
+                    formStatus.style.color = 'green';
+                    formStatus.textContent = 'Thanks for reaching out! Your message was saved.';
+                    contactForm.reset();
+                } catch (error) {
+                    formStatus.style.display = 'block';
+                    formStatus.style.color = 'var(--brand-red)';
+                    formStatus.textContent = 'Error: ' + error.message;
+                } finally {
+                    submitBtn.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
     </script>
 </body>
 </html>
