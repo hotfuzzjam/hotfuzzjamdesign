@@ -32,9 +32,9 @@ serve(async (req) => {
         'Authorization': `Bearer ${resendApiKey}`
       },
       body: JSON.stringify({
-        // IMPORTANT: If you haven't verified a custom domain on Resend, you MUST use 'onboarding@resend.dev' as the 'from' email.
-        from: 'Contact Form <onboarding@resend.dev>', 
-        to: ['stylemaster@fastmail.com'],
+        // Note: The 'from' email MUST be on a verified domain (like hotfuzzjam.com) to send via Resend!
+        from: 'Website Contact Form <design@hotfuzzjam.com>', 
+        to: ['design@hotfuzzjam.com'],
         subject: `New Contact Request: ${name}`,
         html: `
           <h2>New Contact Form Submission</h2>
