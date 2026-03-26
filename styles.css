@@ -922,20 +922,39 @@ h1, h2, h3, h4, .section-title, .hero-title {
     }
     
     .navbar.menu-open {
-        background-color: var(--brand-cream);
+        background-color: #BCE0E7; /* Light Blue integration */
+        border-bottom: 1px solid rgba(0,0,0,0.05); /* Soft delimiter */
     }
     
     .nav-links.active {
         display: flex;
         flex-direction: column;
         position: absolute;
-        margin: 0; /* Reset desktop positioning overrides */
+        margin: 0;
         top: var(--nav-height);
         left: 0;
         width: 100%;
-        background-color: var(--brand-cream);
-        padding: var(--spacing-md) var(--spacing-xl);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        min-height: calc(100vh - var(--nav-height));
+        background-color: #BCE0E7;
+        background-image: url('HFJ-Hanko.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-blend-mode: multiply;
+        padding: var(--spacing-xl) var(--spacing-md);
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .nav-links.active .nav-link {
+        font-family: 'Oswald', 'Bebas Neue', 'Impact', 'Univers Condensed', 'Arial Narrow', sans-serif; 
+        font-weight: 700;
+        font-stretch: condensed;
+        text-transform: uppercase;
+        font-size: 3.5rem;
+        line-height: 1;
+        letter-spacing: -1px;
+        color: var(--brand-black);
     }
 
     .hero-background {
