@@ -734,13 +734,23 @@ h1, h2, h3, h4, .section-title, .hero-title {
 /* ====== CTA SECTION ====== */
 .cta-section {
     background-color: var(--brand-orange);
-    background-image: url('texture.png');
-    background-size: cover;
-    background-attachment: fixed;
     color: var(--brand-black);
     padding: var(--spacing-xl) 0;
     position: relative;
     overflow: hidden;
+}
+
+.cta-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('texture.png');
+    background-size: 50%; /* 50% smaller scale */
+    background-attachment: fixed;
+    background-repeat: repeat;
+    opacity: 0.5; /* 50% transparent */
+    pointer-events: none;
+    z-index: 0;
 }
 
 .cta-section::before {
@@ -753,9 +763,12 @@ h1, h2, h3, h4, .section-title, .hero-title {
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
     pointer-events: none;
+    z-index: 0;
 }
 
 .cta-grid-aligned {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: max-content max-content;
     gap: 1.25rem;
