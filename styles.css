@@ -122,7 +122,9 @@ h1, h2, h3, h4, .section-title, .hero-title {
 
 .nav-links {
     display: flex;
-    gap: var(--spacing-md);
+    gap: calc(var(--spacing-md) * 2); /* Doubled the padding between links */
+    margin-left: var(--spacing-lg); /* Doubled the padding from the logo */
+    margin-right: auto;             /* Forces the block to the left alignment */
 }
 
 .nav-link {
@@ -927,6 +929,7 @@ h1, h2, h3, h4, .section-title, .hero-title {
         display: flex;
         flex-direction: column;
         position: absolute;
+        margin: 0; /* Reset desktop positioning overrides */
         top: var(--nav-height);
         left: 0;
         width: 100%;
