@@ -734,6 +734,9 @@ h1, h2, h3, h4, .section-title, .hero-title {
 /* ====== CTA SECTION ====== */
 .cta-section {
     background-color: var(--brand-orange);
+    background-image: url('texture.png');
+    background-size: cover;
+    background-attachment: fixed;
     color: var(--brand-black);
     padding: var(--spacing-xl) 0;
     position: relative;
