@@ -947,10 +947,10 @@ h1, h2, h3, h4, .section-title, .hero-title {
         position: absolute;
         inset: 0;
         z-index: 0;
-        background-image: url('HFJ-logo-stamp.png');
-        background-position: left -20vw center;
+        background-image: url('HFJ-logo-stamp2.png');
+        background-position: center;
         background-repeat: no-repeat;
-        background-size: 150vw;
+        background-size: 130vw;
         background-blend-mode: multiply;
         opacity: 0.3; /* Force precisely 30% opacity */
         pointer-events: none;
