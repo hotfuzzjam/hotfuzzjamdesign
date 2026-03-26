@@ -1044,7 +1044,14 @@ h1, h2, h3, h4, .section-title, .hero-title {
 
 .text-sand { color: #C2B280; }
 .text-moss { color: #4F6644; font-weight: 800; font-size: 1rem; text-transform: uppercase; margin-top: 0.5rem; }
-.premium-serif { font-family: 'Abril Fatface', serif; letter-spacing: 1px; }
+.univers-folio { 
+    font-family: 'Oswald', 'Bebas Neue', 'Impact', 'Univers Condensed', 'Arial Narrow', sans-serif; 
+    font-weight: 700; 
+    font-stretch: condensed;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    line-height: 0.95;
+}
 .font-geometric { font-family: 'Outfit', sans-serif; letter-spacing: 2px; }
 
 .spiral-svg {
