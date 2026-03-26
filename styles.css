@@ -934,19 +934,44 @@ h1, h2, h3, h4, .section-title, .hero-title {
         top: var(--nav-height);
         left: 0;
         width: 100%;
-        min-height: calc(100vh - var(--nav-height));
         background-color: #BCE0E7;
-        background-image: url('HFJ-Hanko.png');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 90%;
-        background-blend-mode: multiply;
         padding: var(--spacing-xl) var(--spacing-md);
         align-items: center;
         gap: 1.5rem;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        overflow: hidden; /* Bind shadows securely inside */
+    }
+
+    .nav-links.active::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background-image: url('HFJ-logo-stamp.png');
+        background-position: left -20vw center;
+        background-repeat: no-repeat;
+        background-size: 150vw;
+        background-blend-mode: multiply;
+        opacity: 0.3; /* Force precisely 30% opacity */
+        pointer-events: none;
+    }
+
+    .nav-links.active::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background-image: url('texture.png');
+        background-size: 50%;
+        background-repeat: repeat;
+        box-shadow: inset 0 0 150px 60px rgba(0, 0, 0, 0.6); /* Multiplies down to 30% soft edge vignette */
+        opacity: 0.5; /* 50% texture blending */
+        pointer-events: none;
     }
 
     .nav-links.active .nav-link {
+        position: relative;
+        z-index: 2; /* Firmly elevate links over new background layers */
         font-family: 'Oswald', 'Bebas Neue', 'Impact', 'Univers Condensed', 'Arial Narrow', sans-serif; 
         font-weight: 700;
         font-stretch: condensed;
