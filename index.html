@@ -74,23 +74,74 @@
         </a>
     </header>
 
-    <!-- Trust / Intro Section -->
-    <section id="about" class="section trust-section">
-        <div class="container text-content">
-            <div class="split-layout">
-                <div class="split-text">
-                    <h2 class="section-title">Built on the <br>Golden Ratio.</h2>
-                    <p class="section-paragraph">
-                        At HotFuzzJam, we don't just make things look good—we engineer beauty. Using time-tested mathematical principles like the Golden Grid, we design interfaces and brands that feel instinctively right to your customers.
-                    </p>
-                    <p class="section-paragraph highlight-text">
-                        Better design builds immediate trust. <span style="color: var(--brand-black);">Immediate trust drives conversions.</span>
-                    </p>
+    <!-- Editorial Folio Section -->
+    <section id="folio-editorial" class="section folio-editorial-section">
+        <!-- The Drawing Spiral -->
+        <svg class="spiral-svg pointer-events-none" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+            <!-- Approximated Fibonacci curve -->
+            <path id="fibonacci-path" d="M1000,1000 C600,1000 200,800 200,400 C200,100 400,0 600,0 C800,0 900,100 900,200 C900,300 800,400 700,400 C600,400 500,300 500,200" fill="none" stroke="#C2B280" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+
+        <div class="container text-content relative z-10">
+            <h2 class="premium-serif text-sand" style="font-size: 4rem; margin-bottom: 4rem; text-align: center;">Featured Works.</h2>
+            
+            <div class="editorial-grid">
+                
+                <!-- Tile 01 -->
+                <div class="tile-01 editorial-tile reveal-on-scroll">
+                    <div class="tile-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1000" alt="Boutique Identity">
+                    </div>
+                    <div class="tile-text">
+                        <h3 class="premium-serif text-sand">Boutique Identity</h3>
+                        <p class="text-moss font-geometric">+140% Small Business Conversion</p>
+                    </div>
                 </div>
-                <div class="split-visual">
-                    <div class="decorative-shape"></div>
-                    <img src="HFJ-logo-stamp2.png" alt="HFJ Hanko Stamp" class="stamp-image blend-multiply">
+
+                <!-- Tile 02 -->
+                <div class="tile-02 editorial-tile reveal-on-scroll delay-1">
+                    <div class="tile-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=1000" alt="Craft Spirits Brand">
+                    </div>
+                    <div class="tile-text">
+                        <h3 class="premium-serif text-sand">Craft Spirits Brand</h3>
+                        <p class="text-moss font-geometric">+85% Small Business Conversion</p>
+                    </div>
                 </div>
+
+                <!-- Tile 03 -->
+                <div class="tile-03 editorial-tile reveal-on-scroll delay-2">
+                    <div class="tile-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000" alt="Nordic Architecture">
+                    </div>
+                    <div class="tile-text">
+                        <h3 class="premium-serif text-sand">Nordic Architecture</h3>
+                        <p class="text-moss font-geometric">+110% Small Business Conversion</p>
+                    </div>
+                </div>
+
+                <!-- Tile 04 -->
+                <div class="tile-04 editorial-tile reveal-on-scroll delay-1">
+                    <div class="tile-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=1000" alt="Luxury Cosmetics">
+                    </div>
+                    <div class="tile-text">
+                        <h3 class="premium-serif text-sand">Luxury Cosmetics</h3>
+                        <p class="text-moss font-geometric">+200% Small Business Conversion</p>
+                    </div>
+                </div>
+
+                <!-- Tile 05 -->
+                <div class="tile-05 editorial-tile reveal-on-scroll delay-3">
+                    <div class="tile-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000" alt="Modern Interiors">
+                    </div>
+                    <div class="tile-text">
+                        <h3 class="premium-serif text-sand">Modern Interiors</h3>
+                        <p class="text-moss font-geometric">+95% Small Business Conversion</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>

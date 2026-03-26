@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     // Select all elements to animate
-    const animateElements = document.querySelectorAll('.text-content');
+    const animateElements = document.querySelectorAll('.text-content, .reveal-on-scroll');
     animateElements.forEach(el => observer.observe(el));
     
     // Initial trigger for hero items that are already in view
@@ -189,5 +189,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 orb.style.top = '50%';
             });
         }
+    }
+
+    // Custom Folio SVG spiral drawing logic
+    const folioSection = document.getElementById('folio-editorial');
+    const spiralSvg = document.querySelector('.spiral-svg');
+    if (folioSection && spiralSvg) {
+        const svgObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    spiralSvg.classList.add('drawn');
+                    // wait for animation to complete (2.5s) then dissolve
+                    setTimeout(() => {
+                        spiralSvg.classList.add('dissolve');
+                    }, 2500);
+                    svgObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        svgObserver.observe(folioSection);
     }
 });
