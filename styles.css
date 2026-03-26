@@ -1147,3 +1147,33 @@ h1, h2, h3, h4, .section-title, .hero-title {
 .delay-1 { transition-delay: 0.2s; }
 .delay-2 { transition-delay: 0.4s; }
 .delay-3 { transition-delay: 0.6s; }
+
+/* ====== GLOBAL GLOW CURSOR & TRAIL ====== */
+.global-glow-cursor {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(188, 224, 231, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    mix-blend-mode: hard-light;
+    transition: width 0.3s, height 0.3s;
+}
+
+.glow-trail {
+    position: fixed;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(188, 224, 231, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(15px);
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 9998;
+    opacity: 0.8;
+    mix-blend-mode: hard-light;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}

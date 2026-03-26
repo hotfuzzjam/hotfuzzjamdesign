@@ -209,4 +209,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.3 });
         svgObserver.observe(folioSection);
     }
+
+    // Global Glow Mouse Cursor & Trail
+    const globalGlow = document.createElement('div');
+    globalGlow.classList.add('global-glow-cursor');
+    document.body.appendChild(globalGlow);
+
+    let lastTrailTime = 0;
+    document.addEventListener('mousemove', (e) => {
+        globalGlow.style.left = e.clientX + 'px';
+        globalGlow.style.top = e.clientY + 'px';
+
+        const now = Date.now();
+        if (now - lastTrailTime > 50) { // Limit trail spawn rate for performance
+            lastTrailTime = now;
+            const trail = document.createElement('div');
+            trail.classList.add('glow-trail');
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            document.body.appendChild(trail);
+
+            // Trigger reflow to ensure CSS processes the initial state before transitioning
+            void trail.offsetWidth;
+            
+            trail.style.opacity = '0';
+            trail.style.transform = 'translate(-50%, -50%) scale(0.2)';
+            
+            setTimeout(() => {
+                trail.remove();
+            }, 800);
+        }
+    });
+
+    // Make glow burst on click
+    document.addEventListener('click', () => {
+        globalGlow.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        setTimeout(() => {
+            globalGlow.style.transform = 'translate(-50%, -50%) scale(1)';
+        }, 300);
+    });
 });
