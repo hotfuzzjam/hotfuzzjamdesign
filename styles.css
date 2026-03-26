@@ -740,6 +740,11 @@ h1, h2, h3, h4, .section-title, .hero-title {
     overflow: hidden;
 }
 
+.cta-section .container {
+    position: relative;
+    z-index: 2;
+}
+
 .cta-section::after {
     content: '';
     position: absolute;
