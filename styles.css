@@ -909,8 +909,16 @@ h1, h2, h3, h4, .section-title, .hero-title {
 
 @media (max-width: 768px) {
     :root {
-        --spacing-xl: 3rem;
+        --spacing-xl: 3rem; /* Used for vertical section gaps */
         --nav-height: 70px;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .navbar {
+        padding: 0 1.5rem;
     }
     
     .nav-links, .nav-cta {
