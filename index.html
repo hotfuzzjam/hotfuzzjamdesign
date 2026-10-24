@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta property="og:title" content="HOTFUZZJAM Studio">
-<meta property="og:image" content="assets/hero/still-1280.jpg">
+<meta property="og:image" content="assets/hero/face-1920.jpg">
 <title>HOTFUZZJAM Studio</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="HOTFUZZJAM Studio — a rehearsal room on the Gold Coast. Book online, see the live roster, get a reminder before you play.">
@@ -92,7 +92,7 @@ p{margin:0;max-width:62ch}
 .link:hover{background-size:0 1px;background-position:100% 85%}
 
 /* nav — transparent over the hero, solid once you leave it */
-.nav{position:absolute;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:50;--nav-fg:#FBF6F0;color:var(--nav-fg);text-shadow:0 1px 2px rgba(18,10,6,.45)}
+.nav{position:relative;z-index:50;padding-top:env(safe-area-inset-top,0px);background:var(--ground);--nav-fg:#FBF6F0;color:var(--nav-fg)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:var(--nav-h)}
 .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--nav-fg);margin-left:clamp(64px,5.6vw,80px)}
 .brand .mark{width:48px}
@@ -107,44 +107,42 @@ p{margin:0;max-width:62ch}
 @media (max-width:900px){.nav ul{display:none}}
 @media (max-width:520px){.brand span{display:none}.chip{display:none}}
 
-/* hero — layered portrait: static plate + head layer that nods on a pivot at the top of the neck */
+/* hero — engraved banner: the portrait holds the left 60%, the headline sits in the open orange on the right.
+   The plate fades out at the chin into the same orange, where the intro and CTAs run underneath. */
 @font-face{font-family:"HFJ Helvetica Condensed";font-weight:700;font-style:normal;font-display:swap;
   src:local("HelveticaNeue-CondensedBold"),local("Helvetica Neue Condensed Bold"),local("HelveticaNeueLTStd-BdCn"),local("HelveticaNeueLTPro-BdCn"),local("Helvetica-Condensed-Bold"),local("Helvetica Condensed Bold")}
 @font-face{font-family:"HFJ Helvetica Condensed";font-weight:900;font-style:normal;font-display:swap;
   src:local("HelveticaNeue-CondensedBlack"),local("Helvetica Neue Condensed Black"),local("HelveticaNeueLTStd-BlkCn"),local("HelveticaNeueLTPro-BlkCn"),local("Helvetica-Condensed-Black")}
-.hero h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:clamp(3.6rem,1.4rem + 6.6vw,8.6rem);line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal}
-.hero{position:relative;height:clamp(560px,86svh,940px);overflow:hidden;background:#F1A11B;container-type:size;isolation:isolate;
-  --px:.5;--py:.3;--hfg:var(--on-light)}
-.stage{position:absolute;--w:max(100cqw,calc(100cqh * 1.7788));width:var(--w);aspect-ratio:2517/1415;max-width:none;
-  left:calc((100cqw - var(--w)) * var(--px));top:calc((100cqh - var(--w) / 1.7788) * var(--py));z-index:-2;will-change:transform}
-.stage img{position:absolute;inset:0;width:100%;height:100%;max-width:none}
-.hero .wrap{height:100%;display:flex;flex-direction:column;justify-content:center;padding-block:calc(var(--nav-h) + env(safe-area-inset-top,0px)) 3rem}
-.hero .copy{margin-left:auto;width:min(48%,640px);color:var(--hfg)}
-.hero .wordmark-logo{display:block;width:100%;max-width:640px;height:auto;margin:0 0 clamp(1rem,.6rem + 1.4vw,1.8rem) -.4%;filter:drop-shadow(0 6px 14px rgba(18,10,6,.28))}
-/* ROOM TO BE: the wordmark's deep purple (sampled from its hatching); a lighter tint of the same hue on the dark mobile fade */
-.hero h1{color:var(--hfj-purple,#5A3460)}
+.hero{position:relative;overflow:hidden;background:#E6902C;color:#120A06;container-type:inline-size;isolation:isolate;--hfg:#120A06}
+.banner{position:relative;aspect-ratio:1920/440}
+.stage{position:absolute;inset:0;z-index:-1;
+  -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 78%,transparent 100%)}
+.stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
+.banner .copy{position:absolute;left:61.5%;right:max(var(--gutter),3.2cqw);top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
+.hero .wordmark-logo{display:block;width:21cqw;max-width:none;height:auto;margin:0 0 1.1cqw -.3%;filter:drop-shadow(0 4px 10px rgba(18,10,6,.22))}
+.hero h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line > span{display:inline-block}
-/* LOUD: mustard, heaviest cut, with the wordmark's black outline so it holds on the orange */
-.hero h1 em{font-style:normal;font-weight:900;color:#E1AD01;-webkit-text-stroke:.055em #120A06;paint-order:stroke fill;text-shadow:0 .04em 0 #120A06}
-.hero .row{display:grid;gap:1.6rem;margin-top:clamp(1.4rem,1rem + 1.5vw,2.2rem)}
-.hero .row p{max-width:40ch;color:#FBF6F0;font-weight:500;text-shadow:0 1px 2px rgba(18,10,6,.55),0 0 18px rgba(18,10,6,.35)}
+/* LOUD: same black, heaviest cut */
+.hero h1 em{font-style:normal;font-weight:900}
+.hero .row{display:grid;grid-template-columns:61.5% 1fr;align-items:end;gap:1.6rem 0;
+  padding:clamp(.4rem,1.2cqw,1.6rem) max(var(--gutter),3.2cqw) clamp(2.4rem,4cqw,4rem) max(var(--gutter),4cqw)}
+.hero .row p{max-width:46ch;margin:0;color:#120A06;font-weight:500}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
-.hero .btn{background:var(--on-light);border-color:var(--on-light);color:var(--ink)}
+.hero .btn{background:#120A06;border-color:#120A06;color:var(--ink)}
 .hero .btn:hover{background:#3A1E10;border-color:#3A1E10}
-.hero .link{color:var(--hfg)}
+.hero .link{color:#120A06}
 @keyframes rise{from{transform:translateY(60%);opacity:.15}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:.6;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:900px){
-  /* phone/tablet: image across the top showing the whole head, copy starts at the beard on a dark fade */
-  .hero{height:auto;container-type:inline-size;background:var(--ground);--hfg:var(--ink);--hfj-purple:#B07AA6;--mw:min(235cqw,1500px)}
-  .stage{--w:var(--mw);left:0;top:0}
-  .hero::after{content:"";position:absolute;left:0;top:0;width:100%;height:calc(var(--mw) / 1.7788 + 2px);z-index:-1;pointer-events:none;
-    background:linear-gradient(to top,var(--ground) 0%,rgba(18,10,6,.82) 20%,rgba(18,10,6,.35) 34%,rgba(18,10,6,0) 46%)}
-  .hero .wrap{height:auto;justify-content:flex-start;padding-block:calc(var(--mw) / 1.7788 * .72) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
-  .hero .copy{margin-left:0;width:100%}
-  .hero .btn{background:var(--ink);border-color:var(--ink);color:var(--on-light)}
-  .hero .btn:hover{background:var(--kin);border-color:var(--kin)}
+  /* phone/tablet: crop to the face, then the copy stacks on the orange */
+  .banner{aspect-ratio:auto}
+  .stage{position:relative;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent 100%);mask-image:linear-gradient(to bottom,#000 72%,transparent 100%)}
+  .stage img{object-position:21% 50%}
+  .banner .copy{position:static;padding:0 var(--gutter);margin-top:-1.2rem}
+  .hero .wordmark-logo{width:min(74%,420px);margin-bottom:1rem}
+  .hero h1{font-size:clamp(3.4rem,18cqw,6.4rem)}
+  .hero .row{display:grid;grid-template-columns:1fr;padding:1.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
   .hero .ctas .btn{flex:1 1 100%}
 }
 
@@ -447,21 +445,21 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 <main id="top">
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="stage" id="heroImg">
-      <img src="assets/hero/still-1280.webp" srcset="assets/hero/still-1280.webp 1280w, assets/hero/still-2400.webp 2400w" sizes="(max-width:900px) 235vw, 100vw" alt="Line-engraved portrait of a musician in a wide-brim JAM hat and round sunglasses beside the HFJ stamp, on an orange ground" width="2517" height="1415" fetchpriority="high">
+    <div class="banner">
+      <div class="stage" id="heroImg">
+        <img src="assets/hero/face-1920.webp" srcset="assets/hero/face-960.webp 960w, assets/hero/face-1920.webp 1920w" sizes="(max-width:900px) 290vw, 100vw" alt="Line-engraved portrait of a musician with a curly afro and round glasses beside a cymbal, on an orange ground" width="1920" height="440" fetchpriority="high">
+      </div>
+      <div class="copy">
+        <img class="wordmark-logo" src="assets/brand/wordmark-760.webp" srcset="assets/brand/wordmark-760.webp 760w, assets/brand/wordmark-1400.webp 1400w" sizes="(max-width:900px) 74vw, 21vw" width="2091" height="454" alt="HOTFUZZJAM, rehearsal studio on the Gold Coast">
+        <h1><span class="line"><span>Room to</span></span><span class="line"><span>be <em>loud.</em></span></span></h1>
+      </div>
     </div>
     <i class="hero-tape" aria-hidden="true"></i>
-    <div class="wrap">
-      <div class="copy">
-        <img class="wordmark-logo" src="assets/brand/wordmark-760.webp" srcset="assets/brand/wordmark-760.webp 760w, assets/brand/wordmark-1400.webp 1400w" sizes="(max-width:900px) 92vw, 640px" width="2091" height="454" alt="HOTFUZZJAM, rehearsal studio on the Gold Coast">
-        <h1><span class="line"><span>Room to</span></span><span class="line"><span>be <em>loud.</em></span></span></h1>
-        <div class="row">
-          <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
-          <div class="ctas">
-            <a class="btn" href="#book">Book a session <span class="arrow" aria-hidden="true"></span></a>
-            <a class="link" href="#roster">This week's roster</a>
-          </div>
-        </div>
+    <div class="row">
+      <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
+      <div class="ctas">
+        <a class="btn" href="#book">Book a session <span class="arrow" aria-hidden="true"></span></a>
+        <a class="link" href="#roster">This week's roster</a>
       </div>
     </div>
   </section>
