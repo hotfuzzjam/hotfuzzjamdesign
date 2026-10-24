@@ -12,7 +12,7 @@
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Roboto+Condensed:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Roboto+Condensed:wght@700;900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300&text=%E7%B7%B4%E7%BF%92%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA%E9%83%A8%E5%B1%8B%E6%96%99%E9%87%91%E6%A9%9F%E6%9D%90%E4%BA%88%E5%AE%9A%E7%B4%84%E9%96%93%E6%B5%81%E3%82%8C%E9%9F%B3%E3%81%AE&display=swap">
 <style>
 /* Layout: Marshall's structure (full-bleed duotone imagery, stacked feature blocks, category tiles)
@@ -110,29 +110,24 @@ p{margin:0;max-width:62ch}
 /* hero — layered portrait: static plate + head layer that nods on a pivot at the top of the neck */
 @font-face{font-family:"HFJ Helvetica Condensed";font-weight:700;font-style:normal;font-display:swap;
   src:local("HelveticaNeue-CondensedBold"),local("Helvetica Neue Condensed Bold"),local("HelveticaNeueLTStd-BdCn"),local("HelveticaNeueLTPro-BdCn"),local("Helvetica-Condensed-Bold"),local("Helvetica Condensed Bold")}
+@font-face{font-family:"HFJ Helvetica Condensed";font-weight:900;font-style:normal;font-display:swap;
+  src:local("HelveticaNeue-CondensedBlack"),local("Helvetica Neue Condensed Black"),local("HelveticaNeueLTStd-BlkCn"),local("HelveticaNeueLTPro-BlkCn"),local("Helvetica-Condensed-Black")}
 .hero h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:clamp(3.6rem,1.4rem + 6.6vw,8.6rem);line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal}
 .hero{position:relative;height:clamp(560px,86svh,940px);overflow:hidden;background:#F1A11B;container-type:size;isolation:isolate;
   --px:.5;--py:.3;--hfg:var(--on-light)}
 .stage{position:absolute;--w:max(100cqw,calc(100cqh * 1.7788));width:var(--w);aspect-ratio:2517/1415;max-width:none;
   left:calc((100cqw - var(--w)) * var(--px));top:calc((100cqh - var(--w) / 1.7788) * var(--py));z-index:-2;will-change:transform}
 .stage img{position:absolute;inset:0;width:100%;height:100%;max-width:none}
-.stage .head{transform-origin:31.8% 76.7%;animation:nod .6s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform}
-.hero.off .stage .head{animation-play-state:paused}
-/* 100 BPM: one beat (0.6s) down, one beat up; sine-like ease, no snap at either end */
-@keyframes nod{
-  from{transform:rotate(-.4deg) translateY(-.05%)}
-  to  {transform:rotate(2.2deg) translateY(.28%)}
-}
 .hero .wrap{height:100%;display:flex;flex-direction:column;justify-content:center;padding-block:calc(var(--nav-h) + env(safe-area-inset-top,0px)) 3rem}
 .hero .copy{margin-left:auto;width:min(48%,640px);color:var(--hfg)}
-.hero .label{color:var(--hfg);opacity:.75;margin-bottom:1.4rem;display:block}
+.hero .wordmark-logo{display:block;width:100%;max-width:640px;height:auto;margin:0 0 clamp(1rem,.6rem + 1.4vw,1.8rem) -.4%;filter:drop-shadow(0 6px 14px rgba(18,10,6,.28))}
 .hero h1{color:var(--hfg)}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
-.hero h1 .line > span{display:inline-block;animation:rise 1.4s var(--ease) both}
-.hero h1 .line:nth-child(2) > span{animation-delay:.12s}
-.hero h1 em{font-style:normal}
-.hero .row{display:grid;gap:1.6rem;margin-top:clamp(1.4rem,1rem + 1.5vw,2.2rem);animation:fade 1.6s .35s var(--ease) both}
-.hero .row p{max-width:40ch;color:var(--hfg);opacity:.85;font-weight:400}
+.hero h1 .line > span{display:inline-block}
+/* LOUD: mustard, heaviest cut, with the wordmark's black outline so it holds on the orange */
+.hero h1 em{font-style:normal;font-weight:900;color:#E1AD01;-webkit-text-stroke:.055em #120A06;paint-order:stroke fill;text-shadow:0 .04em 0 #120A06}
+.hero .row{display:grid;gap:1.6rem;margin-top:clamp(1.4rem,1rem + 1.5vw,2.2rem)}
+.hero .row p{max-width:40ch;color:#FBF6F0;font-weight:500;text-shadow:0 1px 2px rgba(18,10,6,.55),0 0 18px rgba(18,10,6,.35)}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
 .hero .btn{background:var(--on-light);border-color:var(--on-light);color:var(--ink)}
 .hero .btn:hover{background:#3A1E10;border-color:#3A1E10}
@@ -147,7 +142,6 @@ p{margin:0;max-width:62ch}
     background:linear-gradient(to top,var(--ground) 0%,rgba(18,10,6,.82) 20%,rgba(18,10,6,.35) 34%,rgba(18,10,6,0) 46%)}
   .hero .wrap{height:auto;justify-content:flex-start;padding-block:calc(var(--mw) / 1.7788 * .72) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
   .hero .copy{margin-left:0;width:100%}
-  .hero h1 em{color:var(--kin)}
   .hero .btn{background:var(--ink);border-color:var(--ink);color:var(--on-light)}
   .hero .btn:hover{background:var(--kin);border-color:var(--kin)}
   .hero .ctas .btn{flex:1 1 100%}
@@ -452,14 +446,13 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 <main id="top">
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="stage" id="heroImg" role="img" aria-label="Line-engraved portrait of a musician in a wide-brim JAM hat and round sunglasses, nodding along to music, beside the HFJ stamp on an orange ground">
-      <img class="plate" src="assets/hero/plate-1280.webp" srcset="assets/hero/plate-1280.webp 1280w, assets/hero/plate-2400.webp 2400w" sizes="(max-width:900px) 200vw, 100vw" alt="" width="2517" height="1415" fetchpriority="high">
-      <img class="head" src="assets/hero/head-1280.webp" srcset="assets/hero/head-1280.webp 1280w, assets/hero/head-2400.webp 2400w" sizes="(max-width:900px) 200vw, 100vw" alt="" width="2517" height="1415" fetchpriority="high">
+    <div class="stage" id="heroImg">
+      <img src="assets/hero/still-1280.webp" srcset="assets/hero/still-1280.webp 1280w, assets/hero/still-2400.webp 2400w" sizes="(max-width:900px) 235vw, 100vw" alt="Line-engraved portrait of a musician in a wide-brim JAM hat and round sunglasses beside the HFJ stamp, on an orange ground" width="2517" height="1415" fetchpriority="high">
     </div>
     <i class="hero-tape" aria-hidden="true"></i>
     <div class="wrap">
       <div class="copy">
-        <span class="label">Rehearsal studio · Gold Coast, Queensland</span>
+        <img class="wordmark-logo" src="assets/brand/wordmark-760.webp" srcset="assets/brand/wordmark-760.webp 760w, assets/brand/wordmark-1400.webp 1400w" sizes="(max-width:900px) 92vw, 640px" width="2091" height="454" alt="HOTFUZZJAM, rehearsal studio on the Gold Coast">
         <h1><span class="line"><span>Room to</span></span><span class="line"><span>be <em>loud.</em></span></span></h1>
         <div class="row">
           <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
@@ -1479,7 +1472,6 @@ function frame(){
   hero.classList.toggle('off', hb < 0);
   updateBar(hb);
   if (reduce.matches) return;
-  if (hb > 0) heroImg.style.transform = innerWidth > 900 ? `translate3d(0,${(y * 0.16).toFixed(1)}px,0)` : '';
   for (const img of pars){
     const r = img.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) continue;
     const p = (r.top + r.height/2 - vh/2) / (vh/2 + r.height/2);
