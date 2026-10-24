@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta property="og:title" content="HOTFUZZJAM Studio">
-<meta property="og:image" content="assets/hero/face-1920.jpg">
+<meta property="og:image" content="assets/hero/afro-1983.jpg">
 <title>HOTFUZZJAM Studio</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="HOTFUZZJAM Studio — a rehearsal room on the Gold Coast. Book online, see the live roster, get a reminder before you play.">
@@ -113,21 +113,19 @@ p{margin:0;max-width:62ch}
   src:local("HelveticaNeue-CondensedBold"),local("Helvetica Neue Condensed Bold"),local("HelveticaNeueLTStd-BdCn"),local("HelveticaNeueLTPro-BdCn"),local("Helvetica-Condensed-Bold"),local("Helvetica Condensed Bold")}
 @font-face{font-family:"HFJ Helvetica Condensed";font-weight:900;font-style:normal;font-display:swap;
   src:local("HelveticaNeue-CondensedBlack"),local("Helvetica Neue Condensed Black"),local("HelveticaNeueLTStd-BlkCn"),local("HelveticaNeueLTPro-BlkCn"),local("Helvetica-Condensed-Black")}
-.hero{position:relative;overflow:hidden;background:#E8912C;color:#120A06;container-type:inline-size;isolation:isolate;--hfg:#120A06}
-.banner{position:relative;aspect-ratio:1920/440}
-.stage{position:absolute;inset:0;z-index:-1;
-  -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 78%,transparent 100%)}
+.hero{position:relative;overflow:hidden;background:#F99516;color:#120A06;container-type:inline-size;isolation:isolate;--hfg:#120A06}
+.banner{position:relative;aspect-ratio:1983/793;display:flex;align-items:center}
+.stage{position:absolute;inset:0;z-index:-1}
 .stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
-.banner .copy{position:absolute;left:61.5%;right:max(var(--gutter),3.2cqw);top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
-.hero .wordmark-logo{display:block;width:21cqw;max-width:none;height:auto;margin:0 0 1.1cqw -.3%;filter:drop-shadow(0 4px 10px rgba(18,10,6,.22))}
+.banner .copy{margin-left:60%;width:calc(40% - max(var(--gutter),3.4cqw));padding-block:clamp(2rem,3.4cqw,4rem)}
+.hero .wordmark-logo{display:block;width:min(100%,24cqw);max-width:none;height:auto;margin:0 0 1.2cqw -.3%}
 .hero h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line > span{display:inline-block}
 /* LOUD: same black, heaviest cut */
 .hero h1 em{font-style:normal;font-weight:900}
-.hero .row{display:grid;grid-template-columns:61.5% 1fr;align-items:end;gap:1.6rem 0;
-  padding:clamp(.4rem,1.2cqw,1.6rem) max(var(--gutter),3.2cqw) clamp(2.4rem,4cqw,4rem) max(var(--gutter),4cqw)}
-.hero .row p{max-width:46ch;margin:0;color:#120A06;font-weight:500}
+.hero .row{display:grid;gap:clamp(1.2rem,1.8cqw,1.8rem);margin-top:clamp(1.2rem,2cqw,2.2rem)}
+.hero .row p{max-width:40ch;margin:0;color:#120A06;font-weight:500}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
 .hero .btn{background:#120A06;border-color:#120A06;color:var(--ink)}
 .hero .btn:hover{background:#3A1E10;border-color:#3A1E10}
@@ -136,13 +134,12 @@ p{margin:0;max-width:62ch}
 @keyframes fade{from{opacity:.6;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:900px){
   /* phone/tablet: crop to the face, then the copy stacks on the orange */
-  .banner{aspect-ratio:auto}
-  .stage{position:relative;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent 100%);mask-image:linear-gradient(to bottom,#000 72%,transparent 100%)}
-  .stage img{object-position:21% 50%}
-  .banner .copy{position:static;padding:0 var(--gutter);margin-top:-1.2rem}
+  .banner{aspect-ratio:auto;display:block}
+  .stage{position:relative;aspect-ratio:10/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
+  .stage img{object-position:9% 50%}
+  .banner .copy{margin-left:0;width:auto;padding:.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
   .hero .wordmark-logo{width:min(74%,420px);margin-bottom:1rem}
   .hero h1{font-size:clamp(3.4rem,18cqw,6.4rem)}
-  .hero .row{display:grid;grid-template-columns:1fr;padding:1.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
   .hero .ctas .btn{flex:1 1 100%}
 }
 
@@ -193,8 +190,7 @@ section.band{padding-block:var(--space) 0}
   left:calc(-1 * clamp(22px,2vw,30px));top:calc(env(safe-area-inset-top,0px) - clamp(14px,1.4vw,20px));
   width:clamp(150px,14vw,200px);aspect-ratio:243/73;
   background:url(assets/tape.webp) center/100% 100% no-repeat;opacity:.95;
-  transform:rotate(-45deg);transform-origin:50% 50%;
-  filter:drop-shadow(0 3px 4px rgba(18,10,6,.28))}
+  transform:rotate(-45deg);transform-origin:50% 50%;}
 
 /* gear — category tiles, then the specifics */
 .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.2vw,16px)}
@@ -447,19 +443,19 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <section class="hero" id="hero">
     <div class="banner">
       <div class="stage" id="heroImg">
-        <img src="assets/hero/face-1920.webp" srcset="assets/hero/face-960.webp 960w, assets/hero/face-1920.webp 1920w, assets/hero/face-3840.webp 3840w" sizes="(max-width:900px) 290vw, 100vw" alt="Line-engraved portrait of a musician with a curly afro and round glasses beside a cymbal, on an orange ground" width="3840" height="880" fetchpriority="high">
+        <img src="assets/hero/afro-1983.webp" srcset="assets/hero/afro-1000.webp 1000w, assets/hero/afro-1983.webp 1983w" sizes="(max-width:900px) 225vw, 100vw" alt="Line-engraved portrait of a musician with a big curly afro and round glasses beside a cymbal, on an orange ground" width="1983" height="793" fetchpriority="high">
       </div>
+      <i class="hero-tape" aria-hidden="true"></i>
       <div class="copy">
-        <img class="wordmark-logo" src="assets/brand/wordmark-760.webp" srcset="assets/brand/wordmark-760.webp 760w, assets/brand/wordmark-1400.webp 1400w" sizes="(max-width:900px) 74vw, 21vw" width="2091" height="454" alt="HOTFUZZJAM, rehearsal studio on the Gold Coast">
+        <img class="wordmark-logo" src="assets/brand/wordmark-760.webp" srcset="assets/brand/wordmark-760.webp 760w, assets/brand/wordmark-1400.webp 1400w" sizes="(max-width:900px) 74vw, 24vw" width="2091" height="454" alt="HOTFUZZJAM, rehearsal studio on the Gold Coast">
         <h1><span class="line"><span>Room to</span></span><span class="line"><span>be <em>loud.</em></span></span></h1>
-      </div>
-    </div>
-    <i class="hero-tape" aria-hidden="true"></i>
-    <div class="row">
-      <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
-      <div class="ctas">
-        <a class="btn" href="#book">Book a session <span class="arrow" aria-hidden="true"></span></a>
-        <a class="link" href="#roster">This week's roster</a>
+        <div class="row">
+          <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
+          <div class="ctas">
+            <a class="btn" href="#book">Book a session <span class="arrow" aria-hidden="true"></span></a>
+            <a class="link" href="#roster">This week's roster</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
