@@ -121,7 +121,8 @@ p{margin:0;max-width:62ch}
 .hero .wrap{height:100%;display:flex;flex-direction:column;justify-content:center;padding-block:calc(var(--nav-h) + env(safe-area-inset-top,0px)) 3rem}
 .hero .copy{margin-left:auto;width:min(48%,640px);color:var(--hfg)}
 .hero .wordmark-logo{display:block;width:100%;max-width:640px;height:auto;margin:0 0 clamp(1rem,.6rem + 1.4vw,1.8rem) -.4%;filter:drop-shadow(0 6px 14px rgba(18,10,6,.28))}
-.hero h1{color:var(--hfg)}
+/* ROOM TO BE: the wordmark's deep purple (sampled from its hatching); a lighter tint of the same hue on the dark mobile fade */
+.hero h1{color:var(--hfj-purple,#5A3460)}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line > span{display:inline-block}
 /* LOUD: mustard, heaviest cut, with the wordmark's black outline so it holds on the orange */
@@ -136,7 +137,7 @@ p{margin:0;max-width:62ch}
 @keyframes fade{from{opacity:.6;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:900px){
   /* phone/tablet: image across the top showing the whole head, copy starts at the beard on a dark fade */
-  .hero{height:auto;container-type:inline-size;background:var(--ground);--hfg:var(--ink);--mw:min(235cqw,1500px)}
+  .hero{height:auto;container-type:inline-size;background:var(--ground);--hfg:var(--ink);--hfj-purple:#B07AA6;--mw:min(235cqw,1500px)}
   .stage{--w:var(--mw);left:0;top:0}
   .hero::after{content:"";position:absolute;left:0;top:0;width:100%;height:calc(var(--mw) / 1.7788 + 2px);z-index:-1;pointer-events:none;
     background:linear-gradient(to top,var(--ground) 0%,rgba(18,10,6,.82) 20%,rgba(18,10,6,.35) 34%,rgba(18,10,6,0) 46%)}
