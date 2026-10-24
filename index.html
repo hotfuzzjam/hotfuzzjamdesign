@@ -117,8 +117,9 @@ p{margin:0;max-width:62ch}
 .banner{position:relative;aspect-ratio:1983/793;display:flex;align-items:center}
 .stage{position:absolute;inset:0;z-index:-1}
 .stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
-.banner .copy{margin-left:60%;width:calc(40% - max(var(--gutter),3.4cqw));padding-block:clamp(2rem,3.4cqw,4rem)}
-.hero .wordmark-logo{display:block;width:min(100%,30cqw);max-width:none;height:auto;margin:0 0 1.2cqw -.3%}
+/* copy column = the open orange between the edge of his hair (57.4% of the plate) and the right edge, everything centred in it */
+.banner .copy{margin-left:57.4%;width:42.6%;padding:clamp(2rem,3.4cqw,4rem) 2.6cqw;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero .wordmark-logo{display:block;width:min(100%,30cqw);max-width:none;height:auto;margin:0 auto 1.2cqw}
 /* ROOM TO BE LOUD. — Roboto Condensed Black (900, the family's heaviest), self-hosted so it never falls back */
 @font-face{font-family:"HFJ Roboto Condensed";font-weight:900;font-style:normal;font-display:swap;src:url(assets/fonts/roboto-condensed-latin-900-normal.woff2) format("woff2")}
 .hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
@@ -126,11 +127,11 @@ p{margin:0;max-width:62ch}
 .hero h1 .line > span{display:inline-block}
 /* LOUD: same black, heaviest cut */
 .hero h1 em{font-style:normal;font-weight:900}
-.hero .row{display:grid;gap:clamp(1.2rem,1.8cqw,1.8rem);margin-top:clamp(1.2rem,2cqw,2.2rem)}
+.hero .row{display:grid;justify-items:center;gap:clamp(1.2rem,1.8cqw,1.8rem);margin-top:clamp(1.2rem,2cqw,2.2rem)}
 .hero .row p{max-width:40ch;margin:0;color:#120A06;font-weight:500}
-.hero .ctas{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+.hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;align-items:center}
 /* Book a session: the wordmark purple, flat — no arrow */
-.hero .btn{background:#5A3460;border-color:#5A3460;color:#FBF6F0}
+.hero .btn{background:#5A3460;border-color:#5A3460;color:#FBF6F0;justify-content:center}
 .hero .btn:hover{background:#6B3F72;border-color:#6B3F72}
 .hero .link{color:#120A06}
 @keyframes rise{from{transform:translateY(60%);opacity:.15}to{transform:none;opacity:1}}
@@ -141,6 +142,7 @@ p{margin:0;max-width:62ch}
   .stage{position:relative;aspect-ratio:10/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
   .stage img{object-position:9% 50%}
   .banner .copy{margin-left:0;width:auto;padding:.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
+  .hero .ctas{width:100%}
   .hero .wordmark-logo{width:min(80%,460px);margin-bottom:1rem}
   .hero h1{font-size:clamp(3.4rem,18cqw,6.4rem)}
   .hero .ctas .btn{flex:1 1 100%}
@@ -450,7 +452,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       </div>
       <i class="hero-tape" aria-hidden="true"></i>
       <div class="copy">
-        <img class="wordmark-logo" src="assets/brand/logo-studio-800.webp" srcset="assets/brand/logo-studio-800.webp 800w, assets/brand/logo-studio-1600.webp 1600w" sizes="(max-width:900px) 80vw, 30vw" width="2103" height="503" alt="HOTFUZZJAM Studio, rehearsal studio on the Gold Coast">
+        <img class="wordmark-logo" src="assets/brand/logo-colour2-700.webp" srcset="assets/brand/logo-colour2-700.webp 700w, assets/brand/logo-colour2-1000.webp 1000w, assets/brand/logo-colour2-1400.webp 1400w" sizes="(max-width:900px) 80vw, 30vw" width="2103" height="503" alt="HOTFUZZJAM Studio, rehearsal studio on the Gold Coast">
         <h1><span class="line"><span>Room to</span></span><span class="line"><span>be <em>loud.</em></span></span></h1>
         <div class="row">
           <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
