@@ -119,7 +119,9 @@ p{margin:0;max-width:62ch}
 .stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
 .banner .copy{margin-left:60%;width:calc(40% - max(var(--gutter),3.4cqw));padding-block:clamp(2rem,3.4cqw,4rem)}
 .hero .wordmark-logo{display:block;width:min(100%,24cqw);max-width:none;height:auto;margin:0 0 1.2cqw -.3%}
-.hero h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
+/* ROOM TO BE LOUD. — Roboto Condensed Black (900, the family's heaviest), self-hosted so it never falls back */
+@font-face{font-family:"HFJ Roboto Condensed";font-weight:900;font-style:normal;font-display:swap;src:url(assets/fonts/roboto-condensed-latin-900-normal.woff2) format("woff2")}
+.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line > span{display:inline-block}
 /* LOUD: same black, heaviest cut */
