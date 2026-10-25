@@ -176,9 +176,15 @@ section.band{padding-block:var(--space) 0}
 .sec-head.has-art p{grid-column:2 / span 5;grid-row:3;align-self:start;margin-top:1.6rem}
 .sec-art{grid-column:9 / span 4;grid-row:1 / span 3;margin:0;align-self:end}
 .sec-art .duo{aspect-ratio:1}
+/* mirrored: plate on the left, label and heading on the right, bottom-aligned to it */
+.sec-head.art-left{grid-template-rows:1fr auto}
+.sec-head.art-left .sec-art{grid-column:2 / span 4;grid-row:1 / span 2}
+.sec-head.art-left .label{grid-column:7 / span 6;grid-row:1;align-self:end}
+.sec-head.art-left h2{grid-column:7 / span 6;grid-row:2;align-self:end}
+.sec-head.art-left .duo{aspect-ratio:6/5}
 /* landscape plate: same column as the ticket below it, so the edges line up */
 .sec-art.wide .duo{aspect-ratio:4/3}
-@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}.sec-art.wide{grid-column:1 / -1}.sec-art.wide .duo{aspect-ratio:16/9}}
+@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}.sec-art.wide{grid-column:1 / -1}.sec-art.wide .duo{aspect-ratio:16/9}.sec-head.art-left .sec-art{grid-column:1 / -1;grid-row:auto;margin:0 0 2rem}.sec-head.art-left .label,.sec-head.art-left h2{grid-column:1 / -1;grid-row:auto}.sec-head.art-left .duo{aspect-ratio:6/5}.sec-head.art-left{grid-template-rows:none}}
 @media (max-width:960px){.sec-head .jp{display:none}.sec-head .label,.sec-head h2{grid-column:1 / -1}.sec-head p{grid-column:1 / span 10;margin-top:1.4rem}}
 @media (max-width:600px){.sec-head p{grid-column:1 / -1}}
 
@@ -563,8 +569,9 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- FLOW -->
   <section class="band">
     <div class="wrap">
-      <div class="grid sec-head">
+      <div class="grid sec-head has-art art-left">
         <span class="jp" aria-hidden="true">予約</span>
+        <figure class="sec-art rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/singer-640.webp" srcset="assets/duo/singer-640.webp 640w, assets/duo/singer-1200.webp 1200w" sizes="(max-width:960px) 92vw, 30vw" width="1200" height="1010" alt="Engraved illustration of a singer in a floral shirt at the mic, guitar neck raised"></div></figure>
         <span class="label">How booking works</span>
         <h2 class="rise">From booking to first chord.</h2>
       </div>
