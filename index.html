@@ -119,10 +119,12 @@ p{margin:0;max-width:62ch}
 .stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
 /* copy column = the open orange between the edge of his hair (57.4% of the plate) and the right edge, everything centred in it */
 .banner .copy{margin-left:57.4%;width:42.6%;padding:2.2cqw 2.6cqw;text-align:center;display:flex;flex-direction:column;align-items:center}
-.hero .wordmark-logo{display:block;width:min(100%,26cqw);max-width:none;height:auto;margin:0 auto 1cqw}
+/* logo is tied to the headline size: 4.1em of it = about 8% wider than "ROOM TO" at every breakpoint */
+.hero{--h1fs:6.8cqw}
+.hero .wordmark-logo{display:block;width:min(100%,calc(var(--h1fs) * 4.1));max-width:none;height:auto;margin:0 auto 1cqw}
 /* ROOM TO BE LOUD. — Roboto Condensed Black (900, the family's heaviest), self-hosted so it never falls back */
 @font-face{font-family:"HFJ Roboto Condensed";font-weight:900;font-style:normal;font-display:swap;src:url(assets/fonts/roboto-condensed-latin-900-normal.woff2) format("woff2")}
-.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:6.8cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
+.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:6.8cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06;font-size:var(--h1fs)}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line > span{display:inline-block}
 /* LOUD: same black, heaviest cut */
@@ -144,15 +146,15 @@ p{margin:0;max-width:62ch}
   .stage{position:relative;aspect-ratio:16/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
   .stage img{object-position:0 50%}
   .banner .copy{margin-left:0;width:auto;padding:.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
-  .hero .wordmark-logo{width:min(80%,460px);margin-bottom:1rem}
-  .hero h1{font-size:clamp(3.4rem,13cqw,7rem)}
+  .hero{--h1fs:clamp(3.4rem,13cqw,7rem)}
+  .hero .wordmark-logo{margin-bottom:1rem}
   .hero .row{gap:1.4rem;margin-top:1.6rem}
   .hero .row p{font-size:1rem}
 }
 @media (max-width:640px){
   .stage{aspect-ratio:10/9}
   .stage img{object-position:9% 50%}
-  .hero h1{font-size:clamp(3.4rem,18cqw,6.4rem)}
+  .hero{--h1fs:clamp(3.4rem,18cqw,6.4rem)}
   .hero .ctas{width:100%}
   .hero .ctas .btn{flex:1 1 100%}
 }
@@ -433,7 +435,14 @@ dialog[open]{animation:fade .5s var(--ease)}
 footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 .foot{padding-block:clamp(3rem,2rem + 3vw,5rem) 2rem;row-gap:2.4rem}
 .foot > div{grid-column:span 3;display:grid;gap:.5rem;align-content:start;font-size:.92rem;min-width:0}
-.foot .mark{width:72px;color:var(--ink);margin-bottom:.6rem}
+/* even columns: the logo fills the first column, and each other column's label row is the logo's height
+   (all four columns are the same width, so the same container maths works in each), so every first line starts level */
+.foot > div{container-type:inline-size}
+.foot-logo{display:block;width:min(100%,300px);height:auto}
+@media (min-width:861px){
+  .foot > div > .label{min-height:calc(min(100cqw,300px) * 503 / 2103);display:flex;align-items:flex-end;margin:0}
+  .foot > div > .foot-logo + p{margin-top:0}
+}
 .foot a{text-decoration:none;justify-self:start;border-bottom:1px solid var(--line-strong)}
 .foot a:hover{border-bottom-color:var(--ink)}
 @media (max-width:860px){.foot > div{grid-column:span 6}}
@@ -530,16 +539,16 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
           <h3>PA & vocal mics</h3><p>Four channels, stands and every cable to the desk.</p>
         </article>
         <article class="tile taped rise" style="--tilt:-2.4deg;--tx:-5%">
-          <div class="duo"><span class="kind">Supplied</span><img data-par loading="lazy" src="assets/duo/rack-560.webp" srcset="assets/duo/rack-560.webp 560w, assets/duo/rack-900.webp 900w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of guitars and basses lined up in a rack" style="object-position:50% 50%"></div>
-          <h3>Cabs & shells</h3><p>Three guitar cabs, a 4×10 bass cab and drum shells.</p>
+          <div class="duo"><span class="kind">Supplied</span><img data-par loading="lazy" src="assets/duo/combo-760.webp" srcset="assets/duo/combo-760.webp 760w, assets/duo/combo-1400.webp 1400w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of a combo amp with a guitar lead hanging over its control panel" style="object-position:100% 50%"></div>
+          <h3>Cabs & shells</h3><p>Three guitar cabs, a 4×10 bass cab, drum shells and guitar racks.</p>
         </article>
         <article class="tile taped rise" style="--tilt:2.9deg;--tx:2%">
           <div class="duo"><span class="kind bring">Required</span><img data-par loading="lazy" src="assets/duo/hats-760.webp" srcset="assets/duo/hats-760.webp 760w, assets/duo/hats-1400.webp 1400w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of a hi-hat pair on its stand" style="object-position:80% 50%"></div>
           <h3>Must bring</h3><p>Snare, cymbals, kick pedal, hardware and throne.</p>
         </article>
         <article class="tile taped rise" style="--tilt:-1.4deg;--tx:-3%">
-          <div class="duo"><span class="kind bring">Bring yours</span><img data-par loading="lazy" src="assets/duo/combo-760.webp" srcset="assets/duo/combo-760.webp 760w, assets/duo/combo-1400.webp 1400w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of a combo amp with a guitar lead hanging over its control panel" style="object-position:100% 50%"></div>
-          <h3>Heads & pedals</h3><p>Your amp heads, combos, boards and leads.</p>
+          <div class="duo"><span class="kind bring">Bring yours</span><img data-par loading="lazy" src="assets/duo/rack-560.webp" srcset="assets/duo/rack-560.webp 560w, assets/duo/rack-900.webp 900w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of guitars and basses standing in one of the studio's racks" style="object-position:50% 50%"></div>
+          <h3>Heads & pedals</h3><p>Your guitars, amp heads, combos, boards and leads. Racks are here to stand them in.</p>
         </article>
       </div>
 
@@ -553,13 +562,14 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
             <li><span>Guitar cabinet, 2×12</span><span>On request</span></li>
             <li><span>Bass cabinet, 4×10</span><span>8 Ω</span></li>
             <li><span>Drum shells: kick, rack tom, floor tom</span><span>Tuned & miked</span></li>
+            <li><span>Guitar racks</span><span>Stands only</span></li>
           </ul>
         </div>
         <div class="rise">
           <h3>Bring your own <span class="label">Not supplied</span></h3>
           <ul>
             <li><span>Amp heads & combos</span><span>Guitar & bass</span></li>
-            <li><span>Instruments, pedals & leads</span><span></span></li>
+            <li><span>Guitars, basses, pedals & leads</span><span>No house guitars</span></li>
             <li><span>Snare, cymbals & kick pedal</span><span></span></li>
             <li><span>Drum hardware, hi-hat stand & throne</span><span></span></li>
             <li><span>DI cables for laptops & keys</span><span>Spare XLRs</span></li>
@@ -618,12 +628,11 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- BOOK -->
   <section class="band" id="book">
     <div class="wrap">
-      <div class="grid sec-head has-art">
+      <div class="grid sec-head">
         <span class="jp" aria-hidden="true">予約</span>
         <span class="label">Book a session</span>
         <h2 class="rise">Choose a day and an hour.</h2>
         <p class="muted rise">All times are Gold Coast time (AEST). Bookings open 60 days ahead.</p>
-        <figure class="sec-art wide rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/desk-760.webp" srcset="assets/duo/desk-760.webp 760w, assets/duo/desk-1400.webp 1400w" sizes="(max-width:960px) 92vw, 40vw" width="1400" height="933" alt="Engraved illustration of a hand setting gain on a mixing desk, a vocal mic resting on the channels, keys and a drum kit behind"></div></figure>
       </div>
 
       <div class="notice" id="notice" hidden role="status"></div>
@@ -710,7 +719,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <div class="wrap">
     <div class="grid foot">
       <div>
-        <div class="mark" aria-hidden="true"></div>
+        <img class="foot-logo" src="assets/brand/logo-dark-700.webp" srcset="assets/brand/logo-dark-700.webp 700w, assets/brand/logo-dark-1000.webp 1000w" sizes="(max-width:520px) 70vw, 22vw" width="2103" height="503" alt="HOTFUZZJAM Studio" loading="lazy">
         <p class="muted">A rehearsal room for bands who'd rather be playing. Gold Coast, Queensland.</p>
       </div>
       <div>
@@ -730,7 +739,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       </div>
     </div>
     <div class="wordmark" id="wordmark" aria-hidden="true">HOTFUZZJAM</div>
-    <div class="legal"><span>© <span id="yr">2026</span> HOTFUZZJAM Studio</span><span>Photography: Adobe Stock · <a href="admin.html" style="color:inherit">Studio login</a></span></div>
+    <div class="legal"><span>© <span id="yr">2026</span> HOTFUZZJAM Studio</span><span><a href="admin.html" style="color:inherit">Studio login</a></span></div>
   </div>
 </footer>
 
