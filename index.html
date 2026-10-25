@@ -118,17 +118,18 @@ p{margin:0;max-width:62ch}
 .stage{position:absolute;inset:0;z-index:-1}
 .stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
 /* copy column = the open orange between the edge of his hair (57.4% of the plate) and the right edge, everything centred in it */
-.banner .copy{margin-left:57.4%;width:42.6%;padding:clamp(2rem,3.4cqw,4rem) 2.6cqw;text-align:center;display:flex;flex-direction:column;align-items:center}
-.hero .wordmark-logo{display:block;width:min(100%,30cqw);max-width:none;height:auto;margin:0 auto 1.2cqw}
+.banner .copy{margin-left:57.4%;width:42.6%;padding:2.2cqw 2.6cqw;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero .wordmark-logo{display:block;width:min(100%,26cqw);max-width:none;height:auto;margin:0 auto 1cqw}
 /* ROOM TO BE LOUD. — Roboto Condensed Black (900, the family's heaviest), self-hosted so it never falls back */
 @font-face{font-family:"HFJ Roboto Condensed";font-weight:900;font-style:normal;font-display:swap;src:url(assets/fonts/roboto-condensed-latin-900-normal.woff2) format("woff2")}
-.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
+.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:6.8cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line > span{display:inline-block}
 /* LOUD: same black, heaviest cut */
 .hero h1 em{font-style:normal;font-weight:900}
-.hero .row{display:grid;justify-items:center;gap:clamp(1.2rem,1.8cqw,1.8rem);margin-top:clamp(1.2rem,2cqw,2.2rem)}
-.hero .row p{max-width:40ch;margin:0;color:#120A06;font-weight:500}
+.hero .row{display:grid;justify-items:center;gap:1.4cqw;margin-top:1.6cqw}
+/* sized off the hero width so the whole column scales with the plate and never outgrows it */
+.hero .row p{max-width:40ch;margin:0;color:#120A06;font-weight:500;font-size:clamp(.9rem,1.1cqw,1.2rem);line-height:1.55}
 .hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;align-items:center}
 /* Book a session: the wordmark purple, flat — no arrow */
 .hero .btn{background:#5A3460;border-color:#5A3460;color:#FBF6F0;justify-content:center}
@@ -136,15 +137,23 @@ p{margin:0;max-width:62ch}
 .hero .link{color:#120A06}
 @keyframes rise{from{transform:translateY(60%);opacity:.15}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:.6;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media (max-width:900px){
-  /* phone/tablet: crop to the face, then the copy stacks on the orange */
+/* side-by-side only where the copy fits inside the plate's own ratio; any narrower and the plate would scale up and the hair would run into the copy */
+@media (max-width:1080px){
+  /* tablet/phone: portrait across the top, copy stacks underneath, centred on the orange */
   .banner{aspect-ratio:auto;display:block}
-  .stage{position:relative;aspect-ratio:10/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
-  .stage img{object-position:9% 50%}
+  .stage{position:relative;aspect-ratio:16/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
+  .stage img{object-position:0 50%}
   .banner .copy{margin-left:0;width:auto;padding:.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
-  .hero .ctas{width:100%}
   .hero .wordmark-logo{width:min(80%,460px);margin-bottom:1rem}
+  .hero h1{font-size:clamp(3.4rem,13cqw,7rem)}
+  .hero .row{gap:1.4rem;margin-top:1.6rem}
+  .hero .row p{font-size:1rem}
+}
+@media (max-width:640px){
+  .stage{aspect-ratio:10/9}
+  .stage img{object-position:9% 50%}
   .hero h1{font-size:clamp(3.4rem,18cqw,6.4rem)}
+  .hero .ctas{width:100%}
   .hero .ctas .btn{flex:1 1 100%}
 }
 
@@ -162,6 +171,14 @@ section.band{padding-block:var(--space) 0}
 .sec-head .label{grid-column:2 / span 4;margin-bottom:1.4rem}
 .sec-head h2{grid-column:2 / span 7}
 .sec-head p{grid-column:9 / span 4;align-self:end}
+/* section head with an illustration: heading and intro stack on the left, the plate sits on the right */
+.sec-head.has-art h2{grid-column:2 / span 6}
+.sec-head.has-art p{grid-column:2 / span 5;grid-row:3;align-self:start;margin-top:1.6rem}
+.sec-art{grid-column:9 / span 4;grid-row:1 / span 3;margin:0;align-self:end}
+.sec-art .duo{aspect-ratio:1}
+/* landscape plate: same column as the ticket below it, so the edges line up */
+.sec-art.wide .duo{aspect-ratio:4/3}
+@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}.sec-art.wide{grid-column:1 / -1}.sec-art.wide .duo{aspect-ratio:16/9}}
 @media (max-width:960px){.sec-head .jp{display:none}.sec-head .label,.sec-head h2{grid-column:1 / -1}.sec-head p{grid-column:1 / span 10;margin-top:1.4rem}}
 @media (max-width:600px){.sec-head p{grid-column:1 / -1}}
 
@@ -173,7 +190,7 @@ section.band{padding-block:var(--space) 0}
 .rooms{display:grid;gap:clamp(4rem,3rem + 5vw,8rem)}
 .room{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px);row-gap:2rem;align-items:end}
 .room .taped{grid-column:1 / span 6}
-.room .duo{aspect-ratio:4/5}
+.room .duo{aspect-ratio:16/9}
 .room .body{grid-column:9 / span 4;display:grid;gap:1.4rem;align-content:end;min-width:0}
 .room:nth-child(even) .taped{grid-column:6 / span 7;grid-row:1}
 .room:nth-child(even) .body{grid-column:1 / span 4;grid-row:1}
@@ -186,7 +203,7 @@ section.band{padding-block:var(--space) 0}
 .room .tag{position:absolute;left:1rem;bottom:1rem;z-index:1;color:var(--ink);font-weight:400;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;background:rgba(18,10,6,.6);padding:.5em .8em;backdrop-filter:blur(4px)}
 @media (max-width:860px){
   .room .taped,.room:nth-child(even) .taped,.room .body,.room:nth-child(even) .body{grid-column:1 / -1;grid-row:auto}
-  .room .duo{aspect-ratio:4/5}
+  .room .duo{aspect-ratio:16/9}
 }
 
 /* one strip of masking tape across the very top-left corner, like a poster stuck to the wall; the brand sits clear of it */
@@ -455,7 +472,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
         <img class="wordmark-logo" src="assets/brand/logo-colour2-700.webp" srcset="assets/brand/logo-colour2-700.webp 700w, assets/brand/logo-colour2-1000.webp 1000w, assets/brand/logo-colour2-1400.webp 1400w" sizes="(max-width:900px) 80vw, 30vw" width="2103" height="503" alt="HOTFUZZJAM Studio, rehearsal studio on the Gold Coast">
         <h1><span class="line"><span>Room to</span></span><span class="line"><span>be <em>loud.</em></span></span></h1>
         <div class="row">
-          <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
+          <p>New room, new management. Freshly treated, a PA that tells the truth, and backline ready to plug into. Book online: block out a session in the calendar, and we&rsquo;ll remind you the day before.</p>
           <div class="ctas">
             <a class="btn" href="#book">Book a session</a>
             <a class="link" href="#roster">This week's roster</a>
@@ -563,11 +580,12 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- ROSTER -->
   <section class="band" id="roster">
     <div class="wrap">
-      <div class="grid sec-head">
+      <div class="grid sec-head has-art">
         <span class="jp" aria-hidden="true">予定</span>
         <span class="label">Roster</span>
         <h2 class="rise">What's free this week.</h2>
         <p class="muted rise">Tap a day to jump to it in the booking calendar. Other bands' bookings show as blocks only, never names.</p>
+        <figure class="sec-art rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/listener-640.webp" srcset="assets/duo/listener-640.webp 640w, assets/duo/listener-1200.webp 1200w" sizes="(max-width:960px) 92vw, 30vw" width="1200" height="1200" alt="Engraved illustration of a young woman in a tracksuit and earbuds, crouched and eating a slice of watermelon"></div></figure>
       </div>
       <div class="roster-bar">
         <div class="pager">
@@ -589,11 +607,12 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- BOOK -->
   <section class="band" id="book">
     <div class="wrap">
-      <div class="grid sec-head">
+      <div class="grid sec-head has-art">
         <span class="jp" aria-hidden="true">予約</span>
         <span class="label">Book a session</span>
         <h2 class="rise">Choose a day and an hour.</h2>
         <p class="muted rise">All times are Gold Coast time (AEST). Bookings open 60 days ahead.</p>
+        <figure class="sec-art wide rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/desk-760.webp" srcset="assets/duo/desk-760.webp 760w, assets/duo/desk-1400.webp 1400w" sizes="(max-width:960px) 92vw, 40vw" width="1400" height="933" alt="Engraved illustration of a hand setting gain on a mixing desk, a vocal mic resting on the channels, keys and a drum kit behind"></div></figure>
       </div>
 
       <div class="notice" id="notice" hidden role="status"></div>
@@ -633,10 +652,11 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- GIFTS -->
   <section class="band" id="gifts">
     <div class="wrap">
-      <div class="grid sec-head">
-        <span class="label" style="grid-column:2 / span 4">Gift vouchers</span>
+      <div class="grid sec-head has-art">
+        <span class="label">Gift vouchers</span>
         <h2 class="rise">Give someone room to be loud.</h2>
         <p class="muted rise">Vouchers work on any session. Whatever isn't used stays on the card for next time.</p>
+        <figure class="sec-art wide rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/drummer-760.webp" srcset="assets/duo/drummer-760.webp 760w, assets/duo/drummer-1400.webp 1400w" sizes="(max-width:960px) 92vw, 30vw" width="1400" height="933" alt="Engraved illustration of a drummer behind a full kit, sticks raised over the cymbals"></div></figure>
       </div>
       <div class="gift">
         <form class="form" id="giftForm" novalidate>
@@ -755,7 +775,7 @@ const CONFIG = {
 
 const ROOMS = [
   { id:'a', name:'The Room', short:'The Room', rate:40, size:[6,5], cap:'Up to 6 players', note:'Full PA, three cabs and drum shells, treated for the full band at stage volume. Writing session or full run-through, it all happens here.',
-    img:'room', srcset:'assets/duo/room-800.webp 800w, assets/duo/room-1084.webp 1084w', pos:'50% 50%', alt:'Three musicians sitting on the floor of the HOTFUZZJAM room working through a song, with a drummer playing the kit behind them' }
+    img:'jam', srcset:'assets/duo/jam-800.webp 800w, assets/duo/jam-1536.webp 1536w', pos:'50% 50%', alt:'Engraved illustration of a guitarist and a bass player jamming either side of a drum kit in the HOTFUZZJAM room' }
 ];
 // studio rules — overwritten from the settings table when Supabase is connected
 let OPEN = 10, CLOSE = 23, MAX_HOURS = 4, DAYS_AHEAD = 60;
