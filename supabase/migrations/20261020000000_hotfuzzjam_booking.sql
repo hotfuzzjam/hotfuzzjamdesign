@@ -19,8 +19,6 @@ create policy "rooms are public" on public.rooms for select to anon, authenticat
 insert into public.rooms (id, name, rate_cents, capacity, sort) values
   ('a', 'The Room', 4000, 'Up to 6 players', 1)
 on conflict (id) do update set name = excluded.name, rate_cents = excluded.rate_cents, capacity = excluded.capacity;
--- single-room studio: bookings can only be made for room 'a'
-delete from public.rooms where id <> 'a' and not exists (select 1 from public.bookings b where b.room_id = rooms.id);
 
 -- ---------- profiles ----------
 create table if not exists public.profiles (

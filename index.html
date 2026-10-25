@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta property="og:title" content="HOTFUZZJAM Studio">
-<meta property="og:image" content="assets/hero/still-1280.jpg">
+<meta property="og:image" content="assets/hero/afro-1983.jpg">
 <title>HOTFUZZJAM Studio</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="HOTFUZZJAM Studio — a rehearsal room on the Gold Coast. Book online, see the live roster, get a reminder before you play.">
@@ -12,7 +12,7 @@
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Roboto+Condensed:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Roboto+Condensed:wght@700;900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300&text=%E7%B7%B4%E7%BF%92%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA%E9%83%A8%E5%B1%8B%E6%96%99%E9%87%91%E6%A9%9F%E6%9D%90%E4%BA%88%E5%AE%9A%E7%B4%84%E9%96%93%E6%B5%81%E3%82%8C%E9%9F%B3%E3%81%AE&display=swap">
 <style>
 /* Layout: Marshall's structure (full-bleed duotone imagery, stacked feature blocks, category tiles)
@@ -92,7 +92,7 @@ p{margin:0;max-width:62ch}
 .link:hover{background-size:0 1px;background-position:100% 85%}
 
 /* nav — transparent over the hero, solid once you leave it */
-.nav{position:absolute;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:50;--nav-fg:#FBF6F0;color:var(--nav-fg);text-shadow:0 1px 2px rgba(18,10,6,.45)}
+.nav{position:relative;z-index:50;padding-top:env(safe-area-inset-top,0px);background:var(--ground);--nav-fg:#FBF6F0;color:var(--nav-fg)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:var(--nav-h)}
 .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--nav-fg);margin-left:clamp(64px,5.6vw,80px)}
 .brand .mark{width:48px}
@@ -107,49 +107,44 @@ p{margin:0;max-width:62ch}
 @media (max-width:900px){.nav ul{display:none}}
 @media (max-width:520px){.brand span{display:none}.chip{display:none}}
 
-/* hero — layered portrait: static plate + head layer that nods on a pivot at the top of the neck */
+/* hero — engraved banner: the portrait holds the left 60%, the headline sits in the open orange on the right.
+   The plate fades out at the chin into the same orange, where the intro and CTAs run underneath. */
 @font-face{font-family:"HFJ Helvetica Condensed";font-weight:700;font-style:normal;font-display:swap;
   src:local("HelveticaNeue-CondensedBold"),local("Helvetica Neue Condensed Bold"),local("HelveticaNeueLTStd-BdCn"),local("HelveticaNeueLTPro-BdCn"),local("Helvetica-Condensed-Bold"),local("Helvetica Condensed Bold")}
-.hero h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:clamp(3.6rem,1.4rem + 6.6vw,8.6rem);line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal}
-.hero{position:relative;height:clamp(560px,86svh,940px);overflow:hidden;background:#F1A11B;container-type:size;isolation:isolate;
-  --px:.5;--py:.3;--hfg:var(--on-light)}
-.stage{position:absolute;--w:max(100cqw,calc(100cqh * 1.7788));width:var(--w);aspect-ratio:2517/1415;max-width:none;
-  left:calc((100cqw - var(--w)) * var(--px));top:calc((100cqh - var(--w) / 1.7788) * var(--py));z-index:-2;will-change:transform}
-.stage img{position:absolute;inset:0;width:100%;height:100%;max-width:none}
-.stage .head{transform-origin:31.8% 76.7%;animation:nod .6s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform}
-.hero.off .stage .head{animation-play-state:paused}
-/* 100 BPM: one beat (0.6s) down, one beat up; sine-like ease, no snap at either end */
-@keyframes nod{
-  from{transform:rotate(-.4deg) translateY(-.05%)}
-  to  {transform:rotate(2.2deg) translateY(.28%)}
-}
-.hero .wrap{height:100%;display:flex;flex-direction:column;justify-content:center;padding-block:calc(var(--nav-h) + env(safe-area-inset-top,0px)) 3rem}
-.hero .copy{margin-left:auto;width:min(48%,640px);color:var(--hfg)}
-.hero .label{color:var(--hfg);opacity:.75;margin-bottom:1.4rem;display:block}
-.hero h1{color:var(--hfg)}
+@font-face{font-family:"HFJ Helvetica Condensed";font-weight:900;font-style:normal;font-display:swap;
+  src:local("HelveticaNeue-CondensedBlack"),local("Helvetica Neue Condensed Black"),local("HelveticaNeueLTStd-BlkCn"),local("HelveticaNeueLTPro-BlkCn"),local("Helvetica-Condensed-Black")}
+.hero{position:relative;overflow:hidden;background:#F99516;color:#120A06;container-type:inline-size;isolation:isolate;--hfg:#120A06}
+.banner{position:relative;aspect-ratio:1983/793;display:flex;align-items:center}
+.stage{position:absolute;inset:0;z-index:-1}
+.stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
+/* copy column = the open orange between the edge of his hair (57.4% of the plate) and the right edge, everything centred in it */
+.banner .copy{margin-left:57.4%;width:42.6%;padding:clamp(2rem,3.4cqw,4rem) 2.6cqw;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero .wordmark-logo{display:block;width:min(100%,30cqw);max-width:none;height:auto;margin:0 auto 1.2cqw}
+/* ROOM TO BE LOUD. — Roboto Condensed Black (900, the family's heaviest), self-hosted so it never falls back */
+@font-face{font-family:"HFJ Roboto Condensed";font-weight:900;font-style:normal;font-display:swap;src:url(assets/fonts/roboto-condensed-latin-900-normal.woff2) format("woff2")}
+.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
-.hero h1 .line > span{display:inline-block;animation:rise 1.4s var(--ease) both}
-.hero h1 .line:nth-child(2) > span{animation-delay:.12s}
-.hero h1 em{font-style:normal}
-.hero .row{display:grid;gap:1.6rem;margin-top:clamp(1.4rem,1rem + 1.5vw,2.2rem);animation:fade 1.6s .35s var(--ease) both}
-.hero .row p{max-width:40ch;color:var(--hfg);opacity:.85;font-weight:400}
-.hero .ctas{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
-.hero .btn{background:var(--on-light);border-color:var(--on-light);color:var(--ink)}
-.hero .btn:hover{background:#3A1E10;border-color:#3A1E10}
-.hero .link{color:var(--hfg)}
+.hero h1 .line > span{display:inline-block}
+/* LOUD: same black, heaviest cut */
+.hero h1 em{font-style:normal;font-weight:900}
+.hero .row{display:grid;justify-items:center;gap:clamp(1.2rem,1.8cqw,1.8rem);margin-top:clamp(1.2rem,2cqw,2.2rem)}
+.hero .row p{max-width:40ch;margin:0;color:#120A06;font-weight:500}
+.hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;align-items:center}
+/* Book a session: the wordmark purple, flat — no arrow */
+.hero .btn{background:#5A3460;border-color:#5A3460;color:#FBF6F0;justify-content:center}
+.hero .btn:hover{background:#6B3F72;border-color:#6B3F72}
+.hero .link{color:#120A06}
 @keyframes rise{from{transform:translateY(60%);opacity:.15}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:.6;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (max-width:900px){
-  /* phone/tablet: image across the top showing the whole head, copy starts at the beard on a dark fade */
-  .hero{height:auto;container-type:inline-size;background:var(--ground);--hfg:var(--ink);--mw:min(235cqw,1500px)}
-  .stage{--w:var(--mw);left:0;top:0}
-  .hero::after{content:"";position:absolute;left:0;top:0;width:100%;height:calc(var(--mw) / 1.7788 + 2px);z-index:-1;pointer-events:none;
-    background:linear-gradient(to top,var(--ground) 0%,rgba(18,10,6,.82) 20%,rgba(18,10,6,.35) 34%,rgba(18,10,6,0) 46%)}
-  .hero .wrap{height:auto;justify-content:flex-start;padding-block:calc(var(--mw) / 1.7788 * .72) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
-  .hero .copy{margin-left:0;width:100%}
-  .hero h1 em{color:var(--kin)}
-  .hero .btn{background:var(--ink);border-color:var(--ink);color:var(--on-light)}
-  .hero .btn:hover{background:var(--kin);border-color:var(--kin)}
+  /* phone/tablet: crop to the face, then the copy stacks on the orange */
+  .banner{aspect-ratio:auto;display:block}
+  .stage{position:relative;aspect-ratio:10/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
+  .stage img{object-position:9% 50%}
+  .banner .copy{margin-left:0;width:auto;padding:.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
+  .hero .ctas{width:100%}
+  .hero .wordmark-logo{width:min(80%,460px);margin-bottom:1rem}
+  .hero h1{font-size:clamp(3.4rem,18cqw,6.4rem)}
   .hero .ctas .btn{flex:1 1 100%}
 }
 
@@ -200,8 +195,7 @@ section.band{padding-block:var(--space) 0}
   left:calc(-1 * clamp(22px,2vw,30px));top:calc(env(safe-area-inset-top,0px) - clamp(14px,1.4vw,20px));
   width:clamp(150px,14vw,200px);aspect-ratio:243/73;
   background:url(assets/tape.webp) center/100% 100% no-repeat;opacity:.95;
-  transform:rotate(-45deg);transform-origin:50% 50%;
-  filter:drop-shadow(0 3px 4px rgba(18,10,6,.28))}
+  transform:rotate(-45deg);transform-origin:50% 50%;}
 
 /* gear — category tiles, then the specifics */
 .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.2vw,16px)}
@@ -336,6 +330,65 @@ section.band{padding-block:var(--space) 0}
 .mbar .btn{min-height:46px;padding:0 1.2em;flex:none}
 @media (max-width:960px){.mbar{display:flex}footer{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
 
+/* booking extras: codes, pay choice, SMS, waitlist, notices */
+.mini{min-height:44px;padding:0 1em;border:1px solid var(--line-strong);background:none;color:var(--ink);cursor:pointer;font-weight:400;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;flex:none}
+.mini:hover{border-color:var(--ink)}
+.codes{display:grid;grid-template-columns:1fr;gap:.6rem}
+.code-field{display:grid;gap:.45rem;min-width:0}
+.code-field label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;color:var(--ink-2)}
+.inline{display:flex;gap:6px;align-items:stretch;min-width:0}
+.inline input{flex:1;min-width:0;background:transparent;border:0;border-bottom:1px solid var(--line-strong);padding:.6rem 0;font:inherit;font-size:16px;text-transform:uppercase;letter-spacing:.06em;border-radius:0}
+.inline input:focus{outline:none;border-bottom-color:var(--kin)}
+.code-field .msg{font-size:.78rem;min-height:1.1em}
+.code-field .msg.good{color:var(--kin)}
+.paychoice button{min-height:58px}
+.check{display:flex;gap:.7rem;align-items:center;cursor:pointer;font-size:.92rem;min-height:44px}
+.check input{width:18px;height:18px;accent-color:var(--kin);margin:0}
+.rows .neg dd{color:var(--kin)}
+.notice{border:1px solid var(--line-strong);background:var(--ground-2);padding:1.1rem 1.3rem;margin-bottom:2.4rem;display:flex;gap:1rem;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.notice p{font-size:.95rem}
+.notice.good{border-color:color-mix(in srgb,var(--kin) 60%,transparent)}
+.wait{margin-top:.4rem;display:grid;gap:1rem}
+.wait-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:.8rem;align-items:end;border:1px solid var(--line);padding:1rem}
+.wait-form .field select{width:100%;background:var(--ground);border:1px solid var(--line-strong);color:var(--ink);padding:.7rem .6rem;font:inherit;font-size:16px;border-radius:0}
+@media (max-width:600px){.wait-form{grid-template-columns:1fr 1fr}.wait-form .btn{grid-column:1 / -1}}
+.wait-form .msg{grid-column:1 / -1}
+.democheck{display:grid;gap:1.1rem}
+.democheck .stripe{display:flex;align-items:center;gap:.7rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);font-weight:400}
+.democheck .stripe i{width:28px;height:18px;border:1px solid var(--line-strong);display:inline-block;position:relative}
+.democheck .stripe i::after{content:"";position:absolute;left:4px;right:4px;top:5px;height:2px;background:var(--line-strong)}
+.mine .wl .sub{color:var(--kin)}
+
+/* manage dialog */
+#manageDlg{width:min(520px,calc(100vw - 32px))}
+.mg-actions{display:flex;flex-wrap:wrap;gap:10px}
+.mg-actions .btn{flex:1 1 180px}
+.mg-move{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.mg-move select{width:100%;background:var(--ground);border:1px solid var(--line-strong);color:var(--ink);padding:.8rem .6rem;font:inherit;font-size:16px;border-radius:0}
+.pill{display:inline-block;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;padding:.4em .7em;border:1px solid var(--line-strong)}
+.pill.ok{border-color:var(--kin);color:var(--kin)}
+.pill.off{color:var(--ink-2)}
+
+/* gift vouchers */
+.gift{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px);row-gap:3rem;align-items:start}
+.gift .form{grid-column:2 / span 6;display:grid;gap:2rem;min-width:0}
+.gift .card-wrap{grid-column:9 / span 4;position:sticky;top:24px;min-width:0}
+@media (max-width:960px){.gift .form,.gift .card-wrap{grid-column:1 / -1;position:static}.gift .card-wrap{order:-1}}
+.amounts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.amounts button{min-height:52px;border:1px solid var(--line-strong);background:none;color:var(--ink);cursor:pointer;font-size:.95rem}
+.amounts button[aria-pressed="true"]{background:var(--ink);color:var(--on-light);border-color:var(--ink)}
+@media (max-width:520px){.amounts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+.voucher{aspect-ratio:1.6;max-width:100%;background:var(--kin);color:var(--on-light);padding:clamp(1.2rem,1rem + 1vw,1.8rem);display:grid;grid-template-rows:auto 1fr auto;position:relative;overflow:hidden}
+.voucher::after{content:"";position:absolute;right:-18%;bottom:-38%;width:78%;aspect-ratio:1;background:currentColor;opacity:.12;-webkit-mask:var(--hfj-mark) center/contain no-repeat;mask:var(--hfj-mark) center/contain no-repeat}
+.voucher .top{display:flex;justify-content:space-between;align-items:center;font-weight:400;font-size:.64rem;letter-spacing:.26em;text-transform:uppercase}
+.voucher .top .mark{width:30px}
+.voucher .amt{align-self:center;font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:clamp(3rem,2rem + 4vw,4.6rem);line-height:.9}
+.voucher .to{font-size:.85rem;line-height:1.35;max-width:24ch;position:relative;z-index:1}
+.voucher .code{font-family:var(--f-display);font-weight:700;font-stretch:condensed;letter-spacing:.06em;font-size:1.05rem}
+.card-wrap .msg{margin-top:1rem}
+
 /* dialog */
 dialog{border:1px solid var(--line);padding:0;background:var(--ground-2);color:var(--ink);width:min(460px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto}
 dialog::backdrop{background:rgba(8,4,2,.72);backdrop-filter:blur(3px)}
@@ -381,6 +434,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       <li><a href="#gear">Gear</a></li>
       <li><a href="#roster">Roster</a></li>
       <li><a href="#book">Book</a></li>
+      <li><a href="#gifts">Gifts</a></li>
     </ul>
     <div class="nav-right">
       <span class="chip" id="modeChip" hidden>Preview mode</span>
@@ -392,19 +446,18 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 <main id="top">
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="stage" id="heroImg" role="img" aria-label="Line-engraved portrait of a musician in a wide-brim JAM hat and round sunglasses, nodding along to music, beside the HFJ stamp on an orange ground">
-      <img class="plate" src="assets/hero/plate-1280.webp" srcset="assets/hero/plate-1280.webp 1280w, assets/hero/plate-2400.webp 2400w" sizes="(max-width:900px) 200vw, 100vw" alt="" width="2517" height="1415" fetchpriority="high">
-      <img class="head" src="assets/hero/head-1280.webp" srcset="assets/hero/head-1280.webp 1280w, assets/hero/head-2400.webp 2400w" sizes="(max-width:900px) 200vw, 100vw" alt="" width="2517" height="1415" fetchpriority="high">
-    </div>
-    <i class="hero-tape" aria-hidden="true"></i>
-    <div class="wrap">
+    <div class="banner">
+      <div class="stage" id="heroImg">
+        <img src="assets/hero/afro-1983.webp" srcset="assets/hero/afro-1000.webp 1000w, assets/hero/afro-1983.webp 1983w" sizes="(max-width:900px) 225vw, 100vw" alt="Line-engraved portrait of a musician with a big curly afro and round glasses beside a cymbal, on an orange ground" width="1983" height="793" fetchpriority="high">
+      </div>
+      <i class="hero-tape" aria-hidden="true"></i>
       <div class="copy">
-        <span class="label">Rehearsal studio · Gold Coast, Queensland</span>
+        <img class="wordmark-logo" src="assets/brand/logo-colour2-700.webp" srcset="assets/brand/logo-colour2-700.webp 700w, assets/brand/logo-colour2-1000.webp 1000w, assets/brand/logo-colour2-1400.webp 1400w" sizes="(max-width:900px) 80vw, 30vw" width="2103" height="503" alt="HOTFUZZJAM Studio, rehearsal studio on the Gold Coast">
         <h1><span class="line"><span>Room to</span></span><span class="line"><span>be <em>loud.</em></span></span></h1>
         <div class="row">
           <p>One treated room, a PA that tells the truth, and backline ready to plug into. Book by the hour and get a reminder the day before you play.</p>
           <div class="ctas">
-            <a class="btn" href="#book">Book a session <span class="arrow" aria-hidden="true"></span></a>
+            <a class="btn" href="#book">Book a session</a>
             <a class="link" href="#roster">This week's roster</a>
           </div>
         </div>
@@ -543,6 +596,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
         <p class="muted rise">All times are Gold Coast time (AEST). Bookings open 60 days ahead.</p>
       </div>
 
+      <div class="notice" id="notice" hidden role="status"></div>
       <div class="book">
         <div class="left">
           <div class="seg" id="roomSeg" hidden></div>
@@ -560,6 +614,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
           <div class="step">
             <span class="label">Start time</span>
             <div class="slots" id="slots"></div>
+            <div class="wait" id="wait"></div>
           </div>
           <div class="step">
             <span class="label">Length</span>
@@ -571,6 +626,50 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
           <div class="ticket" id="ticket"></div>
           <div class="mine" id="mine" hidden></div>
         </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- GIFTS -->
+  <section class="band" id="gifts">
+    <div class="wrap">
+      <div class="grid sec-head">
+        <span class="label" style="grid-column:2 / span 4">Gift vouchers</span>
+        <h2 class="rise">Give someone room to be loud.</h2>
+        <p class="muted rise">Vouchers work on any session. Whatever isn't used stays on the card for next time.</p>
+      </div>
+      <div class="gift">
+        <form class="form" id="giftForm" novalidate>
+          <div class="step">
+            <span class="label">Amount</span>
+            <div class="amounts" id="gAmounts"></div>
+            <div class="field" id="gCustomWrap" hidden><label for="gCustom">Custom amount (AUD, $20–$1,000)</label><input id="gCustom" type="number" inputmode="numeric" min="20" max="1000" step="1"></div>
+          </div>
+          <div class="step">
+            <span class="label">Send it</span>
+            <div class="seg" id="gDeliver">
+              <button type="button" data-deliver="recipient" aria-pressed="true">Email it to them<span>We send the code on payment</span></button>
+              <button type="button" data-deliver="purchaser" aria-pressed="false">Send it to me<span>Print it or hand it over</span></button>
+            </div>
+            <div class="two" id="gRecipient">
+              <div class="field"><label for="gToName">Their name</label><input id="gToName" autocomplete="off" maxlength="80"></div>
+              <div class="field"><label for="gToEmail">Their email</label><input id="gToEmail" type="email" inputmode="email" autocomplete="off"></div>
+            </div>
+            <div class="field"><label for="gMsg">Message (optional)</label><textarea id="gMsg" rows="2" maxlength="300"></textarea></div>
+          </div>
+          <div class="step">
+            <span class="label">From</span>
+            <div class="two">
+              <div class="field"><label for="gFromName">Your name</label><input id="gFromName" autocomplete="name" maxlength="80"></div>
+              <div class="field"><label for="gFromEmail">Your email (for the receipt)</label><input id="gFromEmail" type="email" inputmode="email" autocomplete="email"></div>
+            </div>
+          </div>
+          <div><button class="btn" type="submit" id="gBuy">Buy voucher <span class="arrow" aria-hidden="true"></span></button></div>
+        </form>
+        <div class="card-wrap">
+          <div class="voucher" id="gCard" aria-live="polite"></div>
+          <p class="msg muted" id="gMsgOut" role="status"></p>
+        </div>
       </div>
     </div>
   </section>
@@ -600,7 +699,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       </div>
     </div>
     <div class="wordmark" id="wordmark" aria-hidden="true">HOTFUZZJAM</div>
-    <div class="legal"><span>© <span id="yr">2026</span> HOTFUZZJAM Studio</span><span>Photography: Adobe Stock</span></div>
+    <div class="legal"><span>© <span id="yr">2026</span> HOTFUZZJAM Studio</span><span>Photography: Adobe Stock · <a href="admin.html" style="color:inherit">Studio login</a></span></div>
   </div>
 </footer>
 
@@ -638,11 +737,16 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   </div>
 </dialog>
 
+<!-- MANAGE BOOKING -->
+<dialog id="manageDlg" aria-labelledby="mgTitle">
+  <div class="dlg" id="manageBody"></div>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ============================================================
    CONFIG — paste your Supabase project URL and anon key.
-   Leave empty to run in preview mode (local sample data, no emails).
+   Leave empty to run in preview mode (local sample data, no emails, no charges).
    ============================================================ */
 const CONFIG = {
   SUPABASE_URL: '',
@@ -653,7 +757,10 @@ const ROOMS = [
   { id:'a', name:'The Room', short:'The Room', rate:40, size:[6,5], cap:'Up to 6 players', note:'Full PA, three cabs and drum shells, treated for the full band at stage volume. Writing session or full run-through, it all happens here.',
     img:'room', srcset:'assets/duo/room-800.webp 800w, assets/duo/room-1084.webp 1084w', pos:'50% 50%', alt:'Three musicians sitting on the floor of the HOTFUZZJAM room working through a song, with a drummer playing the kit behind them' }
 ];
-const OPEN = 10, CLOSE = 23, MAX_HOURS = 4, DAYS_AHEAD = 60, TZ = 'Australia/Brisbane';
+// studio rules — overwritten from the settings table when Supabase is connected
+let OPEN = 10, CLOSE = 23, MAX_HOURS = 4, DAYS_AHEAD = 60;
+const SET = { cutoff: 24, payMode: 'choice', depositPct: 50, sms: true };
+const TZ = 'Australia/Brisbane';
 
 /* ---------- time (Brisbane is UTC+10 year-round, no DST) ---------- */
 const pad = n => String(n).padStart(2,'0');
@@ -661,6 +768,7 @@ const bne = (y,m,d,h=0) => new Date(Date.UTC(y,m,d,h-10));
 const parts = date => { const t = new Date(date.getTime() + 36e6); return { y:t.getUTCFullYear(), m:t.getUTCMonth(), d:t.getUTCDate(), h:t.getUTCHours(), dow:t.getUTCDay() }; };
 const key = (y,m,d) => { const t = new Date(Date.UTC(y,m,d)); return `${t.getUTCFullYear()}-${pad(t.getUTCMonth()+1)}-${pad(t.getUTCDate())}`; };
 const fromKey = k => { const [y,m,d] = k.split('-').map(Number); return { y, m:m-1, d }; };
+const keyOf = date => { const p = parts(date); return key(p.y,p.m,p.d); };
 const today = () => { const p = parts(new Date()); return { ...p, k:key(p.y,p.m,p.d) }; };
 const fmt = (o) => new Intl.DateTimeFormat('en-AU',{ timeZone:TZ, ...o });
 const fDay = fmt({ weekday:'short', day:'numeric', month:'short' });
@@ -668,22 +776,38 @@ const fLong = fmt({ weekday:'long', day:'numeric', month:'long' });
 const fMonth = fmt({ month:'long', year:'numeric' });
 const hh = h => `${pad(h)}:00`;
 const money = n => `$${n.toLocaleString('en-AU')}`;
-const roomById = id => ROOMS.find(r => r.id === id);
+const cash = c => `$${(c/100).toLocaleString('en-AU', { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 })}`;
+const roomById = id => ROOMS.find(r => r.id === id) || ROOMS[0];
+const noonOf = k => { const p = fromKey(k); return bne(p.y,p.m,p.d,12); };
 const safeStore = { get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random()*16|0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); }));
 
 /* ---------- data layer ---------- */
 const live = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && window.supabase);
 const sb = live ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
 
+/** Same pricing the server uses (create-checkout); the server's numbers are the ones charged. */
+function priceFor({ rateCents, hours, couponCents = 0, giftBalance = 0, payChoice = 'full' }){
+  const amount = rateCents * hours;
+  const discount = Math.min(amount, couponCents);
+  const after = amount - discount;
+  const gift = Math.min(giftBalance, after);
+  const due = after - gift;
+  const mode = due === 0 ? 'free' : SET.payMode === 'choice' ? payChoice : SET.payMode;
+  const now = due === 0 ? 0 : mode === 'full' ? due : mode === 'deposit' ? Math.max(100, Math.ceil(due * SET.depositPct / 100)) : 0;
+  return { amount, discount, gift, due, mode, now, later: due - now };
+}
+
 function seedDemo(){
   const t = today(); const out = []; let s = 11;
   const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
   for (let i = -7; i < 63; i++) for (const r of ROOMS) {
+    if (i === 9) { out.push({ id:'x9', room_id:r.id, starts_at:bne(t.y,t.m,t.d+i,OPEN).toISOString(), ends_at:bne(t.y,t.m,t.d+i,CLOSE).toISOString(), kind:'booking' }); continue; }  // one sold-out day to show the waitlist
     let h = OPEN + Math.floor(rnd()*3);
     while (h < CLOSE - 1) {
-      if (rnd() < (r.id === 'a' ? .5 : .32)) {
+      if (rnd() < .5) {
         const end = Math.min(h + 1 + Math.floor(rnd()*3), CLOSE);
-        out.push({ id:'s'+out.length, room_id:r.id, starts_at:bne(t.y,t.m,t.d+i,h).toISOString(), ends_at:bne(t.y,t.m,t.d+i,end).toISOString(), mine:false });
+        out.push({ id:'s'+out.length, room_id:r.id, starts_at:bne(t.y,t.m,t.d+i,h).toISOString(), ends_at:bne(t.y,t.m,t.d+i,end).toISOString(), kind:'booking' });
         h = end + 1;
       } else h += 1 + Math.floor(rnd()*2);
     }
@@ -691,47 +815,112 @@ function seedDemo(){
   return out;
 }
 
+const DEMO_COUPONS = { LOUD10: { kind:'percent', value:10, min:1 }, FIRSTJAM: { kind:'amount', value:2000, min:2 } };
 const Demo = {
-  rows: null, user: null, mine: [],
-  init(){ this.rows = seedDemo(); this.user = safeStore.get('hfj-demo-user'); this.mine = safeStore.get('hfj-demo-mine') || []; },
-  async roster(){ return [...this.rows, ...this.mine.filter(b => b.status !== 'cancelled').map(b => ({ ...b, mine:true }))]; },
-  async create(b){
+  rows: null, user: null, mine: [], waits: [], gifts: {},
+  init(){
+    this.rows = seedDemo(); this.user = safeStore.get('hfj-demo-user');
+    this.mine = (safeStore.get('hfj-demo-mine') || []).filter(b => b.manage_token);
+    this.waits = safeStore.get('hfj-demo-waits') || [];
+    this.gifts = Object.assign({ 'HFJ-DEMO-GIFT': { balance_cents: 5000, status:'active' } }, safeStore.get('hfj-demo-gifts') || {});
+  },
+  save(){ safeStore.set('hfj-demo-mine', this.mine); safeStore.set('hfj-demo-waits', this.waits); safeStore.set('hfj-demo-gifts', this.gifts); },
+  async settings(){},
+  async roster(){ return [...this.rows, ...this.mine.filter(b => b.status !== 'cancelled').map(b => ({ ...b, kind:'booking', mine:true }))]; },
+  async checkCoupon(code, hours, amount){
+    const c = DEMO_COUPONS[code.toUpperCase()];
+    if (!c) return { valid:false, discount_cents:0, message:'That code isn\'t valid. Try LOUD10 in preview mode.' };
+    if (hours < c.min) return { valid:false, discount_cents:0, message:`That code needs a booking of ${c.min} hours or more.` };
+    return { valid:true, discount_cents: Math.min(amount, c.kind === 'percent' ? Math.floor(amount * c.value / 100) : c.value), message: c.kind === 'percent' ? `${c.value}% off` : `${cash(c.value)} off` };
+  },
+  async checkGift(code){
+    const g = this.gifts[code.toUpperCase()];
+    if (!g || g.status !== 'active') return { valid:false, balance_cents:0, message:'That gift code isn\'t valid. Try HFJ-DEMO-GIFT in preview mode.' };
+    if (!g.balance_cents) return { valid:false, balance_cents:0, message:'That gift card has been fully used.' };
+    return { valid:true, balance_cents:g.balance_cents, message:`${cash(g.balance_cents)} available` };
+  },
+  async checkout(b){
     const all = await this.roster();
-    const clash = all.some(x => x.room_id === b.room_id && new Date(x.starts_at) < new Date(b.ends_at) && new Date(x.ends_at) > new Date(b.starts_at));
-    if (clash) throw { code:'23P01' };
-    const row = { id:'m'+Date.now(), status:'confirmed', ...b };
-    this.mine.push(row); safeStore.set('hfj-demo-mine', this.mine); return row;
+    if (all.some(x => x.room_id === b.room_id && new Date(x.starts_at) < new Date(b.ends_at) && new Date(x.ends_at) > new Date(b.starts_at))) throw { code:'taken', message:'Someone just took part of that time. Pick another start or a shorter session.' };
+    const hours = Math.round((new Date(b.ends_at) - new Date(b.starts_at)) / 36e5);
+    const c = b.coupon ? await this.checkCoupon(b.coupon, hours, roomById(b.room_id).rate * 100 * hours) : null;
+    if (c && !c.valid) throw { code:'coupon', message:c.message };
+    const g = b.gift_code ? await this.checkGift(b.gift_code) : null;
+    if (g && !g.valid) throw { code:'gift', message:g.message };
+    const q = priceFor({ rateCents: roomById(b.room_id).rate * 100, hours, couponCents: c?.discount_cents || 0, giftBalance: g?.balance_cents || 0, payChoice: b.pay_choice });
+    if (g && q.gift) this.gifts[b.gift_code.toUpperCase()].balance_cents -= q.gift;
+    const row = { id:'m'+Date.now(), manage_token: uuid(), status: q.now ? 'pending' : 'confirmed', ...b,
+      amount_cents:q.amount, discount_cents:q.discount, gift_applied_cents:q.gift, due_cents:q.due, charge_now_cents:q.now, paid_cents:0, refunded_cents:0,
+      pay_mode:q.mode, payment_status:'unpaid', coupon_code: c ? b.coupon.toUpperCase() : null, gift_code: q.gift ? b.gift_code.toUpperCase() : null, reschedule_count:0 };
+    this.mine.push(row); this.save();
+    return q.now ? { demo:true, booking:row } : { confirmed:true, booking:row };
+  },
+  async demoPay(token){ const b = this.mine.find(x => x.manage_token === token); if (b){ b.status = 'confirmed'; b.paid_cents = b.charge_now_cents; b.payment_status = b.paid_cents >= b.due_cents ? 'paid' : 'deposit_paid'; this.save(); } return b; },
+  async manage(action, token, extra = {}){
+    const b = this.mine.find(x => x.manage_token === token);
+    if (!b) throw { message:'We couldn\'t find that booking.' };
+    const start = +new Date(b.starts_at), before = start - Date.now() >= SET.cutoff * 36e5;
+    if (action === 'release' && b.status === 'pending'){ b.status = 'cancelled'; if (b.gift_code) this.gifts[b.gift_code].balance_cents += b.gift_applied_cents; }
+    if (action === 'reschedule'){
+      if (!before) throw { message:`Sessions can be moved up to ${SET.cutoff} hours before they start.` };
+      const len = new Date(b.ends_at) - start, ns = new Date(extra.starts_at), ne = new Date(+ns + len);
+      const all = await this.roster();
+      if (all.some(x => x.manage_token !== token && new Date(x.starts_at) < ne && new Date(x.ends_at) > ns)) throw { code:'taken', message:'That time is taken. Pick another.' };
+      b.starts_at = ns.toISOString(); b.ends_at = ne.toISOString(); b.reschedule_count++;
+    }
+    if (action === 'cancel'){
+      const refund = before ? b.paid_cents - b.refunded_cents : 0;
+      b.status = 'cancelled'; b.refunded_cents += refund; if (refund) b.payment_status = 'refunded';
+      if (before && b.gift_code) this.gifts[b.gift_code].balance_cents += b.gift_applied_cents;
+    }
+    this.save();
+    const nb = this.mine.find(x => x.manage_token === token);
+    return { booking: { ...nb, room: roomById(nb.room_id).name }, policy: { cutoff_hours:SET.cutoff,
+      can_reschedule: nb.status === 'confirmed' && (+new Date(nb.starts_at) - Date.now() >= SET.cutoff * 36e5) && nb.reschedule_count < 3,
+      can_cancel: nb.status === 'confirmed' && +new Date(nb.starts_at) > Date.now(),
+      refund_cents: (+new Date(nb.starts_at) - Date.now() >= SET.cutoff * 36e5) ? nb.paid_cents - nb.refunded_cents : 0 } };
   },
   async myBookings(){ const now = Date.now(); return this.mine.filter(b => b.status === 'confirmed' && new Date(b.ends_at) > now).sort((a,b) => a.starts_at.localeCompare(b.starts_at)); },
-  async cancel(id){ const b = this.mine.find(x => x.id === id); if (b) b.status = 'cancelled'; safeStore.set('hfj-demo-mine', this.mine); },
-  async signIn(email){ this.user = { email, name: email.split('@')[0] }; safeStore.set('hfj-demo-user', this.user); return this.user; },
-  async signUp(email, pass, meta){ this.user = { email, name: meta.full_name || email.split('@')[0], band: meta.band_name }; safeStore.set('hfj-demo-user', this.user); return this.user; },
+  async joinWaitlist(w){ this.waits = this.waits.filter(x => !(x.room_id === w.room_id && x.day === w.day)); this.waits.push({ id:'w'+Date.now(), status:'waiting', ...w }); this.save(); },
+  async myWaitlist(){ return this.waits.filter(w => w.day >= today().k && w.status === 'waiting'); },
+  async leaveWaitlist(id){ this.waits = this.waits.filter(w => w.id !== id); this.save(); },
+  async buyGift(g){ const code = 'HFJ-' + Math.random().toString(36).slice(2,6).toUpperCase().padEnd(4,'X') + '-' + Math.random().toString(36).slice(2,6).toUpperCase().padEnd(4,'X'); this.gifts[code] = { balance_cents:g.amount_cents, status:'active' }; this.save(); return { demo:true, code }; },
+  async signIn(email){ this.user = { id:'demo', email, name: email.split('@')[0] }; safeStore.set('hfj-demo-user', this.user); return this.user; },
+  async signUp(email, pass, meta){ this.user = { id:'demo', email, name: meta.full_name || email.split('@')[0], band: meta.band_name, phone: meta.phone }; safeStore.set('hfj-demo-user', this.user); return this.user; },
   async magic(){ return true; },
   async signOut(){ this.user = null; safeStore.set('hfj-demo-user', null); }
 };
 
+async function invoke(name, body){
+  const { data, error } = await sb.functions.invoke(name, { body });
+  if (error){ let j = null; try { j = await error.context.json(); } catch(e){} throw { message: j?.error || 'Something went wrong. Check your connection and try again.', code: j?.code }; }
+  return data;
+}
 const Live = {
   user: null,
   async init(){
     const { data } = await sb.auth.getSession(); this.user = toUser(data.session?.user);
-    sb.auth.onAuthStateChange((_e, session) => { this.user = toUser(session?.user); onAuthChange(); });
+    sb.auth.onAuthStateChange((_e, session) => { const u = toUser(session?.user); const changed = (u?.id || null) !== (this.user?.id || null); this.user = u; if (changed) onAuthChange(); });
   },
-  async roster(from, to){
-    const { data, error } = await sb.rpc('get_roster', { p_from: from.toISOString(), p_to: to.toISOString() });
-    if (error) throw error; return data;
+  async settings(){
+    const [{ data: s }, { data: rooms }] = await Promise.all([sb.from('settings').select('*').eq('id',1).single(), sb.from('rooms').select('id, rate_cents')]);
+    if (s){ OPEN = s.open_hour; CLOSE = s.close_hour; MAX_HOURS = s.max_hours; DAYS_AHEAD = s.days_ahead; Object.assign(SET, { cutoff:s.cancel_cutoff_hours, payMode:s.payment_mode, depositPct:s.deposit_pct, sms:s.sms_enabled }); }
+    for (const r of rooms || []) { const x = ROOMS.find(y => y.id === r.id); if (x) x.rate = r.rate_cents / 100; }
   },
-  async create(b){
-    const { data, error } = await sb.from('bookings').insert(b).select('id, room_id, starts_at, ends_at').single();
-    if (error) throw error;
-    sb.functions.invoke('booking-notify', { body: { booking_id: data.id } }).catch(() => {});
-    return data;
-  },
+  async roster(from, to){ const { data, error } = await sb.rpc('get_roster', { p_from: from.toISOString(), p_to: to.toISOString() }); if (error) throw error; return data; },
+  async checkCoupon(code, hours, amount){ const { data, error } = await sb.rpc('check_coupon', { p_code: code, p_hours: hours, p_amount_cents: amount }); if (error) throw error; return data[0]; },
+  async checkGift(code){ const { data, error } = await sb.rpc('check_gift', { p_code: code }); if (error) throw error; return data[0]; },
+  checkout(b){ return invoke('create-checkout', b); },
+  manage(action, token, extra = {}){ return invoke('manage-booking', { action, token, ...extra }); },
   async myBookings(){
-    const { data, error } = await sb.from('bookings').select('id, room_id, starts_at, ends_at, band_name, status')
+    const { data, error } = await sb.from('bookings').select('id, room_id, starts_at, ends_at, band_name, status, manage_token, paid_cents, due_cents, payment_status')
       .eq('status','confirmed').gte('ends_at', new Date().toISOString()).order('starts_at');
     if (error) throw error; return data;
   },
-  async cancel(id){ const { error } = await sb.rpc('cancel_booking', { p_id: id }); if (error) throw error; },
+  async joinWaitlist(w){ const { error } = await sb.from('waitlist').upsert({ ...w, user_id: this.user.id, status:'waiting', notified_at:null }, { onConflict:'user_id,room_id,day' }); if (error) throw error; },
+  async myWaitlist(){ const { data } = await sb.from('waitlist').select('*').eq('status','waiting').gte('day', today().k).order('day'); return data || []; },
+  async leaveWaitlist(id){ await sb.from('waitlist').delete().eq('id', id); },
+  buyGift(g){ return invoke('buy-gift', g); },
   async signIn(email, password){ const { data, error } = await sb.auth.signInWithPassword({ email, password }); if (error) throw error; return toUser(data.user); },
   async signUp(email, password, meta){
     const { data, error } = await sb.auth.signUp({ email, password, options:{ data: meta, emailRedirectTo: location.origin + location.pathname } });
@@ -740,23 +929,21 @@ const Live = {
   async magic(email){ const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: location.origin + location.pathname + '#book' } }); if (error) throw error; },
   async signOut(){ await sb.auth.signOut(); }
 };
-function toUser(u){ if (!u) return null; const m = u.user_metadata || {}; return { id:u.id, email:u.email, name:m.full_name || u.email.split('@')[0], band:m.band_name || '' }; }
+function toUser(u){ if (!u) return null; const m = u.user_metadata || {}; return { id:u.id, email:u.email, name:m.full_name || u.email.split('@')[0], band:m.band_name || '', phone:m.phone || '' }; }
 
 const API = live ? Live : Demo;
 
 /* ---------- state ---------- */
 const T = today();
 const state = {
-  room:'a',
-  calY:T.y, calM:T.m,
-  day:null, start:null, dur:2,
-  week:0,
-  rows:[], mine:[],
-  busy:false, done:null, err:'',
-  confirmCancel:null,
-  pendingSubmit:false
+  room:'a', calY:T.y, calM:T.m, day:null, start:null, dur:2, week:0,
+  rows:[], mine:[], waits:[],
+  busy:false, done:null, err:'', pendingSubmit:false,
+  coupon:null, gift:null, payChoice:'deposit', sms:false, phone:'',
+  checkout:null,                 // preview-mode stand-in for Stripe Checkout
+  waitOpen:false, waitMsg:'', waitFrom:null, waitTo:null, waitNeed:1
 };
-const rangeStart = () => { const t = today(); const back = (t.dow + 6) % 7; return bne(t.y,t.m,t.d - back - 0); };
+const rangeStart = () => { const t = today(); const back = (t.dow + 6) % 7; return bne(t.y,t.m,t.d - back); };
 const rangeEnd = () => { const t = today(); return bne(t.y,t.m,t.d + DAYS_AHEAD + 7); };
 
 async function loadRows(){
@@ -764,15 +951,15 @@ async function loadRows(){
   catch(e){ state.loadErr = 'The roster could not load. Check your connection and refresh.'; state.rows = []; }
 }
 async function loadMine(){
-  if (!API.user){ state.mine = []; return; }
-  try { state.mine = await API.myBookings(); } catch(e){ state.mine = []; }
+  if (!API.user){ state.mine = []; state.waits = []; return; }
+  try { [state.mine, state.waits] = await Promise.all([API.myBookings(), API.myWaitlist()]); } catch(e){ state.mine = []; state.waits = []; }
 }
 
-/* busy hours for room on a day key → Set of hours */
-function busyHours(roomId, k){
+/* busy hours for room on a day key → Set of hours (optionally ignoring one booking, for moves) */
+function busyHours(roomId, k, ignoreId){
   const { y,m,d } = fromKey(k); const s = bne(y,m,d,0).getTime(), e = s + 864e5; const set = new Set();
   for (const b of state.rows) {
-    if (b.room_id !== roomId) continue;
+    if (b.room_id !== roomId || (ignoreId && b.id === ignoreId)) continue;
     const bs = new Date(b.starts_at).getTime(), be = new Date(b.ends_at).getTime();
     if (be <= s || bs >= e) continue;
     for (let h = OPEN; h < CLOSE; h++){ const hs = bne(y,m,d,h).getTime(); if (hs < be && hs + 36e5 > bs) set.add(h); }
@@ -793,9 +980,9 @@ function lastBookable(){ const t = today(); return key(t.y,t.m,t.d + DAYS_AHEAD)
 
 /* ---------- render: rooms ---------- */
 function renderRooms(){
-  document.getElementById('roomList').innerHTML = ROOMS.map((r,i) => `
+  document.getElementById('roomList').innerHTML = ROOMS.map((r) => `
     <article class="room">
-      <div class="taped rise" style="--tilt:-2.6deg;--tx:-6%"><div class="duo"><span class="tag">Gold Coast · ${r.short}</span>
+      <div class="taped rise"><div class="duo"><span class="tag">Gold Coast · ${r.short}</span>
         <img data-par loading="lazy" src="assets/duo/${r.img}-800.webp" srcset="${r.srcset}" sizes="(max-width:860px) 100vw, 50vw" alt="${r.alt}" style="object-position:${r.pos}">
       </div></div>
       <div class="body rise">
@@ -824,22 +1011,25 @@ function renderRoster(){
   document.getElementById('wkNext').disabled = state.week >= maxWeek;
   const a = bne(days[0].y,days[0].m,days[0].d,12), b = bne(days[6].y,days[6].m,days[6].d,12);
   document.getElementById('wkLabel').textContent = state.week === 0 ? 'This week' : `${fmt({day:'numeric',month:'short'}).format(a)} – ${fmt({day:'numeric',month:'short'}).format(b)}`;
-
+  const rows = CLOSE - OPEN;
+  document.getElementById('roster-grid').style.setProperty('--rows', rows);
   let html = `<div></div>` + days.map(dd => {
     const noon = bne(dd.y,dd.m,dd.d,12); const past = dd.k < t.k;
     return `<button type="button" class="dh${dd.k === t.k ? ' today':''}${past ? ' past':''}" data-day="${dd.k}" ${past?'disabled':''} aria-label="Book ${fLong.format(noon)}">
       <span class="w">${fmt({weekday:'short'}).format(noon)}</span><span class="d num">${dd.d}</span></button>`;
   }).join('');
-  html += `<div class="times">${[...Array(CLOSE-OPEN+1)].map((_,i) => i === 0 ? '' : `<span class="num" style="top:calc(var(--row) * ${i})">${pad(OPEN+i)}</span>`).join('')}</div>`;
+  html += `<div class="times" style="height:calc(var(--row) * ${rows})">${[...Array(rows+1)].map((_,i) => i === 0 ? '' : `<span class="num" style="top:calc(var(--row) * ${i})">${pad(OPEN+i)}</span>`).join('')}</div>`;
   for (const dd of days){
     const s = bne(dd.y,dd.m,dd.d,0).getTime(), e = s + 864e5;
     const blocks = state.rows.filter(r => { const bs = +new Date(r.starts_at); return bs >= s && bs < e; }).map(r => {
       const sh = parts(new Date(r.starts_at)).h, eh = sh + Math.round((new Date(r.ends_at) - new Date(r.starts_at)) / 36e5);
       const top = Math.max(0, sh - OPEN), len = Math.min(CLOSE, eh) - Math.max(OPEN, sh);
+      if (len <= 0) return '';
       const me = r.mine || isMine(r);
-      return `<div class="blk ${r.room_id}${me ? ' me':''}" style="top:calc(var(--row) * ${top} + 2px);height:calc(var(--row) * ${len} - 4px)" title="${roomById(r.room_id).short} · ${hh(sh)}–${hh(eh)}">${me ? 'You' : 'Booked'}</div>`;
+      const label = me ? 'You' : r.kind === 'closed' ? 'Closed' : 'Booked';
+      return `<div class="blk a${me ? ' me':''}" style="top:calc(var(--row) * ${top} + 2px);height:calc(var(--row) * ${len} - 4px)" title="${label} · ${hh(sh)}–${hh(eh)}">${label}</div>`;
     }).join('');
-    html += `<div class="col${dd.k < t.k ? ' past':''}">${blocks}</div>`;
+    html += `<div class="col${dd.k < t.k ? ' past':''}" style="height:calc(var(--row) * ${rows})">${blocks}</div>`;
   }
   document.getElementById('roster-grid').innerHTML = html;
   document.getElementById('rosterNote').textContent = state.loadErr || (live ? 'Updates every minute.' : 'Preview mode: sample bookings. Connect Supabase to show live bookings.');
@@ -863,14 +1053,14 @@ function renderCal(){
     const k = key(state.calY, state.calM, d); const out = k < t.k || k > last;
     const free = out ? 0 : freeHours(state.room, k).length;
     const cls = [k === t.k ? 'today':'', !out && free === 0 ? 'full':'', free > 0 && free <= 3 ? 'few':''].filter(Boolean).join(' ');
-    const label = `${fLong.format(bne(state.calY,state.calM,d,12))}${out ? '' : free ? `, ${free} hours free` : ', fully booked'}`;
-    html += `<button type="button" class="num ${cls}" data-k="${k}" aria-pressed="${state.day === k}" aria-label="${label}" ${out || !free ? 'disabled':''}>${d}${free ? '<i></i>':''}</button>`;
+    const label = `${fLong.format(bne(state.calY,state.calM,d,12))}${out ? '' : free ? `, ${free} hours free` : ', fully booked, waitlist open'}`;
+    html += `<button type="button" class="num ${cls}" data-k="${k}" aria-pressed="${state.day === k}" aria-label="${label}" ${out ? 'disabled':''}>${d}${free ? '<i></i>':''}</button>`;
   }
   document.getElementById('cal').innerHTML = html;
 }
 function renderSlots(){
   const el = document.getElementById('slots');
-  if (!state.day){ el.innerHTML = `<p class="empty">Pick a day to see start times.</p>`; return; }
+  if (!state.day){ el.innerHTML = `<p class="empty">Pick a day to see start times.</p>`; renderWait(); return; }
   const busy = busyHours(state.room, state.day); const { y,m,d } = fromKey(state.day); const now = Date.now();
   let html = '';
   for (let h = OPEN; h < CLOSE; h++){
@@ -878,42 +1068,117 @@ function renderSlots(){
     html += `<button type="button" class="num" data-h="${h}" aria-pressed="${state.start === h}" ${off ? 'disabled':''} aria-label="${hh(h)}${off ? ', unavailable':''}">${hh(h)}</button>`;
   }
   el.innerHTML = html;
+  renderWait();
+}
+function renderWait(){
+  const el = document.getElementById('wait');
+  if (!state.day){ el.innerHTML = ''; return; }
+  const full = freeHours(state.room, state.day).length === 0;
+  const dayLabel = fDay.format(noonOf(state.day));
+  const already = state.waits.find(w => w.day === state.day && w.room_id === state.room);
+  if (already){ el.innerHTML = `<p class="msg muted">You're on the waitlist for ${dayLabel}, ${hh(already.from_hour)}–${hh(already.to_hour)}. We'll email you if a slot opens.</p>`; return; }
+  if (!state.waitOpen && !full){ el.innerHTML = `<div><button type="button" class="link" id="waitToggle">Can't find a time? Join the waitlist for ${dayLabel}</button></div>`; return; }
+  const from = state.waitFrom ?? OPEN, to = state.waitTo ?? CLOSE;
+  const opts = (lo, hi, sel) => { let o = ''; for (let h = lo; h <= hi; h++) o += `<option value="${h}" ${h === sel ? 'selected':''}>${hh(h)}</option>`; return o; };
+  el.innerHTML = `
+    ${full ? `<p class="msg">${dayLabel} is fully booked. Join the waitlist and we'll email you the moment something opens.</p>` : ''}
+    <div class="wait-form">
+      <div class="field"><label for="wFrom">From</label><select id="wFrom">${opts(OPEN, CLOSE - 1, from)}</select></div>
+      <div class="field"><label for="wTo">Until</label><select id="wTo">${opts(OPEN + 1, CLOSE, to)}</select></div>
+      <div class="field"><label for="wNeed">I need</label><select id="wNeed">${[1,2,3,4].filter(n => n <= MAX_HOURS).map(n => `<option value="${n}" ${n === state.waitNeed ? 'selected':''}>${n} hr${n > 1 ? 's':''}</option>`).join('')}</select></div>
+      <button type="button" class="btn ghost" id="waitJoin">Join waitlist <span class="arrow" aria-hidden="true"></span></button>
+      <p class="msg muted" role="status">${state.waitMsg || (API.user ? '' : 'You\'ll be asked to sign in so we know where to email you.')}</p>
+    </div>`;
 }
 function renderDurs(){
   const el = document.getElementById('durs');
   const max = state.start != null ? maxDur(state.room, state.day, state.start) : 0;
   if (state.start != null && state.dur > max) state.dur = max;
-  el.innerHTML = [1,2,3,4].map(n => `<button type="button" class="num" data-dur="${n}" aria-pressed="${state.start != null && state.dur === n}" ${state.start == null || n > max ? 'disabled':''}>${n} hr${n>1?'s':''}</button>`).join('');
+  el.innerHTML = [...Array(MAX_HOURS)].map((_,i) => i + 1).map(n => `<button type="button" class="num" data-dur="${n}" aria-pressed="${state.start != null && state.dur === n}" ${state.start == null || n > max ? 'disabled':''}>${n} hr${n>1?'s':''}</button>`).join('');
+}
+function quote(){
+  const r = roomById(state.room);
+  return priceFor({ rateCents: Math.round(r.rate * 100), hours: state.dur || 0,
+    couponCents: state.coupon?.valid ? state.coupon.discount_cents : 0,
+    giftBalance: state.gift?.valid ? state.gift.balance_cents : 0, payChoice: state.payChoice });
+}
+function codeField(kind){
+  const v = state[kind], isC = kind === 'coupon';
+  const applied = v?.valid;
+  return `<div class="code-field">
+    <label for="${isC ? 'cCode' : 'gCode'}">${isC ? 'Promo code' : 'Gift card'}</label>
+    <div class="inline"><input id="${isC ? 'cCode' : 'gCode'}" value="${escapeHtml(v?.code || '')}" ${applied ? 'readonly' : ''} autocomplete="off" spellcheck="false" placeholder="${isC ? 'Code' : 'HFJ-XXXX-XXXX'}">
+      <button type="button" class="mini" data-code="${kind}" data-op="${applied ? 'remove' : 'apply'}">${applied ? 'Remove' : 'Apply'}</button></div>
+    <p class="msg ${applied ? 'good' : v?.message ? 'err' : ''}" role="status">${v?.message ? escapeHtml(v.message) : ''}</p>
+  </div>`;
 }
 function renderTicket(){
   const el = document.getElementById('ticket'); const r = roomById(state.room); const user = API.user;
+  if (state.checkout){                                          // preview-mode stand-in for Stripe Checkout
+    const b = state.checkout;
+    el.innerHTML = `<div class="democheck" role="dialog" aria-label="Checkout">
+      <span class="label">Checkout</span>
+      <h3>Secure payment</h3>
+      <p class="muted msg">Preview mode: on the live site this opens Stripe Checkout. Nothing is charged here. The slot is held for 30 minutes while you pay.</p>
+      <dl class="rows">
+        <div><dt>Session</dt><dd class="num">${fDay.format(new Date(b.starts_at))} · ${hh(parts(new Date(b.starts_at)).h)}–${hh(parts(new Date(b.ends_at)).h)}</dd></div>
+        <div><dt>${b.pay_mode === 'deposit' ? `Deposit (${SET.depositPct}%)` : 'Pay in full'}</dt><dd class="num">${cash(b.charge_now_cents)}</dd></div>
+        ${b.due_cents > b.charge_now_cents ? `<div><dt>At the studio</dt><dd class="num">${cash(b.due_cents - b.charge_now_cents)}</dd></div>` : ''}
+      </dl>
+      <div class="stripe"><i aria-hidden="true"></i>Card, Apple Pay, Google Pay</div>
+      <button type="button" class="btn" id="demoPay">Pay ${cash(b.charge_now_cents)} <span class="arrow" aria-hidden="true"></span></button>
+      <button type="button" class="link" id="demoCancel" style="justify-self:start">Cancel and release the slot</button>
+    </div>`;
+    return;
+  }
   if (state.done){
     const b = state.done; const sh = parts(new Date(b.starts_at)).h, eh = parts(new Date(b.ends_at)).h;
+    const paid = b.paid_cents || b.charge_now_cents || 0, rest = Math.max(0, (b.due_cents || 0) - paid);
     el.innerHTML = `<div class="done" role="status">
       <div class="tick"><div class="mark"></div></div>
       <h3>You're booked.</h3>
       <p class="muted msg">${roomById(b.room_id).name}, ${fLong.format(new Date(b.starts_at))}, ${hh(sh)} – ${hh(eh)}.</p>
-      <p class="muted msg">${live ? `Confirmation sent to ${user?.email}. We'll remind you 24 hours before.` : 'Preview mode: no email was sent. With Supabase connected, a confirmation and a 24-hour reminder go out automatically.'}</p>
+      ${b.due_cents != null ? `<p class="msg">${paid ? `Paid ${cash(paid)} online.` : ''} ${rest ? `${cash(rest)} to pay at the studio.` : paid ? 'Nothing more to pay.' : b.due_cents === 0 ? 'Nothing to pay.' : ''}</p>` : ''}
+      <p class="muted msg">${live ? `Confirmation sent to ${escapeHtml(user?.email || 'your email')}, with a link to change or cancel. We'll remind you 24 hours before.` : 'Preview mode: no email was sent. On the live site you get a confirmation with a change/cancel link, then a reminder 24 hours before.'}</p>
       <button type="button" class="btn ghost" id="again">Book another <span class="arrow" aria-hidden="true"></span></button>
     </div>`;
     return;
   }
   const ready = state.day && state.start != null && state.dur > 0;
-  const total = ready ? r.rate * state.dur : 0;
-  const when = state.day ? fLong.format(bne(...Object.values(fromKey(state.day)),12)) : '—';
+  const q = quote();
+  const when = state.day ? fLong.format(noonOf(state.day)) : '—';
+  const showChoice = ready && q.due > 0 && SET.payMode === 'choice';
+  const depNow = Math.max(100, Math.ceil(q.due * SET.depositPct / 100));
+  const policy = `Free changes and cancellation up to ${SET.cutoff} hours before.`;
+  const note = !ready ? 'Choose a day, a start time and a length.'
+    : q.mode === 'free' ? `Covered in full. ${policy}`
+    : q.mode === 'on_arrival' ? `Pay at the studio on arrival. ${policy}`
+    : q.mode === 'deposit' ? `${cash(q.now)} deposit now, ${cash(q.later)} at the studio. Full refund if you cancel ${SET.cutoff}+ hours before.`
+    : `Paid in full now. Full refund if you cancel ${SET.cutoff}+ hours before.`;
+  const btnLabel = state.busy ? 'One moment…' : !user ? 'Sign in & continue' : q.now > 0 ? `Pay ${cash(q.now)} & book` : 'Confirm booking';
   el.innerHTML = `
     <span class="label">Your session</span>
     <dl class="rows">
       <div><dt>Room</dt><dd>${r.name}</dd></div>
       <div><dt>Day</dt><dd>${when}</dd></div>
       <div><dt>Time</dt><dd class="num">${ready ? `${hh(state.start)} – ${hh(state.start + state.dur)}` : '—'}</dd></div>
-      <div><dt>Rate</dt><dd class="num">${money(r.rate)} × ${ready ? state.dur : 0} hr</dd></div>
+      <div><dt>Session</dt><dd class="num">${money(r.rate)} × ${ready ? state.dur : 0} hr${ready ? ` = ${cash(q.amount)}` : ''}</dd></div>
+      ${ready && q.discount ? `<div class="neg"><dt>Code ${escapeHtml(state.coupon.code)}</dt><dd class="num">−${cash(q.discount)}</dd></div>` : ''}
+      ${ready && q.gift ? `<div class="neg"><dt>Gift card</dt><dd class="num">−${cash(q.gift)}</dd></div>` : ''}
+      ${ready && q.now && q.later ? `<div><dt>At the studio</dt><dd class="num">${cash(q.later)}</dd></div>` : ''}
     </dl>
     <div class="field"><label for="bBand">Band or project name</label><input id="bBand" value="${escapeHtml(state.band ?? user?.band ?? '')}" maxlength="80"></div>
     <div class="field"><label for="bNotes">Notes for the studio (optional)</label><textarea id="bNotes" rows="1" maxlength="400">${escapeHtml(state.notes || '')}</textarea></div>
-    <div class="total"><span class="label">Total, incl. GST</span><strong class="num">${money(total)}</strong></div>
-    <button type="button" class="btn" id="confirmBtn" ${!ready || state.busy ? 'disabled':''}>${state.busy ? 'Booking…' : user ? 'Confirm booking' : 'Sign in & confirm'} <span class="arrow" aria-hidden="true"></span></button>
-    <p class="msg ${state.err ? 'err':''} muted" role="status">${state.err || (ready ? 'Pay at the studio on arrival. Free cancellation up to 24 hours before.' : 'Choose a day, a start time and a length.')}</p>`;
+    <div class="codes">${codeField('coupon')}${codeField('gift')}</div>
+    ${showChoice ? `<div class="seg paychoice" role="group" aria-label="Payment">
+      <button type="button" data-pay="deposit" aria-pressed="${state.payChoice === 'deposit'}">Pay deposit<span class="num">${cash(depNow)} now</span></button>
+      <button type="button" data-pay="full" aria-pressed="${state.payChoice === 'full'}">Pay in full<span class="num">${cash(q.due)} now</span></button>
+    </div>` : ''}
+    ${SET.sms ? `<label class="check"><input type="checkbox" id="bSms" ${state.sms ? 'checked' : ''}> Text me a reminder the day before</label>
+      ${state.sms ? `<div class="field"><label for="bPhone">Mobile</label><input id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0412 345 678" value="${escapeHtml(state.phone || user?.phone || '')}"></div>` : ''}` : ''}
+    <div class="total"><span class="label">${ready && q.now ? 'Pay now' : 'Total, incl. GST'}</span><strong class="num">${cash(ready ? (q.now || q.due) : 0)}</strong></div>
+    <button type="button" class="btn" id="confirmBtn" ${!ready || state.busy ? 'disabled':''}>${btnLabel} <span class="arrow" aria-hidden="true"></span></button>
+    <p class="msg ${state.err ? 'err':''} muted" role="status">${state.err ? escapeHtml(state.err) : note}</p>`;
 }
 function renderMine(){
   const el = document.getElementById('mine');
@@ -921,13 +1186,11 @@ function renderMine(){
   el.hidden = false;
   const items = state.mine.map(b => {
     const sh = parts(new Date(b.starts_at)).h, eh = parts(new Date(b.ends_at)).h;
-    const can = new Date(b.starts_at) - Date.now() > 0;
-    const action = state.confirmCancel === b.id
-      ? `<span class="confirm-row"><button type="button" class="link" data-cancel-yes="${b.id}">Yes, cancel</button><button type="button" class="link" data-cancel-no style="color:var(--ink-2)">Keep</button></span>`
-      : can ? `<button type="button" class="link" data-cancel="${b.id}">Cancel</button>` : '';
-    return `<li><span>${fDay.format(new Date(b.starts_at))} · <span class="num">${hh(sh)}–${hh(eh)}</span><span class="sub">${roomById(b.room_id).name}</span></span>${action}</li>`;
+    return `<li><span>${fDay.format(new Date(b.starts_at))} · <span class="num">${hh(sh)}–${hh(eh)}</span><span class="sub">${roomById(b.room_id).name}${b.payment_status === 'deposit_paid' ? ' · deposit paid' : b.payment_status === 'paid' ? ' · paid' : ''}</span></span>
+      ${b.manage_token ? `<button type="button" class="link" data-manage="${b.manage_token}">Change</button>` : ''}</li>`;
   }).join('');
-  el.innerHTML = `<h4>Upcoming for ${escapeHtml(API.user.name)}</h4>${items ? `<ul>${items}</ul>` : '<p class="empty">No upcoming sessions yet.</p>'}`;
+  const waits = state.waits.map(w => `<li class="wl"><span>${fDay.format(noonOf(w.day))} · <span class="num">${hh(w.from_hour)}–${hh(w.to_hour)}</span><span class="sub">Waitlist</span></span><button type="button" class="link" data-leave="${w.id}">Leave</button></li>`).join('');
+  el.innerHTML = `<h4>Upcoming for ${escapeHtml(API.user.name)}</h4>${items || waits ? `<ul>${items}${waits}</ul>` : '<p class="empty">No upcoming sessions yet.</p>'}`;
 }
 function renderAcct(){
   document.getElementById('acctBtn').textContent = API.user ? 'Sign out' : 'Sign in';
@@ -937,42 +1200,216 @@ function renderBooking(){ renderSeg(); renderCal(); renderSlots(); renderDurs();
 function renderAll(){ renderAcct(); renderRoster(); renderBooking(); }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
+function notice(text, good = true, target = 'notice'){
+  const el = document.getElementById(target);
+  if (target !== 'notice'){ el.textContent = text; return; }
+  el.hidden = !text; el.className = 'notice' + (good ? ' good' : '');
+  el.innerHTML = text ? `<p>${escapeHtml(text)}</p><button type="button" class="mini" id="noticeClose">Dismiss</button>` : '';
+}
+
+/* ---------- codes ---------- */
+async function applyCode(kind){
+  const input = document.getElementById(kind === 'coupon' ? 'cCode' : 'gCode');
+  const code = (input?.value || '').trim().toUpperCase();
+  if (!code){ state[kind] = null; renderTicket(); return; }
+  try {
+    if (kind === 'coupon'){
+      const amount = Math.round(roomById(state.room).rate * 100) * (state.dur || 1);
+      const r = await API.checkCoupon(code, state.dur || 1, amount);
+      state.coupon = { code, valid: !!r.valid, discount_cents: r.discount_cents || 0, message: r.message, forDur: state.dur };
+    } else {
+      const r = await API.checkGift(code);
+      state.gift = { code, valid: !!r.valid, balance_cents: r.balance_cents || 0, message: r.message };
+    }
+  } catch(e){ state[kind] = { code, valid:false, message:'Couldn\'t check that code. Try again.' }; }
+  renderTicket(); requestAnimationFrame(frame);
+}
+/** percentage codes depend on the session length, so re-check when it changes */
+function recheckCoupon(){ if (state.coupon?.valid && state.coupon.forDur !== state.dur){ const c = state.coupon.code; state.coupon = { code:c }; setTimeout(() => { const i = document.getElementById('cCode'); if (i){ i.value = c; applyCode('coupon'); } }, 0); } }
+
 /* ---------- interactions ---------- */
 document.addEventListener('click', async e => {
   const t = e.target.closest('button'); if (!t) return;
   if (t.dataset.pickRoom){ state.room = t.dataset.pickRoom; state.start = null; state.done = null; renderBooking(); document.getElementById('book').scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth' }); return; }
-  if (t.dataset.room){ state.room = t.dataset.room; state.start = null; state.err=''; if (state.day && !freeHours(state.room, state.day).length) state.day = null; renderBooking(); }
-  else if (t.dataset.k){ state.day = t.dataset.k; state.start = null; state.err=''; renderBooking(); }
-  else if (t.dataset.h){ state.start = +t.dataset.h; if (!state.dur) state.dur = 1; state.dur = Math.min(state.dur || 2, maxDur(state.room, state.day, state.start)) || 1; renderSlots(); renderDurs(); renderTicket(); requestAnimationFrame(frame); }
-  else if (t.dataset.dur){ state.dur = +t.dataset.dur; renderDurs(); renderTicket(); requestAnimationFrame(frame); }
+  if (t.dataset.room){ state.room = t.dataset.room; state.start = null; state.err=''; renderBooking(); }
+  else if (t.dataset.k){ state.day = t.dataset.k; state.start = null; state.err=''; state.waitOpen = false; state.waitMsg = ''; renderBooking(); }
+  else if (t.dataset.h){ state.start = +t.dataset.h; state.dur = Math.min(state.dur || 2, maxDur(state.room, state.day, state.start)) || 1; renderSlots(); renderDurs(); renderTicket(); recheckCoupon(); requestAnimationFrame(frame); }
+  else if (t.dataset.dur){ state.dur = +t.dataset.dur; renderDurs(); renderTicket(); recheckCoupon(); requestAnimationFrame(frame); }
   else if (t.dataset.day){ const k = t.dataset.day; const p = fromKey(k); state.day = k; state.calY = p.y; state.calM = p.m; state.start = null; state.done = null; renderBooking(); document.getElementById('book').scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth' }); }
-  else if (t.dataset.cancel){ state.confirmCancel = t.dataset.cancel; renderMine(); }
-  else if ('cancelNo' in t.dataset){ state.confirmCancel = null; renderMine(); }
-  else if (t.dataset.cancelYes){ try { await API.cancel(t.dataset.cancelYes); } catch(err){} state.confirmCancel = null; await Promise.all([loadRows(), loadMine()]); renderAll(); }
+  else if (t.dataset.code){ captureFields(); if (t.dataset.op === 'remove'){ state[t.dataset.code] = null; renderTicket(); } else applyCode(t.dataset.code); }
+  else if (t.dataset.pay){ captureFields(); state.payChoice = t.dataset.pay; renderTicket(); }
+  else if (t.dataset.manage){ openManage(t.dataset.manage); }
+  else if (t.dataset.leave){ await API.leaveWaitlist(t.dataset.leave); await loadMine(); renderBooking(); }
+  else if (t.id === 'waitToggle'){ state.waitOpen = true; renderWait(); }
+  else if (t.id === 'waitJoin'){ await joinWait(); }
   else if (t.id === 'confirmBtn'){ captureFields(); if (!API.user){ state.pendingSubmit = true; openAuth(); } else submit(); }
-  else if (t.id === 'again'){ state.done = null; state.start = null; renderBooking(); }
-  else if (t.id === 'acctBtn'){ if (API.user){ await API.signOut(); onAuthChange(); } else openAuth(); }
+  else if (t.id === 'demoPay'){ const b = await Demo.demoPay(state.checkout.manage_token); state.checkout = null; state.done = b; await Promise.all([loadRows(), loadMine()]); renderAll(); }
+  else if (t.id === 'demoCancel'){ await API.manage('release', state.checkout.manage_token); state.checkout = null; notice('Checkout cancelled. The slot has been released.', false); await Promise.all([loadRows(), loadMine()]); renderAll(); }
+  else if (t.id === 'noticeClose'){ notice(''); }
+  else if (t.id === 'again'){ state.done = null; state.start = null; state.coupon = null; state.gift = null; renderBooking(); }
+  else if (t.id === 'acctBtn'){ if (API.user){ await API.signOut(); if (!live) onAuthChange(); } else openAuth(); }
   else if (t.id === 'calPrev' || t.id === 'calNext'){ const d = new Date(Date.UTC(state.calY, state.calM + (t.id === 'calNext' ? 1 : -1), 1)); state.calY = d.getUTCFullYear(); state.calM = d.getUTCMonth(); renderCal(); }
   else if (t.id === 'wkPrev' || t.id === 'wkNext'){ state.week += t.id === 'wkNext' ? 1 : -1; renderRoster(); }
 });
-document.addEventListener('input', e => { if (e.target.id === 'bBand') state.band = e.target.value; if (e.target.id === 'bNotes') state.notes = e.target.value; });
-function captureFields(){ const b = document.getElementById('bBand'), n = document.getElementById('bNotes'); if (b) state.band = b.value.trim(); if (n) state.notes = n.value.trim(); }
+document.addEventListener('input', e => { const id = e.target.id; if (id === 'bBand') state.band = e.target.value; if (id === 'bNotes') state.notes = e.target.value; if (id === 'bPhone') state.phone = e.target.value;
+  if (id === 'cCode' && !state.coupon?.valid) state.coupon = { code: e.target.value }; if (id === 'gCode' && !state.gift?.valid) state.gift = { code: e.target.value }; });
+document.addEventListener('change', e => {
+  const id = e.target.id;
+  if (id === 'bSms'){ captureFields(); state.sms = e.target.checked; renderTicket(); }
+  if (id === 'wFrom') state.waitFrom = +e.target.value; if (id === 'wTo') state.waitTo = +e.target.value; if (id === 'wNeed') state.waitNeed = +e.target.value;
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.target.id === 'cCode' || e.target.id === 'gCode')){ e.preventDefault(); captureFields(); applyCode(e.target.id === 'cCode' ? 'coupon' : 'gift'); } });
+function captureFields(){ const g = id => document.getElementById(id); if (g('bBand')) state.band = g('bBand').value.trim(); if (g('bNotes')) state.notes = g('bNotes').value.trim(); if (g('bPhone')) state.phone = g('bPhone').value.trim(); }
+
+async function joinWait(){
+  const from = state.waitFrom ?? OPEN, to = state.waitTo ?? CLOSE;
+  if (to - from < state.waitNeed){ state.waitMsg = 'Make the window at least as long as the time you need.'; renderWait(); return; }
+  if (!API.user){ state.pendingWait = true; openAuth(); return; }
+  try {
+    await API.joinWaitlist({ room_id: state.room, day: state.day, from_hour: from, to_hour: to, hours_needed: state.waitNeed, email: API.user.email, name: API.user.name });
+    state.waitMsg = ''; state.waitOpen = false; await loadMine(); renderBooking();
+  } catch(err){ state.waitMsg = err.message || 'Couldn\'t join the waitlist. Try again.'; renderWait(); }
+}
 
 async function submit(){
   const { y,m,d } = fromKey(state.day);
-  const payload = { room_id: state.room, starts_at: bne(y,m,d,state.start).toISOString(), ends_at: bne(y,m,d,state.start + state.dur).toISOString(), band_name: state.band || API.user?.band || null, notes: state.notes || null };
+  const payload = {
+    room_id: state.room, starts_at: bne(y,m,d,state.start).toISOString(), ends_at: bne(y,m,d,state.start + state.dur).toISOString(),
+    band_name: state.band || API.user?.band || null, notes: state.notes || null,
+    coupon: state.coupon?.valid ? state.coupon.code : null, gift_code: state.gift?.valid ? state.gift.code : null,
+    pay_choice: state.payChoice, sms_opt_in: !!state.sms, phone: state.sms ? state.phone : null
+  };
   state.busy = true; state.err = ''; renderTicket();
   try {
-    const row = await API.create(payload);
-    state.done = { ...payload, ...row }; state.notes = '';
+    const res = await API.checkout(payload);
+    if (res.url){ location.href = res.url; return; }                           // off to Stripe Checkout
+    if (res.demo){ state.checkout = res.booking; }
+    else { state.done = res.booking; state.notes = ''; state.coupon = null; state.gift = null; }
   } catch(err){
-    state.err = err.code === '23P01' ? 'Someone just took part of that time. Pick another start or a shorter session.'
-      : err.message && /hours|start|passed/i.test(err.message) ? err.message
-      : 'That booking did not go through. Check your connection and try again.';
+    state.err = err.message || 'That booking did not go through. Check your connection and try again.';
+    if (err.code === 'coupon') state.coupon = { ...state.coupon, valid:false, message: err.message };
+    if (err.code === 'gift') state.gift = { ...state.gift, valid:false, message: err.message };
   }
-  state.busy = false; state.start = state.done ? null : state.start;
+  state.busy = false; if (state.done) state.start = null;
   await Promise.all([loadRows(), loadMine()]); renderAll();
 }
+
+/* ---------- manage a booking (private link or "Change") ---------- */
+const mgDlg = document.getElementById('manageDlg');
+const mg = { token:null, data:null, view:'main', day:null, start:null, msg:'', err:'', busy:false };
+async function openManage(token){
+  Object.assign(mg, { token, data:null, view:'main', day:null, start:null, msg:'', err:'', busy:false });
+  renderManage(); if (typeof mgDlg.showModal === 'function' && !mgDlg.open) mgDlg.showModal(); else mgDlg.setAttribute('open','');
+  try { mg.data = await API.manage('get', token); } catch(e){ mg.err = e.message || 'We couldn\'t load that booking.'; }
+  renderManage();
+}
+function moveOptions(){
+  const b = mg.data.booking; const len = Math.round((new Date(b.ends_at) - new Date(b.starts_at)) / 36e5);
+  const t = today(); const days = [];
+  for (let i = 0; i <= DAYS_AHEAD; i++){
+    const k = key(t.y,t.m,t.d+i); const busy = busyHours(b.room_id, k, b.id); const { y,m,d } = fromKey(k); const starts = [];
+    for (let h = OPEN; h + len <= CLOSE; h++){
+      if (bne(y,m,d,h).getTime() <= Date.now() + 36e5) continue;
+      let ok = true; for (let n = 0; n < len; n++) if (busy.has(h+n)) { ok = false; break; }
+      if (ok) starts.push(h);
+    }
+    if (starts.length) days.push({ k, starts });
+  }
+  return { len, days };
+}
+function renderManage(){
+  const el = document.getElementById('manageBody');
+  const head = `<div class="top"><div class="mark" aria-hidden="true"></div><button class="x" type="button" id="mgClose" aria-label="Close">×</button></div>`;
+  if (!mg.data){ el.innerHTML = head + `<h3 id="mgTitle">Your booking</h3><p class="msg ${mg.err ? 'err' : 'muted'}">${mg.err ? escapeHtml(mg.err) : 'Loading…'}</p>`; return; }
+  const { booking: b, policy: p } = mg.data;
+  const sh = parts(new Date(b.starts_at)).h, eh = parts(new Date(b.ends_at)).h;
+  const status = b.status === 'confirmed' ? '<span class="pill ok">Confirmed</span>' : b.status === 'pending' ? '<span class="pill">Awaiting payment</span>' : '<span class="pill off">Cancelled</span>';
+  const pay = b.paid_cents ? `${cash(b.paid_cents)} paid${b.refunded_cents ? `, ${cash(b.refunded_cents)} refunded` : ''}` : b.due_cents ? `${cash(b.due_cents)} at the studio` : 'Nothing to pay';
+  let body = `<div><h3 id="mgTitle">Your session</h3></div>
+    <dl class="rows ticket-rows" style="margin:0;display:grid;gap:.75rem">
+      <div style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.75rem"><dt class="label">Status</dt><dd style="margin:0">${status}</dd></div>
+      <div style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.75rem"><dt class="label">When</dt><dd style="margin:0;text-align:right">${fLong.format(new Date(b.starts_at))}<br><span class="num">${hh(sh)} – ${hh(eh)}</span></dd></div>
+      <div style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.75rem"><dt class="label">Payment</dt><dd style="margin:0;text-align:right">${pay}</dd></div>
+    </dl>`;
+  if (mg.view === 'move'){
+    const { len, days } = moveOptions();
+    if (!mg.day || !days.some(d => d.k === mg.day)) mg.day = days[0]?.k || null;
+    const starts = days.find(d => d.k === mg.day)?.starts || [];
+    if (!starts.includes(mg.start)) mg.start = starts[0] ?? null;
+    body += days.length ? `<div class="mg-move">
+        <div class="field"><label for="mgDay">New day</label><select id="mgDay">${days.map(d => `<option value="${d.k}" ${d.k === mg.day ? 'selected':''}>${fDay.format(noonOf(d.k))}</option>`).join('')}</select></div>
+        <div class="field"><label for="mgStart">Start (${len} hr${len > 1 ? 's' : ''})</label><select id="mgStart">${starts.map(h => `<option value="${h}" ${h === mg.start ? 'selected':''}>${hh(h)} – ${hh(h+len)}</option>`).join('')}</select></div>
+      </div>
+      <div class="mg-actions"><button type="button" class="btn" id="mgMoveGo" ${mg.busy ? 'disabled' : ''}>Move session <span class="arrow" aria-hidden="true"></span></button><button type="button" class="btn ghost" id="mgBack">Back</button></div>`
+      : `<p class="msg">No free slots of that length in the next ${DAYS_AHEAD} days. Cancel instead, or contact the studio.</p><div class="mg-actions"><button type="button" class="btn ghost" id="mgBack">Back</button></div>`;
+  } else if (mg.view === 'cancel'){
+    body += `<p class="msg">${p.refund_cents ? `You'll get ${cash(p.refund_cents)} back on your card within 5–10 business days.` : b.paid_cents ? `This session starts within ${p.cutoff_hours} hours, so the online payment isn't refundable.` : 'Nothing has been charged, so there\'s nothing to refund.'}</p>
+      <div class="mg-actions"><button type="button" class="btn" id="mgCancelGo" ${mg.busy ? 'disabled' : ''}>Yes, cancel it <span class="arrow" aria-hidden="true"></span></button><button type="button" class="btn ghost" id="mgBack">Keep my session</button></div>`;
+  } else if (b.status === 'confirmed'){
+    body += `<div class="mg-actions">
+        ${p.can_reschedule ? `<button type="button" class="btn" id="mgMove">Move session <span class="arrow" aria-hidden="true"></span></button>` : ''}
+        ${p.can_cancel ? `<button type="button" class="btn ghost" id="mgCancel">Cancel session</button>` : ''}
+      </div>
+      <p class="msg muted">${p.can_reschedule ? `Free changes and cancellation up to ${p.cutoff_hours} hours before.` : `Inside ${p.cutoff_hours} hours, contact the studio to change this session.${p.can_cancel ? ' You can still cancel, but online payments aren\'t refunded.' : ''}`}</p>`;
+  } else {
+    body += `<div class="mg-actions"><a class="btn" href="#book" id="mgRebook">Book another time <span class="arrow" aria-hidden="true"></span></a></div>`;
+  }
+  el.innerHTML = head + body + (mg.msg || mg.err ? `<p class="msg ${mg.err ? 'err' : ''}" role="status">${escapeHtml(mg.err || mg.msg)}</p>` : '');
+}
+mgDlg.addEventListener('click', async e => {
+  const t = e.target.closest('button, a'); if (!t) return;
+  const go = async (action, extra, okMsg) => {
+    mg.busy = true; mg.err = ''; renderManage();
+    try { mg.data = await API.manage(action, mg.token, extra); mg.view = 'main'; mg.msg = okMsg; }
+    catch(err){ mg.err = err.message || 'That didn\'t work. Try again.'; }
+    mg.busy = false; await Promise.all([loadRows(), loadMine()]); renderAll(); renderManage();
+  };
+  if (t.id === 'mgClose' || t.id === 'mgRebook'){ mgDlg.close ? mgDlg.close() : mgDlg.removeAttribute('open'); }
+  else if (t.id === 'mgMove'){ mg.view = 'move'; mg.msg = ''; mg.err = ''; renderManage(); }
+  else if (t.id === 'mgCancel'){ mg.view = 'cancel'; mg.msg = ''; mg.err = ''; renderManage(); }
+  else if (t.id === 'mgBack'){ mg.view = 'main'; renderManage(); }
+  else if (t.id === 'mgMoveGo' && mg.day && mg.start != null){ const { y,m,d } = fromKey(mg.day); await go('reschedule', { starts_at: bne(y,m,d,mg.start).toISOString() }, live ? 'Moved. A new confirmation is on its way.' : 'Moved. (Preview mode: no email sent.)'); }
+  else if (t.id === 'mgCancelGo'){ await go('cancel', {}, 'Cancelled. A confirmation is on its way.'); }
+});
+mgDlg.addEventListener('change', e => { if (e.target.id === 'mgDay'){ mg.day = e.target.value; mg.start = null; renderManage(); } if (e.target.id === 'mgStart') mg.start = +e.target.value; });
+
+/* ---------- gift vouchers ---------- */
+const gift = { amount:8000, custom:false, deliver:'recipient', busy:false };
+const GIFT_AMOUNTS = [4000, 8000, 16000, 30000];
+function renderGift(){
+  document.getElementById('gAmounts').innerHTML = GIFT_AMOUNTS.map(c => `<button type="button" class="num" data-amt="${c}" aria-pressed="${!gift.custom && gift.amount === c}">${cash(c)}</button>`).join('')
+    + `<button type="button" data-amt="custom" aria-pressed="${gift.custom}">Other</button>`;
+  document.getElementById('gCustomWrap').hidden = !gift.custom;
+  document.querySelectorAll('#gDeliver button').forEach(b => b.setAttribute('aria-pressed', b.dataset.deliver === gift.deliver));
+  document.getElementById('gRecipient').hidden = gift.deliver !== 'recipient';
+  const to = document.getElementById('gToName').value.trim(), from = document.getElementById('gFromName').value.trim(), msg = document.getElementById('gMsg').value.trim();
+  const amt = gift.custom ? Math.round((+document.getElementById('gCustom').value || 0) * 100) : gift.amount;
+  const hours = amt ? Math.floor(amt / (ROOMS[0].rate * 100)) : 0;
+  document.getElementById('gCard').innerHTML = `
+    <div class="top"><span>Gift voucher</span><div class="mark" aria-hidden="true"></div></div>
+    <div class="amt num">${amt ? cash(amt) : '$—'}</div>
+    <div class="to">${to ? `For ${escapeHtml(to)}` : 'Studio time at HOTFUZZJAM'}${from ? ` · from ${escapeHtml(from)}` : ''}${msg ? `<br><span style="opacity:.8">“${escapeHtml(msg.slice(0,80))}${msg.length > 80 ? '…' : ''}”</span>` : ''}<br><span class="code">${gift.code || 'HFJ-XXXX-XXXX'}</span>${hours ? ` <span style="opacity:.75">· about ${hours} hr${hours > 1 ? 's' : ''} in the room</span>` : ''}</div>`;
+  document.getElementById('gBuy').disabled = gift.busy;
+}
+document.getElementById('gAmounts').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; if (b.dataset.amt === 'custom'){ gift.custom = true; } else { gift.custom = false; gift.amount = +b.dataset.amt; } renderGift(); if (gift.custom) document.getElementById('gCustom').focus(); });
+document.getElementById('gDeliver').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; gift.deliver = b.dataset.deliver; renderGift(); });
+document.getElementById('giftForm').addEventListener('input', () => renderGift());
+document.getElementById('giftForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim(); const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const amt = gift.custom ? Math.round((+v('gCustom') || 0) * 100) : gift.amount;
+  const out = m => notice(m, false, 'gMsgOut');
+  if (amt < 2000 || amt > 100000) return out('Choose an amount between $20 and $1,000.');
+  if (gift.deliver === 'recipient' && !EMAIL.test(v('gToEmail'))) return out('Enter their email, or choose "Send it to me".');
+  if (!EMAIL.test(v('gFromEmail'))) return out('Enter your email so we can send the receipt.');
+  gift.busy = true; renderGift(); out('');
+  try {
+    const res = await API.buyGift({ amount_cents: amt, deliver_to: gift.deliver, recipient_name: v('gToName'), recipient_email: v('gToEmail'), message: v('gMsg'), purchaser_name: v('gFromName'), purchaser_email: v('gFromEmail') });
+    if (res.url){ location.href = res.url; return; }
+    gift.code = res.code; out(`Preview mode: no payment taken. Code ${res.code} works in this browser's preview; try it at checkout.`);
+  } catch(err){ out(err.message || 'Couldn\'t start the payment. Try again.'); }
+  gift.busy = false; renderGift();
+});
 
 /* ---------- auth dialog ---------- */
 const dlg = document.getElementById('authDlg'); let mode = 'in';
@@ -987,10 +1424,10 @@ function setMode(m){
 }
 function openAuth(){ setMode(mode); if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open',''); setTimeout(() => document.getElementById(mode === 'up' ? 'fName' : 'fEmail').focus(), 50); }
 function closeAuth(){ dlg.close ? dlg.close() : dlg.removeAttribute('open'); }
-document.getElementById('authClose').onclick = () => { state.pendingSubmit = false; closeAuth(); };
+document.getElementById('authClose').onclick = () => { state.pendingSubmit = false; state.pendingWait = false; closeAuth(); };
 document.getElementById('tabIn').onclick = () => setMode('in');
 document.getElementById('tabUp').onclick = () => setMode('up');
-dlg.addEventListener('cancel', () => { state.pendingSubmit = false; });
+dlg.addEventListener('cancel', () => { state.pendingSubmit = false; state.pendingWait = false; });
 function authMsg(text, err){ const el = document.getElementById('authMsg'); el.textContent = text; el.className = 'msg ' + (err ? 'err' : 'muted'); }
 document.getElementById('authForm').addEventListener('submit', async e => {
   e.preventDefault();
@@ -1003,7 +1440,7 @@ document.getElementById('authForm').addEventListener('submit', async e => {
       ? await API.signUp(email, pass, { full_name: document.getElementById('fName').value.trim(), band_name: document.getElementById('fBand').value.trim(), phone: document.getElementById('fPhone').value.trim() })
       : await API.signIn(email, pass);
     if (res && res.pendingConfirm){ authMsg(`Check ${email} and click the confirmation link, then come back to finish booking.`); }
-    else { if (!live) Demo.user = res; closeAuth(); await onAuthChange(); }
+    else { if (!live) Demo.user = res; else Live.user = res; closeAuth(); await onAuthChange(); }
   } catch(err){
     authMsg(/invalid login/i.test(err.message||'') ? 'That email and password don\'t match. Try again or use a sign-in link.' : (err.message || 'Sign-in failed. Try again.'), true);
   }
@@ -1018,6 +1455,7 @@ document.getElementById('magicBtn').onclick = async () => {
 async function onAuthChange(){
   await loadMine(); renderAll();
   if (API.user && state.pendingSubmit){ state.pendingSubmit = false; submit(); }
+  if (API.user && state.pendingWait){ state.pendingWait = false; joinWait(); }
 }
 
 /* ---------- motion: parallax, nav, mobile bar ---------- */
@@ -1034,10 +1472,9 @@ function frame(){
   hero.classList.toggle('off', hb < 0);
   updateBar(hb);
   if (reduce.matches) return;
-  if (hb > 0) heroImg.style.transform = innerWidth > 900 ? `translate3d(0,${(y * 0.16).toFixed(1)}px,0)` : '';
   for (const img of pars){
     const r = img.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) continue;
-    const p = (r.top + r.height/2 - vh/2) / (vh/2 + r.height/2);   // -1 … 1 through the viewport
+    const p = (r.top + r.height/2 - vh/2) / (vh/2 + r.height/2);
     img.style.transform = `translate3d(0,${(p * r.height * 0.07).toFixed(1)}px,0)`;
   }
   const fr = wm.getBoundingClientRect(); if (fr.top < vh) wm.style.transform = `translate3d(${((fr.top - vh) * 0.25).toFixed(1)}px,0,0)`;
@@ -1047,13 +1484,13 @@ function updateBar(heroBottom){
   const vh = innerHeight, br = bookSec.getBoundingClientRect(), tr = ticketEl.getBoundingClientRect();
   const inBook = br.top < vh * .6 && br.bottom > vh * .4;
   const ticketVisible = tr.top < vh - 80 && tr.bottom > 80;
-  const ready = state.day && state.start != null && state.dur > 0 && !state.done;
-  let show = heroBottom < 0 && !(inBook && (!ready || ticketVisible));
-  mbar.classList.toggle('show', show);
+  const ready = state.day && state.start != null && state.dur > 0 && !state.done && !state.checkout;
+  const gifts = document.getElementById('gifts').getBoundingClientRect(); const inGifts = gifts.top < vh * .7 && gifts.bottom > 0;
+  mbar.classList.toggle('show', heroBottom < 0 && !inGifts && !(inBook && (!ready || ticketVisible)));
   const sum = document.getElementById('mbarSum'), btn = document.getElementById('mbarBtn');
   if (ready){
-    const r = roomById(state.room);
-    sum.innerHTML = `<b>${r.short} · ${fDay.format(bne(...Object.values(fromKey(state.day)),12))}</b><span class="num">${hh(state.start)}–${hh(state.start + state.dur)} · ${money(r.rate * state.dur)}</span>`;
+    const q = quote();
+    sum.innerHTML = `<b>${ROOMS[0].short} · ${fDay.format(noonOf(state.day))}</b><span class="num">${hh(state.start)}–${hh(state.start + state.dur)} · ${cash(q.now || q.due)}${q.now && q.later ? ' now' : ''}</span>`;
     btn.firstChild.textContent = 'Review '; btn.setAttribute('href','#ticket');
   } else {
     sum.innerHTML = `<b>The Room</b><span class="num">${money(ROOMS[0].rate)} / hr</span>`;
@@ -1067,12 +1504,31 @@ addEventListener('resize', frame);
 document.getElementById('yr').textContent = today().y;
 (async () => {
   if (live) await Live.init(); else Demo.init();
-  // default to the first day with space in the default room
+  try { await API.settings(); } catch(e){}
+  if (SET.payMode === 'full') state.payChoice = 'full';
   const t = today(); state.day = t.k;
-  renderRooms();
+  renderRooms(); renderGift();
   await Promise.all([loadRows(), loadMine()]);
   for (let i = 0; i < 14; i++){ const k = key(t.y,t.m,t.d+i); if (freeHours(state.room,k).length){ state.day = k; const p = fromKey(k); state.calY = p.y; state.calM = p.m; break; } }
   renderAll(); frame();
+
+  // returning from Stripe, from an email link, or from a gift purchase
+  const qs = new URLSearchParams(location.search);
+  const tok = qs.get('t'), checkout = qs.get('checkout'), manage = qs.get('manage'), g = qs.get('gift');
+  if (checkout || manage || g) history.replaceState(null, '', location.pathname + location.hash);
+  if (checkout === 'success' && tok){
+    try { const r = await API.manage('get', tok); state.done = { ...r.booking, charge_now_cents: r.booking.paid_cents }; } catch(e){}
+    notice('Payment received. You\'re booked, and the confirmation email is on its way.');
+    await Promise.all([loadRows(), loadMine()]); renderAll(); bookSec.scrollIntoView();
+  } else if (checkout === 'cancel' && tok){
+    try { await API.manage('release', tok); } catch(e){}
+    notice('Checkout cancelled. Nothing was charged and the slot has been released.', false);
+    await loadRows(); renderAll(); bookSec.scrollIntoView();
+  }
+  if (manage) openManage(manage);
+  if (g === 'success') { notice('Payment received. The gift card is on its way by email.', true, 'gMsgOut'); document.getElementById('gifts').scrollIntoView(); }
+  if (g === 'cancel') { notice('Checkout cancelled. Nothing was charged.', false, 'gMsgOut'); document.getElementById('gifts').scrollIntoView(); }
+
   if (live) setInterval(async () => { await loadRows(); renderRoster(); renderCal(); renderSlots(); renderDurs(); }, 60000);
 })();
 </script>
