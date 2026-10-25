@@ -188,7 +188,9 @@ section.band{padding-block:var(--space) 0}
 
 /* duotone frames with in-frame parallax */
 .duo{position:relative;overflow:hidden;background:var(--ground-2);max-width:100%}
-.duo img{position:absolute;left:0;top:-9%;width:100%;height:118%;object-fit:cover;will-change:transform}
+/* parallax: images overhang their frames by 14% top and bottom so they can drift inside them */
+.duo img{position:absolute;left:0;top:-14%;width:100%;height:128%;object-fit:cover;will-change:transform}
+[data-depth]{will-change:translate}
 
 /* rooms — Marshall-style stacked feature blocks */
 .rooms{display:grid;gap:clamp(4rem,3rem + 5vw,8rem)}
@@ -1030,7 +1032,7 @@ function renderRooms(){
       </div>
     </article>`).join('');
   document.getElementById('fromRate').textContent = `${money(Math.min(...ROOMS.map(r=>r.rate)))} / hr`;
-  pars = [...document.querySelectorAll('img[data-par]')];
+  pars = [...document.querySelectorAll('img[data-par]')]; collectDepth();
 }
 
 /* ---------- render: roster ---------- */
@@ -1496,6 +1498,18 @@ const heroImg = document.getElementById('heroImg'), hero = document.getElementBy
       wm = document.getElementById('wordmark'), nav = document.getElementById('nav'),
       mbar = document.getElementById('mbar'), bookSec = document.getElementById('book'), ticketEl = document.getElementById('ticket');
 let pars = [...document.querySelectorAll('img[data-par]')];
+/* layered parallax: frames, headings and tiles each travel at their own rate as they pass through the viewport.
+   Uses the individual `translate` property so it never fights the reveal animations, which use `transform`. */
+let depths = [];
+function collectDepth(){
+  const set = (sel, d) => document.querySelectorAll(sel).forEach(el => { if (!el.dataset.depth) el.dataset.depth = d; });
+  set('.sec-head h2', -0.035);                 // headings lift slightly ahead of the page
+  set('.sec-art', 0.07);                       // section illustrations lag behind
+  set('.room .taped', 0.06);
+  document.querySelectorAll('.tiles .tile').forEach((t, i) => { if (!t.dataset.depth) t.dataset.depth = [0.03, 0.08, 0.045, 0.095][i % 4]; });
+  depths = [...document.querySelectorAll('[data-depth]')];
+}
+collectDepth();
 let ticking = false;
 function frame(){
   ticking = false; const vh = innerHeight; const y = scrollY;
@@ -1507,7 +1521,15 @@ function frame(){
   for (const img of pars){
     const r = img.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) continue;
     const p = (r.top + r.height/2 - vh/2) / (vh/2 + r.height/2);
-    img.style.transform = `translate3d(0,${(p * r.height * 0.07).toFixed(1)}px,0)`;
+    img.style.transform = `translate3d(0,${(p * r.height * 0.12).toFixed(1)}px,0)`;
+  }
+  const small = innerWidth < 760;              // half strength on phones
+  for (const el of depths){
+    const r = el.getBoundingClientRect(); const cur = parseFloat(el.dataset.ty || 0);
+    const top = r.top - cur; if (top + r.height < -200 || top > vh + 200) continue;
+    const p = (top + r.height/2 - vh/2) / (vh/2 + r.height/2);
+    const ty = p * vh * (+el.dataset.depth) * (small ? .5 : 1);
+    el.dataset.ty = ty.toFixed(1); el.style.translate = `0 ${ty.toFixed(1)}px`;
   }
   const fr = wm.getBoundingClientRect(); if (fr.top < vh) wm.style.transform = `translate3d(${((fr.top - vh) * 0.25).toFixed(1)}px,0,0)`;
 }
