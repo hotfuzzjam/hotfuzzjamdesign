@@ -171,6 +171,12 @@ section.band{padding-block:var(--space) 0}
 .sec-head .label{grid-column:2 / span 4;margin-bottom:1.4rem}
 .sec-head h2{grid-column:2 / span 7}
 .sec-head p{grid-column:9 / span 4;align-self:end}
+/* section head with an illustration: heading and intro stack on the left, the plate sits on the right */
+.sec-head.has-art h2{grid-column:2 / span 6}
+.sec-head.has-art p{grid-column:2 / span 5;grid-row:3;align-self:start;margin-top:1.6rem}
+.sec-art{grid-column:9 / span 4;grid-row:1 / span 3;margin:0;align-self:end}
+.sec-art .duo{aspect-ratio:1}
+@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}}
 @media (max-width:960px){.sec-head .jp{display:none}.sec-head .label,.sec-head h2{grid-column:1 / -1}.sec-head p{grid-column:1 / span 10;margin-top:1.4rem}}
 @media (max-width:600px){.sec-head p{grid-column:1 / -1}}
 
@@ -572,11 +578,12 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- ROSTER -->
   <section class="band" id="roster">
     <div class="wrap">
-      <div class="grid sec-head">
+      <div class="grid sec-head has-art">
         <span class="jp" aria-hidden="true">予定</span>
         <span class="label">Roster</span>
         <h2 class="rise">What's free this week.</h2>
         <p class="muted rise">Tap a day to jump to it in the booking calendar. Other bands' bookings show as blocks only, never names.</p>
+        <figure class="sec-art rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/listener-640.webp" srcset="assets/duo/listener-640.webp 640w, assets/duo/listener-1200.webp 1200w" sizes="(max-width:960px) 92vw, 30vw" width="1200" height="1200" alt="Engraved illustration of a young woman in a tracksuit and earbuds, crouched and eating a slice of watermelon"></div></figure>
       </div>
       <div class="roster-bar">
         <div class="pager">
