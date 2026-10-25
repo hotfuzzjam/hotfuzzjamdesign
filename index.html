@@ -176,9 +176,6 @@ section.band{padding-block:var(--space) 0}
 .sec-head.has-art p{grid-column:2 / span 5;grid-row:3;align-self:start;margin-top:1.6rem}
 .sec-art{grid-column:9 / span 4;grid-row:1 / span 3;margin:0;align-self:end}
 .sec-art .duo{aspect-ratio:1}
-/* same lighter wash as the voucher details, tuned for the dark ground */
-.sec-head p.panel{background:rgba(251,246,240,.06);padding:1rem 1.2rem;justify-self:start;max-width:46ch}
-@media (min-width:961px){.sec-head p.panel{margin-left:-1.2rem}}
 /* mirrored: plate on the left, label and heading on the right, bottom-aligned to it */
 .sec-head.art-left{grid-template-rows:1fr auto}
 .sec-head.art-left .sec-art{grid-column:2 / span 4;grid-row:1 / span 2}
@@ -324,6 +321,9 @@ section.band{padding-block:var(--space) 0}
 .field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line-strong);padding:.7rem 0;font-weight:300;font-size:16px;border-radius:0}
 .field input:focus,.field textarea:focus{outline:none;border-bottom-color:var(--kin)}
 .field textarea{resize:vertical;min-height:2.8rem}
+/* gift form: each field sits on the same lighter wash as the voucher details */
+#giftForm .field input,#giftForm .field textarea{background:rgba(251,246,240,.06);padding:.75rem .9rem}
+#giftForm .field input:focus,#giftForm .field textarea:focus{background:rgba(251,246,240,.1)}
 
 .ticket{background:var(--ground-2);padding:clamp(1.4rem,1rem + 1.5vw,2.2rem);display:grid;gap:1.4rem;position:relative;border:1px solid var(--line)}
 .ticket::before{content:"";position:absolute;left:0;right:0;top:-6px;height:12px;background:radial-gradient(circle at 6px 6px,var(--ground) 5px,transparent 5.5px) 0 0/16px 12px repeat-x}
@@ -666,7 +666,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       <div class="grid sec-head has-art">
         <span class="label">Gift vouchers</span>
         <h2 class="rise">Give someone room to be loud.</h2>
-        <p class="muted rise panel">Vouchers work on any session. Whatever isn't used stays on the card for next time.</p>
+        <p class="muted rise">Vouchers work on any session. Whatever isn't used stays on the card for next time.</p>
         <figure class="sec-art wide rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/drummer-760.webp" srcset="assets/duo/drummer-760.webp 760w, assets/duo/drummer-1400.webp 1400w" sizes="(max-width:960px) 92vw, 30vw" width="1400" height="933" alt="Engraved illustration of a drummer behind a full kit, sticks raised over the cymbals"></div></figure>
       </div>
       <div class="gift">
