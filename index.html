@@ -176,6 +176,9 @@ section.band{padding-block:var(--space) 0}
 .sec-head.has-art p{grid-column:2 / span 5;grid-row:3;align-self:start;margin-top:1.6rem}
 .sec-art{grid-column:9 / span 4;grid-row:1 / span 3;margin:0;align-self:end}
 .sec-art .duo{aspect-ratio:1}
+/* same lighter wash as the voucher details, tuned for the dark ground */
+.sec-head p.panel{background:rgba(251,246,240,.06);padding:1rem 1.2rem;justify-self:start;max-width:46ch}
+@media (min-width:961px){.sec-head p.panel{margin-left:-1.2rem}}
 /* mirrored: plate on the left, label and heading on the right, bottom-aligned to it */
 .sec-head.art-left{grid-template-rows:1fr auto}
 .sec-head.art-left .sec-art{grid-column:2 / span 4;grid-row:1 / span 2}
@@ -663,7 +666,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       <div class="grid sec-head has-art">
         <span class="label">Gift vouchers</span>
         <h2 class="rise">Give someone room to be loud.</h2>
-        <p class="muted rise">Vouchers work on any session. Whatever isn't used stays on the card for next time.</p>
+        <p class="muted rise panel">Vouchers work on any session. Whatever isn't used stays on the card for next time.</p>
         <figure class="sec-art wide rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/drummer-760.webp" srcset="assets/duo/drummer-760.webp 760w, assets/duo/drummer-1400.webp 1400w" sizes="(max-width:960px) 92vw, 30vw" width="1400" height="933" alt="Engraved illustration of a drummer behind a full kit, sticks raised over the cymbals"></div></figure>
       </div>
       <div class="gift">
