@@ -432,21 +432,18 @@ dialog[open]{animation:fade .5s var(--ease)}
 
 /* footer */
 footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
-.foot{padding-block:clamp(3rem,2rem + 3vw,5rem) 2rem;row-gap:2.4rem}
-.foot > div{grid-column:span 3;display:grid;gap:.5rem;align-content:start;font-size:.92rem;min-width:0}
-/* even columns: the logo fills the first column, and each other column's label row is the logo's height
-   (all four columns are the same width, so the same container maths works in each), so every first line starts level */
-.foot > div{container-type:inline-size}
-.foot-logo{display:block;width:min(100%,300px);height:auto}
-@media (min-width:861px){
-  .foot > div > .label{min-height:calc(min(100cqw,300px) * 503 / 2103);display:flex;align-items:flex-end;margin:0}
-  .foot > div > .foot-logo + p{margin-top:0}
-}
+/* footer: mono logo on a lighter panel at left; about line over Hours / Contact at right */
+.foot{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,3vw,48px);align-items:center;padding-block:clamp(3rem,2rem + 3vw,5rem) 2rem}
+.foot-brand{background:rgba(251,246,240,.04);padding:clamp(1.6rem,1rem + 2.4vw,3.2rem) clamp(1rem,.5rem + 1.6vw,2rem);display:grid;place-items:center}
+.foot-logo{display:block;width:100%;max-width:640px;height:auto}
+.foot-info{display:grid;gap:clamp(1.6rem,1rem + 1.5vw,2.4rem);font-size:.95rem;min-width:0}
+.foot-about{margin:0;max-width:34ch;color:var(--ink-2)}
+.foot-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,32px)}
+.foot-cols > div{display:grid;gap:.55rem;align-content:start;min-width:0}
 .foot a{text-decoration:none;justify-self:start;border-bottom:1px solid var(--line-strong)}
 .foot a:hover{border-bottom-color:var(--ink)}
-@media (max-width:860px){.foot > div{grid-column:span 6}}
-@media (max-width:520px){.foot > div{grid-column:1 / -1}}
-.wordmark{font-weight:300;font-size:clamp(3rem,1rem + 13.5vw,13rem);letter-spacing:-.05em;line-height:.8;color:transparent;-webkit-text-stroke:1px var(--line-strong);white-space:nowrap;margin:2rem 0 -.08em;will-change:transform;user-select:none}
+@media (max-width:860px){.foot{grid-template-columns:1fr}}
+@media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
 .legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-block:1.4rem;border-top:1px solid var(--line);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:400;color:var(--ink-2)}
 
 /* scroll-linked reveal (progressive; fully visible without support) */
@@ -711,28 +708,26 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 
 <footer>
   <div class="wrap">
-    <div class="grid foot">
-      <div>
-        <img class="foot-logo" src="assets/brand/logo-dark-700.webp" srcset="assets/brand/logo-dark-700.webp 700w, assets/brand/logo-dark-1000.webp 1000w" sizes="(max-width:520px) 70vw, 22vw" width="2103" height="503" alt="HOTFUZZJAM Studio" loading="lazy">
-        <p class="muted">A rehearsal room for bands who'd rather be playing. Gold Coast, Queensland.</p>
+    <div class="foot">
+      <div class="foot-brand">
+        <img class="foot-logo" src="assets/brand/logo-mono-700.webp" srcset="assets/brand/logo-mono-700.webp 700w, assets/brand/logo-mono-1000.webp 1000w, assets/brand/logo-mono-1400.webp 1400w" sizes="(max-width:860px) 80vw, 40vw" width="2103" height="503" alt="HOTFUZZJAM Studio" loading="lazy">
       </div>
-      <div>
-        <span class="label">Find us</span>
-        <span>Gold Coast, QLD</span>
-        <span class="muted">Street address and door code arrive with your confirmation.</span>
-      </div>
-      <div>
-        <span class="label">Hours</span>
-        <span class="num">Mon – Sun</span>
-        <span class="num">10:00 – 23:00</span>
-      </div>
-      <div>
-        <span class="label">Contact</span>
-        <span id="email" style="user-select:all;overflow-wrap:anywhere">hello@hotfuzzjam.com.au</span>
-        <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <div class="foot-info">
+        <p class="foot-about">A rehearsal room for bands who'd rather be playing. Gold Coast, Queensland.</p>
+        <div class="foot-cols">
+          <div>
+            <span class="label">Hours</span>
+            <span class="num">Mon – Sun</span>
+            <span class="num">10:00 – 23:00</span>
+          </div>
+          <div>
+            <span class="label">Contact</span>
+            <span id="email" style="user-select:all;overflow-wrap:anywhere">hello@hotfuzzjam.com.au</span>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="wordmark" id="wordmark" aria-hidden="true">HOTFUZZJAM</div>
     <div class="legal"><span>© <span id="yr">2026</span> HOTFUZZJAM Studio</span><span><a href="admin.html" style="color:inherit">Studio login</a></span></div>
   </div>
 </footer>
@@ -1495,7 +1490,7 @@ async function onAuthChange(){
 /* ---------- motion: parallax, nav, mobile bar ---------- */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const heroImg = document.getElementById('heroImg'), hero = document.getElementById('hero'),
-      wm = document.getElementById('wordmark'), nav = document.getElementById('nav'),
+      nav = document.getElementById('nav'),
       mbar = document.getElementById('mbar'), bookSec = document.getElementById('book'), ticketEl = document.getElementById('ticket');
 let pars = [...document.querySelectorAll('img[data-par]')];
 /* layered parallax: frames, headings and tiles each travel at their own rate as they pass through the viewport.
@@ -1531,7 +1526,6 @@ function frame(){
     const ty = p * vh * (+el.dataset.depth) * (small ? .5 : 1);
     el.dataset.ty = ty.toFixed(1); el.style.translate = `0 ${ty.toFixed(1)}px`;
   }
-  const fr = wm.getBoundingClientRect(); if (fr.top < vh) wm.style.transform = `translate3d(${((fr.top - vh) * 0.25).toFixed(1)}px,0,0)`;
 }
 function updateBar(heroBottom){
   if (getComputedStyle(mbar).display === 'none') return;
