@@ -231,8 +231,9 @@ section.band{padding-block:var(--space) 0}
 .tile h3{font-size:1.1rem}
 .tile p{font-size:.88rem;color:var(--ink-2)}
 @media (max-width:860px){.tiles{grid-template-columns:1fr 1fr;row-gap:2rem}}
-.gear{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,64px);margin-top:clamp(3.5rem,3rem + 3vw,6rem)}
-@media (min-width:961px){.gear{margin-left:calc(100% / 12 + 2vw)}}
+/* Supplied / Bring your own sit together on the same lighter wash as the gift form fields */
+.gear{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,64px);margin-top:clamp(3.5rem,3rem + 3vw,6rem);background:rgba(251,246,240,.06);padding:clamp(1.4rem,1rem + 2vw,2.8rem)}
+
 .gear h3{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--line-strong);padding-bottom:1rem;margin-bottom:.4rem}
 .gear ul{list-style:none;margin:0;padding:0}
 .gear li{padding:.95rem 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem}
