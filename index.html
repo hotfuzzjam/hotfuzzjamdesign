@@ -444,7 +444,6 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 .foot a:hover{border-bottom-color:var(--ink)}
 @media (max-width:860px){.foot{grid-template-columns:1fr}}
 @media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
-.wordmark{font-weight:300;font-size:clamp(3rem,1rem + 13.5vw,13rem);letter-spacing:-.05em;line-height:.8;color:transparent;-webkit-text-stroke:1px var(--line-strong);white-space:nowrap;margin:2rem 0 -.08em;will-change:transform;user-select:none}
 .legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding-block:1.4rem;border-top:1px solid var(--line);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:400;color:var(--ink-2)}
 
 /* scroll-linked reveal (progressive; fully visible without support) */
@@ -729,7 +728,6 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
         </div>
       </div>
     </div>
-    <div class="wordmark" id="wordmark" aria-hidden="true">HOTFUZZJAM</div>
     <div class="legal"><span>© <span id="yr">2026</span> HOTFUZZJAM Studio</span><span><a href="admin.html" style="color:inherit">Studio login</a></span></div>
   </div>
 </footer>
@@ -1492,7 +1490,7 @@ async function onAuthChange(){
 /* ---------- motion: parallax, nav, mobile bar ---------- */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const heroImg = document.getElementById('heroImg'), hero = document.getElementById('hero'),
-      wm = document.getElementById('wordmark'), nav = document.getElementById('nav'),
+      nav = document.getElementById('nav'),
       mbar = document.getElementById('mbar'), bookSec = document.getElementById('book'), ticketEl = document.getElementById('ticket');
 let pars = [...document.querySelectorAll('img[data-par]')];
 /* layered parallax: frames, headings and tiles each travel at their own rate as they pass through the viewport.
@@ -1528,7 +1526,6 @@ function frame(){
     const ty = p * vh * (+el.dataset.depth) * (small ? .5 : 1);
     el.dataset.ty = ty.toFixed(1); el.style.translate = `0 ${ty.toFixed(1)}px`;
   }
-  const fr = wm.getBoundingClientRect(); if (fr.top < vh) wm.style.transform = `translate3d(${((fr.top - vh) * 0.25).toFixed(1)}px,0,0)`;
 }
 function updateBar(heroBottom){
   if (getComputedStyle(mbar).display === 'none') return;
