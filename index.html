@@ -182,7 +182,7 @@ section.band{padding-block:var(--space) 0}
 .rooms{display:grid;gap:clamp(4rem,3rem + 5vw,8rem)}
 .room{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px);row-gap:2rem;align-items:end}
 .room .taped{grid-column:1 / span 6}
-.room .duo{aspect-ratio:4/5}
+.room .duo{aspect-ratio:16/9}
 .room .body{grid-column:9 / span 4;display:grid;gap:1.4rem;align-content:end;min-width:0}
 .room:nth-child(even) .taped{grid-column:6 / span 7;grid-row:1}
 .room:nth-child(even) .body{grid-column:1 / span 4;grid-row:1}
@@ -195,7 +195,7 @@ section.band{padding-block:var(--space) 0}
 .room .tag{position:absolute;left:1rem;bottom:1rem;z-index:1;color:var(--ink);font-weight:400;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;background:rgba(18,10,6,.6);padding:.5em .8em;backdrop-filter:blur(4px)}
 @media (max-width:860px){
   .room .taped,.room:nth-child(even) .taped,.room .body,.room:nth-child(even) .body{grid-column:1 / -1;grid-row:auto}
-  .room .duo{aspect-ratio:4/5}
+  .room .duo{aspect-ratio:16/9}
 }
 
 /* one strip of masking tape across the very top-left corner, like a poster stuck to the wall; the brand sits clear of it */
@@ -764,7 +764,7 @@ const CONFIG = {
 
 const ROOMS = [
   { id:'a', name:'The Room', short:'The Room', rate:40, size:[6,5], cap:'Up to 6 players', note:'Full PA, three cabs and drum shells, treated for the full band at stage volume. Writing session or full run-through, it all happens here.',
-    img:'room', srcset:'assets/duo/room-800.webp 800w, assets/duo/room-1084.webp 1084w', pos:'50% 50%', alt:'Three musicians sitting on the floor of the HOTFUZZJAM room working through a song, with a drummer playing the kit behind them' }
+    img:'jam', srcset:'assets/duo/jam-800.webp 800w, assets/duo/jam-1536.webp 1536w', pos:'50% 50%', alt:'Engraved illustration of a guitarist and a bass player jamming either side of a drum kit in the HOTFUZZJAM room' }
 ];
 // studio rules — overwritten from the settings table when Supabase is connected
 let OPEN = 10, CLOSE = 23, MAX_HOURS = 4, DAYS_AHEAD = 60;
