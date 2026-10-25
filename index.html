@@ -118,17 +118,18 @@ p{margin:0;max-width:62ch}
 .stage{position:absolute;inset:0;z-index:-1}
 .stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:0 50%;max-width:none}
 /* copy column = the open orange between the edge of his hair (57.4% of the plate) and the right edge, everything centred in it */
-.banner .copy{margin-left:57.4%;width:42.6%;padding:clamp(2rem,3.4cqw,4rem) 2.6cqw;text-align:center;display:flex;flex-direction:column;align-items:center}
-.hero .wordmark-logo{display:block;width:min(100%,30cqw);max-width:none;height:auto;margin:0 auto 1.2cqw}
+.banner .copy{margin-left:57.4%;width:42.6%;padding:2.2cqw 2.6cqw;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero .wordmark-logo{display:block;width:min(100%,26cqw);max-width:none;height:auto;margin:0 auto 1cqw}
 /* ROOM TO BE LOUD. — Roboto Condensed Black (900, the family's heaviest), self-hosted so it never falls back */
 @font-face{font-family:"HFJ Roboto Condensed";font-weight:900;font-style:normal;font-display:swap;src:url(assets/fonts/roboto-condensed-latin-900-normal.woff2) format("woff2")}
-.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:7.2cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
+.hero h1{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-stretch:normal;font-size:6.8cqw;line-height:.86;letter-spacing:-.012em;text-transform:uppercase;font-kerning:normal;color:#120A06}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
 .hero h1 .line > span{display:inline-block}
 /* LOUD: same black, heaviest cut */
 .hero h1 em{font-style:normal;font-weight:900}
-.hero .row{display:grid;justify-items:center;gap:clamp(1.2rem,1.8cqw,1.8rem);margin-top:clamp(1.2rem,2cqw,2.2rem)}
-.hero .row p{max-width:40ch;margin:0;color:#120A06;font-weight:500}
+.hero .row{display:grid;justify-items:center;gap:1.4cqw;margin-top:1.6cqw}
+/* sized off the hero width so the whole column scales with the plate and never outgrows it */
+.hero .row p{max-width:40ch;margin:0;color:#120A06;font-weight:500;font-size:clamp(.9rem,1.1cqw,1.2rem);line-height:1.55}
 .hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;align-items:center}
 /* Book a session: the wordmark purple, flat — no arrow */
 .hero .btn{background:#5A3460;border-color:#5A3460;color:#FBF6F0;justify-content:center}
@@ -136,15 +137,23 @@ p{margin:0;max-width:62ch}
 .hero .link{color:#120A06}
 @keyframes rise{from{transform:translateY(60%);opacity:.15}to{transform:none;opacity:1}}
 @keyframes fade{from{opacity:.6;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media (max-width:900px){
-  /* phone/tablet: crop to the face, then the copy stacks on the orange */
+/* side-by-side only where the copy fits inside the plate's own ratio; any narrower and the plate would scale up and the hair would run into the copy */
+@media (max-width:1080px){
+  /* tablet/phone: portrait across the top, copy stacks underneath, centred on the orange */
   .banner{aspect-ratio:auto;display:block}
-  .stage{position:relative;aspect-ratio:10/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
-  .stage img{object-position:9% 50%}
+  .stage{position:relative;aspect-ratio:16/9;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 80%,transparent 100%)}
+  .stage img{object-position:0 50%}
   .banner .copy{margin-left:0;width:auto;padding:.4rem var(--gutter) clamp(2.4rem,1.5rem + 3vw,3.5rem)}
-  .hero .ctas{width:100%}
   .hero .wordmark-logo{width:min(80%,460px);margin-bottom:1rem}
+  .hero h1{font-size:clamp(3.4rem,13cqw,7rem)}
+  .hero .row{gap:1.4rem;margin-top:1.6rem}
+  .hero .row p{font-size:1rem}
+}
+@media (max-width:640px){
+  .stage{aspect-ratio:10/9}
+  .stage img{object-position:9% 50%}
   .hero h1{font-size:clamp(3.4rem,18cqw,6.4rem)}
+  .hero .ctas{width:100%}
   .hero .ctas .btn{flex:1 1 100%}
 }
 
