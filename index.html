@@ -176,9 +176,15 @@ section.band{padding-block:var(--space) 0}
 .sec-head.has-art p{grid-column:2 / span 5;grid-row:3;align-self:start;margin-top:1.6rem}
 .sec-art{grid-column:9 / span 4;grid-row:1 / span 3;margin:0;align-self:end}
 .sec-art .duo{aspect-ratio:1}
+/* mirrored: plate on the left, label and heading on the right, bottom-aligned to it */
+.sec-head.art-left{grid-template-rows:1fr auto}
+.sec-head.art-left .sec-art{grid-column:2 / span 4;grid-row:1 / span 2}
+.sec-head.art-left .label{grid-column:7 / span 6;grid-row:1;align-self:end}
+.sec-head.art-left h2{grid-column:7 / span 6;grid-row:2;align-self:end}
+.sec-head.art-left .duo{aspect-ratio:6/5}
 /* landscape plate: same column as the ticket below it, so the edges line up */
 .sec-art.wide .duo{aspect-ratio:4/3}
-@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}.sec-art.wide{grid-column:1 / -1}.sec-art.wide .duo{aspect-ratio:16/9}}
+@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}.sec-art.wide{grid-column:1 / -1}.sec-art.wide .duo{aspect-ratio:16/9}.sec-head.art-left .sec-art{grid-column:1 / -1;grid-row:auto;margin:0 0 2rem}.sec-head.art-left .label,.sec-head.art-left h2{grid-column:1 / -1;grid-row:auto}.sec-head.art-left .duo{aspect-ratio:6/5}.sec-head.art-left{grid-template-rows:none}}
 @media (max-width:960px){.sec-head .jp{display:none}.sec-head .label,.sec-head h2{grid-column:1 / -1}.sec-head p{grid-column:1 / span 10;margin-top:1.4rem}}
 @media (max-width:600px){.sec-head p{grid-column:1 / -1}}
 
@@ -219,7 +225,7 @@ section.band{padding-block:var(--space) 0}
 .tile{display:grid;gap:.9rem;align-content:start}
 .tile .duo{aspect-ratio:4/5}
 .tile .duo .kind{position:absolute;left:.8rem;bottom:.8rem;z-index:1;font-weight:400;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;padding:.45em .7em;background:var(--ink);color:var(--on-light)}
-.tile .duo .kind.bring{background:rgba(18,10,6,.7);color:var(--ink);outline:1px solid var(--line-strong);outline-offset:-1px}
+.tile .duo .kind.bring{background:rgba(18,10,6,.9);color:var(--ink);outline:1px solid var(--line-strong);outline-offset:-1px}
 .tile h3{font-size:1.1rem}
 .tile p{font-size:.88rem;color:var(--ink-2)}
 @media (max-width:860px){.tiles{grid-template-columns:1fr 1fr;row-gap:2rem}}
@@ -315,6 +321,9 @@ section.band{padding-block:var(--space) 0}
 .field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line-strong);padding:.7rem 0;font-weight:300;font-size:16px;border-radius:0}
 .field input:focus,.field textarea:focus{outline:none;border-bottom-color:var(--kin)}
 .field textarea{resize:vertical;min-height:2.8rem}
+/* gift form: each field sits on the same lighter wash as the voucher details */
+#giftForm .field input,#giftForm .field textarea{background:rgba(251,246,240,.06);padding:.75rem .9rem}
+#giftForm .field input:focus,#giftForm .field textarea:focus{background:rgba(251,246,240,.1)}
 
 .ticket{background:var(--ground-2);padding:clamp(1.4rem,1rem + 1.5vw,2.2rem);display:grid;gap:1.4rem;position:relative;border:1px solid var(--line)}
 .ticket::before{content:"";position:absolute;left:0;right:0;top:-6px;height:12px;background:radial-gradient(circle at 6px 6px,var(--ground) 5px,transparent 5.5px) 0 0/16px 12px repeat-x}
@@ -402,7 +411,8 @@ section.band{padding-block:var(--space) 0}
 .voucher .top{display:flex;justify-content:space-between;align-items:center;font-weight:400;font-size:.64rem;letter-spacing:.26em;text-transform:uppercase}
 .voucher .top .mark{width:30px}
 .voucher .amt{align-self:center;font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:clamp(3rem,2rem + 4vw,4.6rem);line-height:.9}
-.voucher .to{font-size:.85rem;line-height:1.35;max-width:24ch;position:relative;z-index:1}
+/* details panel: a lighter tint of the card orange, so the copy and code sit clear of the stamp */
+.voucher .to{font-size:.85rem;line-height:1.35;max-width:30ch;justify-self:start;position:relative;z-index:1;background:rgba(251,246,240,.2);padding:.7rem .9rem;margin-left:-.2rem}
 .voucher .code{font-family:var(--f-display);font-weight:700;font-stretch:condensed;letter-spacing:.06em;font-size:1.05rem}
 .card-wrap .msg{margin-top:1rem}
 
@@ -516,19 +526,19 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 
       <div class="tiles">
         <article class="tile taped rise" style="--tilt:1.8deg;--tx:4%">
-          <div class="duo"><span class="kind">Supplied</span><img data-par loading="lazy" src="assets/duo/mic-800.webp" srcset="assets/duo/mic-800.webp 800w, assets/duo/mic-1600.webp 1600w" sizes="(max-width:860px) 50vw, 25vw" alt="Vintage microphone on a stand in warm stage light" style="object-position:40% 50%"></div>
+          <div class="duo"><span class="kind">Supplied</span><img data-par loading="lazy" src="assets/duo/desk-760.webp" srcset="assets/duo/desk-760.webp 760w, assets/duo/desk-1400.webp 1400w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of a vocal mic resting on a mixing desk while a hand sets the gain" style="object-position:12% 50%"></div>
           <h3>PA & vocal mics</h3><p>Four channels, stands and every cable to the desk.</p>
         </article>
         <article class="tile taped rise" style="--tilt:-2.4deg;--tx:-5%">
-          <div class="duo"><span class="kind">Supplied</span><img data-par loading="lazy" src="assets/duo/amp-800.webp" srcset="assets/duo/amp-800.webp 800w, assets/duo/amp-1600.webp 1600w" sizes="(max-width:860px) 50vw, 25vw" alt="Guitar amplifier with a lead plugged into the input" style="object-position:68% 50%"></div>
+          <div class="duo"><span class="kind">Supplied</span><img data-par loading="lazy" src="assets/duo/rack-560.webp" srcset="assets/duo/rack-560.webp 560w, assets/duo/rack-900.webp 900w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of guitars and basses lined up in a rack" style="object-position:50% 50%"></div>
           <h3>Cabs & shells</h3><p>Three guitar cabs, a 4×10 bass cab and drum shells.</p>
         </article>
         <article class="tile taped rise" style="--tilt:2.9deg;--tx:2%">
-          <div class="duo"><span class="kind bring">Bring yours</span><img data-par loading="lazy" src="assets/duo/hihat-800.webp" srcset="assets/duo/hihat-800.webp 800w, assets/duo/hihat-1600.webp 1600w" sizes="(max-width:860px) 50vw, 25vw" alt="Hi-hat cymbals on a dark background"></div>
-          <h3>Breakables</h3><p>Snare, cymbals, kick pedal, hardware and throne.</p>
+          <div class="duo"><span class="kind bring">Required</span><img data-par loading="lazy" src="assets/duo/hats-760.webp" srcset="assets/duo/hats-760.webp 760w, assets/duo/hats-1400.webp 1400w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of a hi-hat pair on its stand" style="object-position:80% 50%"></div>
+          <h3>Must bring</h3><p>Snare, cymbals, kick pedal, hardware and throne.</p>
         </article>
         <article class="tile taped rise" style="--tilt:-1.4deg;--tx:-3%">
-          <div class="duo"><span class="kind bring">Bring yours</span><img data-par loading="lazy" src="assets/duo/pedals-800.webp" srcset="assets/duo/pedals-800.webp 800w, assets/duo/pedals-1600.webp 1600w" sizes="(max-width:860px) 50vw, 25vw" alt="Bass player above a row of effects pedals" style="object-position:66% 50%"></div>
+          <div class="duo"><span class="kind bring">Bring yours</span><img data-par loading="lazy" src="assets/duo/combo-760.webp" srcset="assets/duo/combo-760.webp 760w, assets/duo/combo-1400.webp 1400w" sizes="(max-width:860px) 50vw, 25vw" alt="Engraved illustration of a combo amp with a guitar lead hanging over its control panel" style="object-position:100% 50%"></div>
           <h3>Heads & pedals</h3><p>Your amp heads, combos, boards and leads.</p>
         </article>
       </div>
@@ -554,7 +564,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
             <li><span>Drum hardware, hi-hat stand & throne</span><span></span></li>
             <li><span>DI cables for laptops & keys</span><span>Spare XLRs</span></li>
           </ul>
-          <p class="note muted">Breakables are the drummer's. Shells are the studio's.</p>
+          <p class="note muted">Snare, cymbals and pedals are the drummer's. Shells are the studio's.</p>
         </div>
       </div>
     </div>
@@ -563,8 +573,9 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- FLOW -->
   <section class="band">
     <div class="wrap">
-      <div class="grid sec-head">
+      <div class="grid sec-head has-art art-left">
         <span class="jp" aria-hidden="true">予約</span>
+        <figure class="sec-art rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/singer-640.webp" srcset="assets/duo/singer-640.webp 640w, assets/duo/singer-1200.webp 1200w" sizes="(max-width:960px) 92vw, 30vw" width="1200" height="1010" alt="Engraved illustration of a singer in a floral shirt at the mic, guitar neck raised"></div></figure>
         <span class="label">How booking works</span>
         <h2 class="rise">From booking to first chord.</h2>
       </div>
