@@ -13,7 +13,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Roboto+Condensed:wght@700;900&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300&text=%E7%B7%B4%E7%BF%92%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA%E9%83%A8%E5%B1%8B%E6%96%99%E9%87%91%E6%A9%9F%E6%9D%90%E4%BA%88%E5%AE%9A%E7%B4%84%E9%96%93%E6%B5%81%E3%82%8C%E9%9F%B3%E3%81%AE&display=swap">
 <style>
 /* Layout: Marshall's structure (full-bleed duotone imagery, stacked feature blocks, category tiles)
    on a 12-column grid that leaves whole columns empty. One committed dark look: the engraved
@@ -34,7 +33,6 @@
   --line:rgba(238,226,212,.12);
   --line-strong:rgba(238,226,212,.26);
   --f-sans:"Montserrat","Helvetica Neue",Arial,sans-serif;
-  --f-jp:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
   /* Helvetica Neue Condensed Bold from the device (all Macs, iPhones, iPads); Roboto Condensed Bold elsewhere */
   --f-display:"HFJ Helvetica Condensed","Helvetica Neue Condensed Bold","Roboto Condensed","Arial Narrow",sans-serif;
   --step--1:clamp(.72rem,.7rem + .1vw,.78rem);
@@ -52,7 +50,7 @@
 html,body{margin:0}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
-body{background:var(--ground);color:var(--ink);font-family:var(--f-sans);font-weight:300;font-size:var(--step-0);line-height:1.65;
+body{background:var(--ground);color:var(--ink);font-family:var(--f-sans);font-weight:400;font-size:var(--step-0);line-height:1.65;
   font-kerning:normal;font-feature-settings:"kern","liga";text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ground)}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:80;opacity:.06;mix-blend-mode:screen;
@@ -66,7 +64,6 @@ button,input,textarea,select{font:inherit;color:inherit}
 .wrap{max-width:var(--maxw);margin-inline:auto;padding-left:max(var(--gutter),env(safe-area-inset-left,0px));padding-right:max(var(--gutter),env(safe-area-inset-right,0px))}
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(12px,2vw,28px)}
 .label{font-weight:400;font-size:var(--step--1);letter-spacing:.28em;text-transform:uppercase;color:var(--ink-2)}
-.jp{font-family:var(--f-jp);font-weight:300;writing-mode:vertical-rl;letter-spacing:.5em;color:var(--shu);font-size:clamp(.95rem,.85rem + .3vw,1.15rem);line-height:1}
 .mark{width:100%;aspect-ratio:1;background:currentColor;-webkit-mask:var(--hfj-mark) center/contain no-repeat;mask:var(--hfj-mark) center/contain no-repeat}
 h1,h2,h3{font-weight:300;margin:0;text-wrap:balance}
 h2{font-size:var(--step-2);line-height:1.06;letter-spacing:-.025em}
@@ -169,7 +166,6 @@ p{margin:0;max-width:62ch}
 /* sections */
 section.band{padding-block:var(--space) 0}
 .sec-head{align-items:start;margin-bottom:clamp(2.5rem,2rem + 3vw,5rem)}
-.sec-head .jp{grid-column:1;grid-row:1 / span 2}
 .sec-head .label{grid-column:2 / span 4;margin-bottom:1.4rem}
 .sec-head h2{grid-column:2 / span 7}
 .sec-head p{grid-column:9 / span 4;align-self:end}
@@ -187,7 +183,7 @@ section.band{padding-block:var(--space) 0}
 /* landscape plate: same column as the ticket below it, so the edges line up */
 .sec-art.wide .duo{aspect-ratio:4/3}
 @media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}.sec-art.wide{grid-column:1 / -1}.sec-art.wide .duo{aspect-ratio:16/9}.sec-head.art-left .sec-art{grid-column:1 / -1;grid-row:auto;margin:0 0 2rem}.sec-head.art-left .label,.sec-head.art-left h2{grid-column:1 / -1;grid-row:auto}.sec-head.art-left .duo{aspect-ratio:6/5}.sec-head.art-left{grid-template-rows:none}}
-@media (max-width:960px){.sec-head .jp{display:none}.sec-head .label,.sec-head h2{grid-column:1 / -1}.sec-head p{grid-column:1 / span 10;margin-top:1.4rem}}
+@media (max-width:960px){.sec-head .label,.sec-head h2{grid-column:1 / -1}.sec-head p{grid-column:1 / span 10;margin-top:1.4rem}}
 @media (max-width:600px){.sec-head p{grid-column:1 / -1}}
 
 /* duotone frames with in-frame parallax */
@@ -321,7 +317,7 @@ section.band{padding-block:var(--space) 0}
 .empty{font-size:.92rem;color:var(--ink-2);padding:1rem 0}
 .field{display:grid;gap:.45rem}
 .field label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;color:var(--ink-2)}
-.field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line-strong);padding:.7rem 0;font-weight:300;font-size:16px;border-radius:0}
+.field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line-strong);padding:.7rem 0;font-weight:400;font-size:16px;border-radius:0}
 .field input:focus,.field textarea:focus{outline:none;border-bottom-color:var(--kin)}
 .field textarea{resize:vertical;min-height:2.8rem}
 /* gift form: each field sits on the same lighter wash as the voucher details */
@@ -527,7 +523,6 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <section class="band" id="gear">
     <div class="wrap">
       <div class="grid sec-head">
-        <span class="jp" aria-hidden="true">機材</span>
         <span class="label">Backline</span>
         <h2 class="rise">What's in the room, and what to bring.</h2>
         <p class="muted rise">The house gear is the gear we play ourselves. Treat it that way and it'll keep sounding this good.</p>
@@ -584,7 +579,6 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <section class="band">
     <div class="wrap">
       <div class="grid sec-head has-art art-left">
-        <span class="jp" aria-hidden="true">予約</span>
         <figure class="sec-art rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/singer-640.webp" srcset="assets/duo/singer-640.webp 640w, assets/duo/singer-1200.webp 1200w" sizes="(max-width:960px) 92vw, 30vw" width="1200" height="1010" alt="Engraved illustration of a singer in a floral shirt at the mic, guitar neck raised"></div></figure>
         <span class="label">How booking works</span>
         <h2 class="rise">From booking to first chord.</h2>
@@ -602,7 +596,6 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <section class="band" id="roster">
     <div class="wrap">
       <div class="grid sec-head has-art">
-        <span class="jp" aria-hidden="true">予定</span>
         <span class="label">Roster</span>
         <h2 class="rise">What's free this week.</h2>
         <p class="muted rise">Tap a day to jump to it in the booking calendar. Other bands' bookings show as blocks only, never names.</p>
@@ -629,7 +622,6 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <section class="band" id="book">
     <div class="wrap">
       <div class="grid sec-head">
-        <span class="jp" aria-hidden="true">予約</span>
         <span class="label">Book a session</span>
         <h2 class="rise">Choose a day and an hour.</h2>
         <p class="muted rise">All times are Gold Coast time (AEST). Bookings open 60 days ahead.</p>
