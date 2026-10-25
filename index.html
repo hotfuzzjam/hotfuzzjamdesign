@@ -176,7 +176,9 @@ section.band{padding-block:var(--space) 0}
 .sec-head.has-art p{grid-column:2 / span 5;grid-row:3;align-self:start;margin-top:1.6rem}
 .sec-art{grid-column:9 / span 4;grid-row:1 / span 3;margin:0;align-self:end}
 .sec-art .duo{aspect-ratio:1}
-@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}}
+/* landscape plate: same column as the ticket below it, so the edges line up */
+.sec-art.wide .duo{aspect-ratio:4/3}
+@media (max-width:960px){.sec-head.has-art h2{grid-column:1 / -1}.sec-head.has-art p{grid-column:1 / span 10;grid-row:auto}.sec-art{grid-column:1 / -1;grid-row:auto;margin-top:2rem}.sec-art .duo{aspect-ratio:4/3}.sec-art img{object-position:50% 12%}.sec-art.wide{grid-column:1 / -1}.sec-art.wide .duo{aspect-ratio:16/9}}
 @media (max-width:960px){.sec-head .jp{display:none}.sec-head .label,.sec-head h2{grid-column:1 / -1}.sec-head p{grid-column:1 / span 10;margin-top:1.4rem}}
 @media (max-width:600px){.sec-head p{grid-column:1 / -1}}
 
@@ -605,11 +607,12 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <!-- BOOK -->
   <section class="band" id="book">
     <div class="wrap">
-      <div class="grid sec-head">
+      <div class="grid sec-head has-art">
         <span class="jp" aria-hidden="true">予約</span>
         <span class="label">Book a session</span>
         <h2 class="rise">Choose a day and an hour.</h2>
         <p class="muted rise">All times are Gold Coast time (AEST). Bookings open 60 days ahead.</p>
+        <figure class="sec-art wide rise"><div class="duo"><img data-par loading="lazy" src="assets/duo/desk-760.webp" srcset="assets/duo/desk-760.webp 760w, assets/duo/desk-1400.webp 1400w" sizes="(max-width:960px) 92vw, 40vw" width="1400" height="933" alt="Engraved illustration of a hand setting gain on a mixing desk, a vocal mic resting on the channels, keys and a drum kit behind"></div></figure>
       </div>
 
       <div class="notice" id="notice" hidden role="status"></div>
