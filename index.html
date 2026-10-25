@@ -435,7 +435,14 @@ dialog[open]{animation:fade .5s var(--ease)}
 footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 .foot{padding-block:clamp(3rem,2rem + 3vw,5rem) 2rem;row-gap:2.4rem}
 .foot > div{grid-column:span 3;display:grid;gap:.5rem;align-content:start;font-size:.92rem;min-width:0}
-.foot .mark{width:72px;color:var(--ink);margin-bottom:.6rem}
+/* even columns: the logo fills the first column, and each other column's label row is the logo's height
+   (all four columns are the same width, so the same container maths works in each), so every first line starts level */
+.foot > div{container-type:inline-size}
+.foot-logo{display:block;width:min(100%,300px);height:auto}
+@media (min-width:861px){
+  .foot > div > .label{min-height:calc(min(100cqw,300px) * 503 / 2103);display:flex;align-items:flex-end;margin:0}
+  .foot > div > .foot-logo + p{margin-top:0}
+}
 .foot a{text-decoration:none;justify-self:start;border-bottom:1px solid var(--line-strong)}
 .foot a:hover{border-bottom-color:var(--ink)}
 @media (max-width:860px){.foot > div{grid-column:span 6}}
@@ -712,7 +719,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <div class="wrap">
     <div class="grid foot">
       <div>
-        <div class="mark" aria-hidden="true"></div>
+        <img class="foot-logo" src="assets/brand/logo-dark-700.webp" srcset="assets/brand/logo-dark-700.webp 700w, assets/brand/logo-dark-1000.webp 1000w" sizes="(max-width:520px) 70vw, 22vw" width="2103" height="503" alt="HOTFUZZJAM Studio" loading="lazy">
         <p class="muted">A rehearsal room for bands who'd rather be playing. Gold Coast, Queensland.</p>
       </div>
       <div>
