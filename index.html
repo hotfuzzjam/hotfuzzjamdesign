@@ -408,7 +408,8 @@ section.band{padding-block:var(--space) 0}
 .voucher .top{display:flex;justify-content:space-between;align-items:center;font-weight:400;font-size:.64rem;letter-spacing:.26em;text-transform:uppercase}
 .voucher .top .mark{width:30px}
 .voucher .amt{align-self:center;font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:clamp(3rem,2rem + 4vw,4.6rem);line-height:.9}
-.voucher .to{font-size:.85rem;line-height:1.35;max-width:24ch;position:relative;z-index:1}
+/* details panel: a lighter tint of the card orange, so the copy and code sit clear of the stamp */
+.voucher .to{font-size:.85rem;line-height:1.35;max-width:30ch;justify-self:start;position:relative;z-index:1;background:rgba(251,246,240,.2);padding:.7rem .9rem;margin-left:-.2rem}
 .voucher .code{font-family:var(--f-display);font-weight:700;font-stretch:condensed;letter-spacing:.06em;font-size:1.05rem}
 .card-wrap .msg{margin-top:1rem}
 
