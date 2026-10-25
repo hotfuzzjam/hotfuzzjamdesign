@@ -12,7 +12,7 @@
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Roboto+Condensed:wght@700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Roboto+Condensed:wght@700;900&display=swap">
 <style>
 /* Layout: Marshall's structure (full-bleed duotone imagery, stacked feature blocks, category tiles)
    on a 12-column grid that leaves whole columns empty. One committed dark look: the engraved
@@ -24,7 +24,7 @@
   --ground-2:#1B110B;
   --ground-3:#271910;
   --ink:#EEE2D4;        /* bone — the brightest value on the page, no pure white */
-  --ink-2:#A88F7E;
+  --ink-2:#BFA897;  /* secondary text, lifted for legibility (was #A88F7E) */
   --shu:#D2643C;        /* stamp rust, lifted for contrast on black */
   --shu-2:#E67A50;
   --shu-tint:#4A2416;
@@ -50,7 +50,7 @@
 html,body{margin:0}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
-body{background:var(--ground);color:var(--ink);font-family:var(--f-sans);font-weight:400;font-size:var(--step-0);line-height:1.65;
+body{background:var(--ground);color:var(--ink);font-family:var(--f-sans);font-weight:500;font-size:var(--step-0);line-height:1.65;
   font-kerning:normal;font-feature-settings:"kern","liga";text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ground)}
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:80;opacity:.06;mix-blend-mode:screen;
@@ -317,7 +317,7 @@ section.band{padding-block:var(--space) 0}
 .empty{font-size:.92rem;color:var(--ink-2);padding:1rem 0}
 .field{display:grid;gap:.45rem}
 .field label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;color:var(--ink-2)}
-.field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line-strong);padding:.7rem 0;font-weight:400;font-size:16px;border-radius:0}
+.field input,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line-strong);padding:.7rem 0;font-weight:500;font-size:16px;border-radius:0}
 .field input:focus,.field textarea:focus{outline:none;border-bottom-color:var(--kin)}
 .field textarea{resize:vertical;min-height:2.8rem}
 /* gift form: each field sits on the same lighter wash as the voucher details */
