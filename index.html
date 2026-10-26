@@ -432,6 +432,23 @@ dialog[open]{animation:fade .5s var(--ease)}
 
 /* footer */
 footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
+/* FAQ: two columns of open/close rows on desktop, one on phones */
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,4vw,64px);align-items:start}
+.faq-col{border-top:1px solid var(--line-strong)}
+.qa{border-bottom:1px solid var(--line)}
+.qa summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1.2rem;padding:1.3rem 0;cursor:pointer;font-size:1.08rem;font-weight:400}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary:hover .q{color:var(--kin)}
+.qa summary:focus-visible{outline:1px solid var(--kin);outline-offset:4px}
+.qa .q{transition:color .25s}
+.qa .pm{position:relative;width:14px;height:14px;flex:none}
+.qa .pm::before,.qa .pm::after{content:"";position:absolute;left:0;top:50%;width:100%;height:1px;background:currentColor;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.qa .pm::after{transform:rotate(90deg)}
+.qa[open] .pm::after{transform:rotate(0)}
+.qa p{margin:0;padding:0 2.4rem 1.4rem 0;color:var(--ink-2);max-width:52ch;animation:qa-in .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes qa-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (max-width:760px){.faq{grid-template-columns:1fr}.faq-col + .faq-col{border-top:0}}
+@media (prefers-reduced-motion:reduce){.qa p{animation:none}.qa .pm::before,.qa .pm::after{transition:none}}
 /* footer: mono logo on a lighter panel at left; about line over Hours / Contact at right */
 .foot{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,3vw,48px);align-items:center;padding-block:clamp(3rem,2rem + 3vw,5rem) 2rem}
 .foot-brand{background:rgba(251,246,240,.04);padding:clamp(1.6rem,1rem + 2.4vw,3.2rem) clamp(1rem,.5rem + 1.6vw,2rem);display:grid;place-items:center}
@@ -464,6 +481,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
     <ul>
       <li><a href="#rooms">The room</a></li>
       <li><a href="#gear">Gear</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="#roster">Roster</a></li>
       <li><a href="#book">Book</a></li>
       <li><a href="#gifts">Gifts</a></li>
@@ -589,6 +607,48 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
         <li class="rise"><span class="n num">04</span><h3>Play</h3><p class="muted">Arrive ten minutes early to load in. The room is yours from the hour.</p></li>
       </ol>
     </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="band" id="faq">
+    <div class="wrap">
+      <div class="grid sec-head">
+        <span class="label">Questions</span>
+        <h2 class="rise">Before you load in.</h2>
+        <p class="muted rise">Still unsure? Email <a href="mailto:hello@hotfuzzjam.com.au">hello@hotfuzzjam.com.au</a> and we'll get back to you.</p>
+      </div>
+      <div class="faq">
+        <div class="faq-col">
+          <details class="qa rise">
+            <summary><span class="q">Do I need to bring drums?</span><span class="pm" aria-hidden="true"></span></summary>
+            <p>The kick, rack tom and floor tom are supplied. Bring your snare, cymbals and hardware.</p>
+          </details>
+          <details class="qa rise">
+            <summary><span class="q">Is there a guitar amp?</span><span class="pm" aria-hidden="true"></span></summary>
+            <p>Cabs only: two 4×12s, a 2×12 on request and a 4×10 bass cab. Bring your head or combo.</p>
+          </details>
+          <details class="qa rise">
+            <summary><span class="q">Can I practise solo?</span><span class="pm" aria-hidden="true"></span></summary>
+            <p>Yes. Book any hour at the standard rate.</p>
+          </details>
+        </div>
+        <div class="faq-col">
+          <details class="qa rise">
+            <summary><span class="q">How do I get in?</span><span class="pm" aria-hidden="true"></span></summary>
+            <p>Your door code arrives in the booking confirmation email.</p>
+          </details>
+          <details class="qa rise">
+            <summary><span class="q">Can I cancel?</span><span class="pm" aria-hidden="true"></span></summary>
+            <p>Free up to 24 hours before your session, from your account or the link in your confirmation email. Later than that, you can still cancel but online payments aren’t refunded.</p>
+          </details>
+          <details class="qa rise">
+            <summary><span class="q">Where do I park and load in?</span><span class="pm" aria-hidden="true"></span></summary>
+            <p>Parking right out the front, and a trolley inside to bring in your gear.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do I need to bring drums?", "acceptedAnswer": {"@type": "Answer", "text": "The kick, rack tom and floor tom are supplied. Bring your snare, cymbals and hardware."}}, {"@type": "Question", "name": "Is there a guitar amp?", "acceptedAnswer": {"@type": "Answer", "text": "Cabs only: two 4×12s, a 2×12 on request and a 4×10 bass cab. Bring your head or combo."}}, {"@type": "Question", "name": "Can I practise solo?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Book any hour at the standard rate."}}, {"@type": "Question", "name": "How do I get in?", "acceptedAnswer": {"@type": "Answer", "text": "Your door code arrives in the booking confirmation email."}}, {"@type": "Question", "name": "Can I cancel?", "acceptedAnswer": {"@type": "Answer", "text": "Free up to 24 hours before your session, from your account or the link in your confirmation email. Later than that, you can still cancel but online payments aren’t refunded."}}, {"@type": "Question", "name": "Where do I park and load in?", "acceptedAnswer": {"@type": "Answer", "text": "Parking right out the front, and a trolley inside to bring in your gear."}}]}</script>
   </section>
 
   <!-- ROSTER -->
