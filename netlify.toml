@@ -13,6 +13,12 @@
     X-Robots-Tag = "noindex, nofollow"
 
 [[redirects]]
+  from = "/admin.html"
+  to = "https://secure.acuityscheduling.com/login.php"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/supabase/*"
   to = "/404"
   status = 404

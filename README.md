@@ -1,79 +1,49 @@
-# HOTFUZZJAM Studio — site, booking and studio admin
+# HOTFUZZJAM Studio — site and bookings
 
-- `index.html`: the public site. Live roster, booking calendar, client accounts, promo codes, gift cards,
-  deposit or full payment (Stripe), SMS opt-in, waitlist, and a private change/cancel link for every booking.
-- `admin.html`: the owner dashboard. Overview, bookings (mark paid, cancel and refund, resend), phone and walk-in bookings,
-  block-outs, promo codes, gift cards, waitlist, clients and settings.
-- `supabase/`: database migrations and edge functions.
+The site is a single static page (`index.html`) on Netlify. Bookings, payments, reminders, changes, cancellations
+and gift vouchers run on **Acuity Scheduling**; the page embeds Acuity's scheduler and links to its store.
 
-Until `CONFIG` is filled in **in both HTML files**, they run in **preview mode**: sample data, local sign-in,
-simulated checkout, no emails, no charges. A "Preview" chip shows so nobody mistakes it for live.
-Preview codes to try: promo `LOUD10` (10% off), `FIRSTJAM` ($20 off, 2+ hours), gift card `HFJ-DEMO-GIFT` ($50).
+Until the Acuity links are filled in, the booking panel shows an "email us to book" fallback and the gift button
+opens an email.
 
-## Accounts you need
-| Service | For | Cost |
-| --- | --- | --- |
-| Supabase | Database, sign-in, server functions, scheduled jobs | Free tier is fine |
-| Stripe | Online payments, deposits, refunds, gift card sales | 1.7% + 30c per domestic card |
-| Resend | Confirmation, reminder, follow-up, waitlist and gift emails | Free up to 3,000 emails a month |
-| Twilio (optional) | SMS reminders | About 6–8c AUD per text, plus a number |
+## Connect Acuity (two links)
 
-## Setup (about 40 minutes)
+At the top of the page script, in `CONFIG`:
 
-1. **Database.** Apply both migrations in order (`supabase link --project-ref <ref> && supabase db push`, or paste each
-   file into the SQL editor):
-   `20261020000000_hotfuzzjam_booking.sql`, then `20261025000000_scheduling_suite.sql`.
+```js
+const CONFIG = {
+  ACUITY_SCHEDULE: 'https://app.acuityscheduling.com/schedule.php?owner=XXXXXXXX&appointmentType=NNNNNNN',
+  ACUITY_STORE:    '<direct link to your Acuity store page>'
+};
+```
 
-2. **Make yourself the admin.** Create your account on the site (Sign in → Create account), then in the SQL editor:
-   ```sql
-   insert into public.admins (user_id) select id from auth.users where email = 'you@hotfuzzjam.com';
-   ```
+- **ACUITY_SCHEDULE**: Acuity › Scheduling Page › Link (Share & Embed) › copy the embed code. Its iframe `src` is this link.
+  Adding `&appointmentType=` with the room's ID opens the calendar straight on the room.
+  If the embed code's `<script src>` differs from `https://embed.acuityscheduling.com/js/embed.js`, update it in `mountAcuity()`.
+- **ACUITY_STORE**: the direct link to the store page where gift certificates are sold.
 
-3. **Auth.** Dashboard → Authentication → URL configuration: Site URL `https://hotfuzzjam.com`, and add it to Redirect URLs.
-   Optional: Authentication → Emails → custom SMTP through Resend, so sign-in emails come from your domain.
+## Acuity setup checklist
 
-4. **Stripe.** Use test mode first.
-   - Developers → API keys → copy the secret key.
-   - Developers → Webhooks → Add endpoint `https://<ref>.supabase.co/functions/v1/stripe-webhook`,
-     events `checkout.session.completed` and `checkout.session.expired`. Copy the signing secret.
+1. **Plan.** Standard or higher (gift certificates and SMS reminders are not on Starter). Premium adds API access,
+   which the weekly roster needs, plus custom CSS and removing Acuity branding.
+2. **Business hours and time zone.** Australia/Brisbane, 10:00 – 23:00, seven days.
+3. **Appointment type "The Room".** Hourly; offer 1, 2, 3 and 4 hours (one type per length, or one type with add-ons),
+   $40 per hour incl. GST. Buffer between sessions if you want changeover time.
+4. **Payments.** Connect Stripe, Square or PayPal and require payment at booking (or a deposit).
+5. **Scheduling limits.** Book up to 60 days ahead; clients can reschedule or cancel up to 24 hours before.
+6. **Emails.** Put the street address, door code and arrival note ("Arrive 10 minutes early to load in") in the
+   confirmation email. Turn on the reminder email (and SMS) the day before, and a follow-up after the session.
+7. **Gift certificates.** Create them (for example $40, $80, $160, $300), set to Public.
+8. **Coupons.** Recreate any promo codes, such as LOUD10 for 10% off.
+9. **Appearance.** Logo, and set the scheduler's accent colour to the site's purple (#5A3460) so the embedded calendar matches.
+10. **Intake form.** Ask for band or project name and notes for the studio.
 
-5. **Function secrets.**
-   ```
-   supabase secrets set \
-     SITE_URL="https://hotfuzzjam.com" \
-     RESEND_API_KEY=re_xxx MAIL_FROM="HOTFUZZJAM Studio <bookings@hotfuzzjam.com>" \
-     STUDIO_ADDRESS="<street address>, Gold Coast QLD" \
-     ARRIVAL_NOTE="Door code 0000. Arrive 10 minutes early to load in." \
-     STRIPE_SECRET_KEY=sk_test_xxx STRIPE_WEBHOOK_SECRET=whsec_xxx \
-     CRON_SECRET="<long random string>"
-   # optional, for SMS:
-   supabase secrets set TWILIO_ACCOUNT_SID=ACxxx TWILIO_AUTH_TOKEN=xxx TWILIO_FROM=+61xxxxxxxxx
-   ```
-   No Stripe key yet? Bookings still work: everything is "pay at the studio" until the key is set.
+## Roster
 
-6. **Deploy functions** (JWT settings come from `supabase/config.toml`):
-   ```
-   supabase functions deploy create-checkout admin-action stripe-webhook buy-gift manage-booking send-reminders
-   ```
+The weekly roster section is in the page but hidden (`<section id="roster" hidden>`). Showing live availability needs
+Acuity's API (Premium plan) and a small serverless function that keeps the API key private. Wire it up later.
 
-7. **Scheduled jobs.** Edit and run `supabase/cron.sql`: reminders, SMS, follow-ups and waitlist emails every 10 minutes,
-   and unpaid holds released every 5 minutes.
+## Retired
 
-8. **Connect the pages.** In `index.html` and `admin.html`, set `CONFIG.SUPABASE_URL` and `CONFIG.SUPABASE_ANON_KEY`
-   (Project Settings → API). The anon key is safe in the browser: row-level security does the protecting.
-
-9. **Settings.** Open `/admin.html` → Settings: hourly rate, hours, deposit %, payment mode, cancellation window, SMS on/off.
-
-## How it behaves
-- **Pricing is server-side.** `create-checkout` recomputes rate × hours − promo code − gift card. The browser's numbers are only a preview.
-- **Holding a slot while paying.** A booking awaiting payment holds its slot for 30 minutes (Stripe's minimum), then is released by the webhook or the 5-minute job. If payment lands after the slot was lost, it's refunded automatically.
-- **Change or cancel.** Every email carries a private link (`/?manage=<token>`). Free changes and refunds up to the cutoff (default 24 hours); inside it, cancelling is allowed but online payments aren't refunded. Three moves per booking.
-- **Gift cards.** Sold without an account. Activated by the webhook, emailed to the recipient with a receipt to the buyer. The balance carries over, and is restored if a booking is cancelled in time.
-- **Waitlist.** Clients pick a window on a day. When a slot of the length they need opens (cancellation, move or expired hold), they're emailed once.
-- **No double bookings.** A Postgres exclusion constraint covers confirmed and awaiting-payment bookings; block-outs are checked by the booking trigger.
-- **Privacy.** The public roster shows times only. Clients see only their own bookings and waitlist entries; the admin role sees everything.
-
-## Before launch
-- Placeholders: $40/hr and 6 × 5 m in `ROOMS` (`index.html`); the rate is also in Settings, which wins once Supabase is connected.
-- Contact email and Instagram link in the footer.
-- Run one real booking in Stripe test mode end to end, including a cancel with refund, before switching to live keys.
+The custom Supabase + Stripe booking system (database migrations, edge functions, `admin.html`) is no longer deployed.
+`/admin.html` redirects to the Acuity login. The source is kept in the repository history if it's ever needed again.
