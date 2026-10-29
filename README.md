@@ -6,8 +6,9 @@
   block-outs, promo codes, gift cards, waitlist, clients and settings.
 - `supabase/`: database migrations and edge functions.
 
-Until `CONFIG` is filled in **in both HTML files**, they run in **preview mode**: sample data, local sign-in,
-simulated checkout, no emails, no charges. A "Preview" chip shows so nobody mistakes it for live.
+**Connected** to Supabase project `hotfuzzjam-studio` (ref `tamwpffuwngukmdbqjmm`, Sydney): migrations applied,
+all six functions deployed, scheduled jobs running. With `CONFIG` emptied, the pages fall back to **preview mode**
+(sample data, local sign-in, simulated checkout, no emails, no charges).
 Preview codes to try: promo `LOUD10` (10% off), `FIRSTJAM` ($20 off, 2+ hours), gift card `HFJ-DEMO-GIFT` ($50).
 
 ## Accounts you need
@@ -22,7 +23,7 @@ Preview codes to try: promo `LOUD10` (10% off), `FIRSTJAM` ($20 off, 2+ hours), 
 
 1. **Database.** Apply both migrations in order (`supabase link --project-ref <ref> && supabase db push`, or paste each
    file into the SQL editor):
-   `20261020000000_hotfuzzjam_booking.sql`, then `20261025000000_scheduling_suite.sql`.
+   `20261020000000_hotfuzzjam_booking.sql`, `20261025000000_scheduling_suite.sql`, then `20261030000000_hardening_and_cron.sql`.
 
 2. **Make yourself the admin.** Create your account on the site (Sign in → Create account), then in the SQL editor:
    ```sql
@@ -44,8 +45,7 @@ Preview codes to try: promo `LOUD10` (10% off), `FIRSTJAM` ($20 off, 2+ hours), 
      RESEND_API_KEY=re_xxx MAIL_FROM="HOTFUZZJAM Studio <bookings@hotfuzzjam.com>" \
      STUDIO_ADDRESS="<street address>, Gold Coast QLD" \
      ARRIVAL_NOTE="Door code 0000. Arrive 10 minutes early to load in." \
-     STRIPE_SECRET_KEY=sk_test_xxx STRIPE_WEBHOOK_SECRET=whsec_xxx \
-     CRON_SECRET="<long random string>"
+     STRIPE_SECRET_KEY=sk_test_xxx STRIPE_WEBHOOK_SECRET=whsec_xxx
    # optional, for SMS:
    supabase secrets set TWILIO_ACCOUNT_SID=ACxxx TWILIO_AUTH_TOKEN=xxx TWILIO_FROM=+61xxxxxxxxx
    ```
@@ -56,8 +56,8 @@ Preview codes to try: promo `LOUD10` (10% off), `FIRSTJAM` ($20 off, 2+ hours), 
    supabase functions deploy create-checkout admin-action stripe-webhook buy-gift manage-booking send-reminders
    ```
 
-7. **Scheduled jobs.** Edit and run `supabase/cron.sql`: reminders, SMS, follow-ups and waitlist emails every 10 minutes,
-   and unpaid holds released every 5 minutes.
+7. **Scheduled jobs.** Run `supabase/cron.sql` (with your project ref): reminders, SMS, follow-ups and waitlist emails every
+   10 minutes, and unpaid holds released every 5 minutes. The cron secret is generated inside the database; nothing to copy.
 
 8. **Connect the pages.** In `index.html` and `admin.html`, set `CONFIG.SUPABASE_URL` and `CONFIG.SUPABASE_ANON_KEY`
    (Project Settings → API). The anon key is safe in the browser: row-level security does the protecting.
