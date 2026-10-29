@@ -4,13 +4,17 @@
 //   3. 24-hour reminders: email always, SMS when switched on and the client opted in
 //   4. follow-up email after the session
 //   5. waitlist: tell waiting clients when their window frees up
-// Deploy with JWT verification OFF; protected by the x-cron-secret header.
+// Deploy with JWT verification OFF; protected by the x-cron-secret header, checked against the
+// CRON_SECRET function secret if set, otherwise against the secret pg_cron reads from Vault.
 import { admin, env, fShort, sendSms, settings, TZ } from "../_shared/util.ts";
 import { BOOKING_SELECT, notify, sendEmail, waitlistEmail } from "../_shared/email.ts";
 
 Deno.serve(async (req) => {
-  if (!env("CRON_SECRET") || req.headers.get("x-cron-secret") !== env("CRON_SECRET")) return new Response("Forbidden", { status: 403 });
   const db = admin();
+  const given = req.headers.get("x-cron-secret") ?? "";
+  let ok = !!env("CRON_SECRET") && given === env("CRON_SECRET");
+  if (!ok && given.length >= 32){ const { data } = await db.rpc("cron_secret_ok", { p_secret: given }); ok = data === true; }
+  if (!ok) return new Response("Forbidden", { status: 403 });
   const s = await settings(db);
   const now = Date.now(), iso = (t: number) => new Date(t).toISOString();
   const out = { holds: 0, confirmations: 0, reminders: 0, sms: 0, followups: 0, waitlist: 0, errors: [] as string[] };
