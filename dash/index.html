@@ -7,17 +7,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
 <style>
-/* Layout: 8-column bento. Gauge cluster holds the left three columns at full height; flip cards (coolant, fuel,
-   battery, trip) and launch tiles fill the rest in mixed sizes. 4 columns under 1000px, 2 under 640px.
-   Palette: Anthropic brand colours. Night = near-black #141413 with clay orange #d97757; day = ivory #faf9f5
-   on warm grey #e8e6dc. Brand blue #6a9bcc reads "cold", brand olive #788c5d reads "normal".
-   The main dial uses a high-contrast green (--dial) so it stands apart from the orange accent.
-   Danger is a truer red than the orange accent, and also blinks, so the two never get confused. */
+/* Layout: 8-column bento. Gauge cluster holds the left three columns at full height; flip cards and launch
+   tiles fill the rest in mixed sizes. 4 columns under 1000px, 2 under 640px.
+   Palette matches the home screen: night = deep navy instrument glass with cool blue backlight; day = pale
+   blue-grey. The rev dial keeps its green, coral-red is danger, amber is caution.
+   Materials, all subtle: soft-touch grain on every surface, carbon weave behind the cluster, a brushed-metal
+   bezel around the rev dial, a faint gloss sheen on cards and a stitched seam along the cluster and strip. */
 :root{
-  --bg:#141413; --panel:#1c1c1a; --raise:#262624; --line:#32312d;
-  --fg:#faf9f5; --muted:#b0aea5; --dim:#6b6a63;
-  --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.07);
-  --ok:#8c9f6e; --warn:#e2b04f; --crit:#f2463f; --cold:#6a9bcc; --dial:#5ad48a;
+  --bg:#040c18; --panel:#0a1a2e; --raise:#10253f; --line:#1a3150;
+  --fg:#e9f2ff; --muted:#8ea8cc; --dim:#4f6a91;
+  --accent:#4fb2ff; --accent-ink:#03111f; --glow:rgba(79,178,255,.13); --glow2:rgba(46,128,214,.10);
+  --ok:#5ad48a; --warn:#f2c94c; --crit:#ff5b52; --cold:#9db4ff; --dial:#5ad48a;
+  --sheen:rgba(140,190,255,.055); --hl:rgba(255,255,255,.06); --shade:rgba(0,0,0,.85);
+  --weave-a:rgba(140,190,255,.04); --weave-b:rgba(0,0,0,.32); --stitch:rgba(79,178,255,.32);
+  --metal-1:#16243a; --metal-2:#9bb2d2; --metal-3:#3a5373; --face:#061224; --face-hi:#0f2848;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
   --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
   --r-lg:20px; --r-sm:12px; --gap:12px;
@@ -25,18 +29,26 @@
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
-    --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
-    --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
-    --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
-    --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4; --dial:#1f8f4e;
+    --bg:#e4ebf3; --panel:#f5f8fb; --raise:#ffffff; --line:#c9d6e4;
+    --fg:#08182b; --muted:#465f80; --dim:#8ea3bd;
+    --accent:#1769c4; --accent-ink:#ffffff; --glow:rgba(23,105,196,.10); --glow2:rgba(40,110,190,.07);
+    --ok:#1f8f4e; --warn:#9c6d00; --crit:#c92a24; --cold:#3b5bd6; --dial:#1f8f4e;
+    --sheen:rgba(255,255,255,.75); --hl:rgba(255,255,255,.95); --shade:rgba(15,40,80,.35);
+    --weave-a:rgba(8,24,43,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(23,105,196,.32);
+    --metal-1:#a7b8cc; --metal-2:#f7fafd; --metal-3:#c6d3e2; --face:#eaf0f7; --face-hi:#ffffff;
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     color-scheme:light;
   }
 }
 :root[data-theme="light"]{
-  --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
-  --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
-  --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
-  --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4; --dial:#1f8f4e;
+  --bg:#e4ebf3; --panel:#f5f8fb; --raise:#ffffff; --line:#c9d6e4;
+    --fg:#08182b; --muted:#465f80; --dim:#8ea3bd;
+    --accent:#1769c4; --accent-ink:#ffffff; --glow:rgba(23,105,196,.10); --glow2:rgba(40,110,190,.07);
+    --ok:#1f8f4e; --warn:#9c6d00; --crit:#c92a24; --cold:#3b5bd6; --dial:#1f8f4e;
+    --sheen:rgba(255,255,255,.75); --hl:rgba(255,255,255,.95); --shade:rgba(15,40,80,.35);
+    --weave-a:rgba(8,24,43,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(23,105,196,.32);
+    --metal-1:#a7b8cc; --metal-2:#f7fafd; --metal-3:#c6d3e2; --face:#eaf0f7; --face-hi:#ffffff;
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme:light;
 }
 
@@ -112,7 +124,7 @@ button{cursor:pointer}
   100%{transform:translate3d(-2%,4%,0) rotate(-4deg)}
 }
 .gauge{position:relative;container-type:inline-size;width:clamp(220px, min(100%, calc(100dvh - 310px)), 520px);aspect-ratio:1;max-width:100%}
-.gauge svg{width:100%;height:100%;display:block;overflow:visible}
+.gauge svg{width:100%;height:100%;display:block;overflow:visible;position:relative;z-index:1}
 .g-track{fill:none;stroke:var(--raise);stroke-width:14;stroke-linecap:round}
 .g-red{fill:none;stroke:var(--crit);stroke-width:3;opacity:.85}
 .g-fill{fill:none;stroke:var(--dial);stroke-width:14;stroke-linecap:round;transition:stroke .3s;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--dial) 40%,transparent))}
@@ -123,7 +135,7 @@ button{cursor:pointer}
 .g-lab{fill:var(--muted);font-family:var(--f-display);font-size:15px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
 .g-cap{fill:var(--dim);font-family:var(--f-ui);font-size:10px;font-weight:600;letter-spacing:.16em;text-anchor:middle}
 .shift .g-fill{stroke:var(--crit)}
-.readout{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;padding-bottom:4cqw}
+.readout{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;padding-bottom:4cqw}
 .speed{font-family:var(--f-display);font-weight:600;font-size:30cqw;line-height:.82;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .unit{font-size:4.2cqw;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:2.4cqw}
 .rpmtxt{font-family:var(--f-display);font-size:5cqw;font-weight:500;color:var(--muted);margin-top:3cqw;font-variant-numeric:tabular-nums}
@@ -217,16 +229,17 @@ button{cursor:pointer}
 #cardOil .back .big{margin-top:10px}
 #cardOil .back .kv{margin-top:auto!important}
 /* cheapest diesel: the one inverted card on the page, so it reads first after speed */
-.gas .face.front{background:var(--fg);color:var(--bg);border-color:transparent}
-.gas .face.front .lbl{color:color-mix(in srgb,var(--bg) 62%,transparent)}
-.gas .tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:color-mix(in srgb,var(--bg) 10%,transparent);color:color-mix(in srgb,var(--bg) 70%,transparent);white-space:nowrap}
+/* green-tinted glass, same as the home screen's diesel tile: stands out without glaring at night */
+.gas .face.front{background-color:var(--panel);color:var(--fg);border-color:color-mix(in srgb,var(--dial) 45%,transparent)}
+.gas .price .num{color:var(--dial)}
+.gas .tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:color-mix(in srgb,var(--fg) 10%,transparent);color:var(--muted);white-space:nowrap}
 .gas[data-live="true"] .tag{background:var(--dial);color:#10140f}
 .gas[data-live="true"] .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 1.6s ease-in-out infinite}
 .gas .price{display:flex;align-items:baseline;gap:6px;margin-top:auto}
 .gas .price .num{font-size:clamp(50px,5.6vw,80px);font-weight:700;line-height:.85;letter-spacing:-.01em}
 .gas .price .u{font-size:15px;font-weight:600;opacity:.6}
 .gas .where{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gas .meta{font-size:12px;opacity:.62;padding-right:30px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gas .meta{font-size:12px;color:var(--muted);padding-right:30px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gas .go{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:14px;background:var(--dial);color:#10140f;text-decoration:none;min-height:56px;min-width:0}
 .gas .go b{display:block;font-size:17px}
 .gas .go small{display:block;font-size:12px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -258,7 +271,7 @@ button{cursor:pointer}
 .launch.primary .t{font-family:var(--f-display);font-size:30px;font-weight:600}
 
 /* footer strip */
-.strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--panel);min-height:52px}
+.strip{position:relative;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--panel);min-height:52px}
 .chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:var(--raise)}
 .chip .dot{background:var(--ok)}
 [data-moving="true"] .chip .dot{background:var(--accent)}
@@ -434,6 +447,34 @@ body[data-view="home"]{overflow:hidden}
 }
 
 
+
+/* ---------- materials ---------- */
+.panel, .face, .launch, .strip, .seg, .icon-btn, .pill, .chip, .sheet{
+  background-image:linear-gradient(180deg, var(--sheen), transparent 42%), var(--grain);
+  box-shadow:inset 0 1px 0 var(--hl), 0 14px 30px -22px var(--shade);
+}
+.launch.primary{background-image:linear-gradient(180deg, rgba(255,255,255,.18), transparent 50%), var(--grain)}
+.gas .face.front{background-image:linear-gradient(135deg, color-mix(in srgb,var(--dial) 22%,transparent), color-mix(in srgb,var(--dial) 5%,transparent) 70%), var(--grain)}
+.cluster{
+  background-image:
+    radial-gradient(120% 70% at 50% 0%, var(--sheen), transparent 60%),
+    repeating-linear-gradient(45deg, var(--weave-a) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(-45deg, var(--weave-b) 0 2px, transparent 2px 4px),
+    var(--grain);
+}
+/* stitched seams, like a trimmed dash */
+.cluster::after, .strip::before{content:"";position:absolute;left:18px;right:18px;top:7px;border-top:1.5px dashed var(--stitch);pointer-events:none}
+.strip::before{top:auto;bottom:6px}
+/* rev dial pod: brushed-metal bezel around a recessed, grained face */
+.bezel{position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 200deg, var(--metal-1), var(--metal-2) 7%, var(--metal-3) 16%, var(--metal-1) 27%, var(--metal-2) 41%, var(--metal-3) 54%, var(--metal-1) 66%, var(--metal-2) 82%, var(--metal-3) 92%, var(--metal-1));
+  box-shadow:0 22px 44px -24px var(--shade), inset 0 0 0 1px var(--hl)}
+.bezel::after{content:"";position:absolute;inset:1.8%;border-radius:50%;
+  background:var(--grain), radial-gradient(circle at 50% 28%, var(--face-hi), var(--face) 72%);
+  box-shadow:inset 0 8px 22px rgba(0,0,0,.5), inset 0 -1px 0 var(--hl)}
+.g-tick.minor{stroke:var(--dim);stroke-width:1;opacity:.55}
+.g-lab{filter:drop-shadow(0 0 4px var(--glow))}
+
 @media (max-width:1000px){
   .bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(160px,auto);
     grid-template-areas:
@@ -499,6 +540,7 @@ body[data-view="home"]{overflow:hidden}
     <!-- cluster: never flips; speed is always on screen -->
     <section class="panel cluster a-clu" aria-label="Speed and engine">
       <div class="gauge" id="gauge">
+        <div class="bezel" aria-hidden="true"></div>
         <svg viewBox="-14 -14 328 328" aria-hidden="true">
           <g id="ticks"></g>
           <path class="g-track" id="gTrack"></path>
@@ -902,11 +944,11 @@ body[data-view="home"]{overflow:hidden}
     $('gFill').setAttribute('d', arc(0, 1, R));
     $('gRed').setAttribute('d', arc(red/max, 1, R + 12));
     let html = '';
-    for (let v = 0; v <= max; v += 500) {
-      const a = A0 + SW*v/max, major = v % 1000 === 0;
-      const [x0,y0] = P(a, R + 17), [x1,y1] = P(a, R + (major ? 27 : 22));
-      html += `<line class="g-tick${major ? ' major' : ''}${v >= red ? ' hot' : ''}" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
-      if (major) { const [lx,ly] = P(a, R + 40); html += `<text class="g-lab" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}">${v/1000}</text>`; }
+    for (let v = 0; v <= max; v += 100) {
+      const a = A0 + SW*v/max, major = v % 1000 === 0, mid = v % 500 === 0;
+      const [x0,y0] = P(a, R + 15), [x1,y1] = P(a, R + (major ? 25 : mid ? 21 : 18));
+      html += `<line class="g-tick${major ? ' major' : mid ? '' : ' minor'}${v >= red ? ' hot' : ''}" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
+      if (major) { const [lx,ly] = P(a, R + 33); html += `<text class="g-lab" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}">${v/1000}</text>`; }
     }
     $('ticks').innerHTML = html;
     $('subline').textContent = '2019 Ranger · ' + E().name;
