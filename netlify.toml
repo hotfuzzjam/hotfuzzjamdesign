@@ -17,3 +17,8 @@
   to = "/404"
   status = 404
   force = true
+
+[[headers]]
+  for = "/dash/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
