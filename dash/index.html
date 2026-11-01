@@ -11,12 +11,13 @@
    battery, trip) and launch tiles fill the rest in mixed sizes. 4 columns under 1000px, 2 under 640px.
    Palette: Anthropic brand colours. Night = near-black #141413 with clay orange #d97757; day = ivory #faf9f5
    on warm grey #e8e6dc. Brand blue #6a9bcc reads "cold", brand olive #788c5d reads "normal".
+   The main dial uses a high-contrast green (--dial) so it stands apart from the orange accent.
    Danger is a truer red than the orange accent, and also blinks, so the two never get confused. */
 :root{
   --bg:#141413; --panel:#1c1c1a; --raise:#262624; --line:#32312d;
   --fg:#faf9f5; --muted:#b0aea5; --dim:#6b6a63;
   --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.07);
-  --ok:#8c9f6e; --warn:#e2b04f; --crit:#f2463f; --cold:#6a9bcc;
+  --ok:#8c9f6e; --warn:#e2b04f; --crit:#f2463f; --cold:#6a9bcc; --dial:#5ad48a;
   --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
   --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
   --r-lg:20px; --r-sm:12px; --gap:12px;
@@ -27,7 +28,7 @@
     --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
     --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
     --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
-    --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4;
+    --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4; --dial:#1f8f4e;
     color-scheme:light;
   }
 }
@@ -35,7 +36,7 @@
   --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
   --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
   --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
-  --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4;
+  --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4; --dial:#1f8f4e;
   color-scheme:light;
 }
 
@@ -85,12 +86,12 @@ button{cursor:pointer}
   grid-template-columns:repeat(8,minmax(0,1fr));
   grid-template-rows:repeat(3,minmax(168px,1fr));
   grid-template-areas:
-    "clu clu clu cool cool batt home home"
-    "clu clu clu trip trip fuel maps waze"
-    "clu clu clu trip trip fuel music spot";
+    "clu clu clu oil oil cool home home"
+    "clu clu clu oil oil fuel maps music"
+    "clu clu clu trip trip fuel batt spot";
 }
 .a-clu{grid-area:clu}.a-cool{grid-area:cool}.a-fuel{grid-area:fuel}.a-batt{grid-area:batt}.a-trip{grid-area:trip}
-.a-home{grid-area:home}.a-maps{grid-area:maps}.a-waze{grid-area:waze}.a-music{grid-area:music}.a-spot{grid-area:spot}
+.a-home{grid-area:home}.a-maps{grid-area:maps}.a-music{grid-area:music}.a-spot{grid-area:spot}.a-oil{grid-area:oil}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
 
 /* cluster with slow caustic light */
@@ -110,7 +111,7 @@ button{cursor:pointer}
 .gauge svg{width:100%;height:100%;display:block;overflow:visible}
 .g-track{fill:none;stroke:var(--raise);stroke-width:14;stroke-linecap:round}
 .g-red{fill:none;stroke:var(--crit);stroke-width:3;opacity:.85}
-.g-fill{fill:none;stroke:var(--accent);stroke-width:14;stroke-linecap:round;transition:stroke .3s}
+.g-fill{fill:none;stroke:var(--dial);stroke-width:14;stroke-linecap:round;transition:stroke .3s;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--dial) 40%,transparent))}
 .g-tip{fill:var(--fg);stroke:var(--panel);stroke-width:3}
 .g-tick{stroke:var(--dim);stroke-width:1.5}
 .g-tick.major{stroke:var(--muted);stroke-width:2.2}
@@ -173,7 +174,7 @@ button{cursor:pointer}
 .kv .num{font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1}
 .kv .k{font-size:12px;color:var(--muted);margin-top:3px}
 .trip-front .big{margin-top:auto}
-.trip-front .big .num{font-size:clamp(56px,6.4vw,92px)}
+.trip-front .big .num{font-size:clamp(44px,4.6vw,64px)}
 .trip-front .kv{margin-top:6px;grid-template-columns:1fr 1fr}
 
 .spark{position:relative;flex:1;min-height:44px}
@@ -182,7 +183,36 @@ button{cursor:pointer}
 .spark .ar{fill:color-mix(in srgb,var(--accent) 16%,transparent);stroke:none}
 .spark .gr{stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 4}
 .spark .end{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent);transform:translate(-50%,-50%)}
-.spark-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding-right:30px}
+.spark-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;font-size:12px;color:var(--muted);padding-right:30px}
+
+/* oil temperature gauge */
+.oilg{position:relative;container-type:inline-size;width:100%;max-width:300px;margin:auto auto 0}
+.oilg svg{width:100%;display:block;overflow:visible}
+.o-track{fill:none;stroke:var(--raise);stroke-width:13;stroke-linecap:round}
+.o-band{fill:none;stroke:color-mix(in srgb,var(--ok) 55%,transparent);stroke-width:4;stroke-linecap:round}
+.o-hot{fill:none;stroke:var(--crit);stroke-width:4;stroke-linecap:round}
+.o-fill{fill:none;stroke:var(--accent);stroke-width:13;stroke-linecap:round;transition:stroke-dasharray .8s cubic-bezier(.2,.8,.2,1),stroke .3s}
+.o-lab{fill:var(--muted);font-family:var(--f-display);font-size:12px;font-weight:600;text-anchor:middle}
+.oilg .read{position:absolute;left:0;right:0;bottom:4%;display:flex;justify-content:center;align-items:baseline;gap:3px}
+.oilg .read .num{font-size:25cqw;font-weight:600;line-height:.85}
+.oilg .read .u{font-size:5.5cqw;font-weight:600;color:var(--muted)}
+.flip[data-state="warn"] .o-fill{stroke:var(--warn)}
+.flip[data-state="crit"] .o-fill{stroke:var(--crit)}
+.flip[data-state="cold"] .o-fill{stroke:var(--cold)}
+.flip[data-state="warn"] .oilg .num{color:var(--warn)}
+.flip[data-state="crit"] .oilg .num{color:var(--crit)}
+.svc{height:8px;border-radius:99px;background:var(--panel);overflow:hidden}
+.svc i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .6s}
+.svc.over i{background:var(--crit)}
+.front .svc{background:var(--raise)}
+.svc-mini{display:grid;gap:7px;margin-top:4px}
+.svc-mini .k{font-size:12.5px;color:var(--muted)}
+.svc-mini .num{font-size:19px;font-weight:600}
+.svc-mini.over .num{color:var(--crit)}
+.oilg{max-width:none!important;margin:auto!important}
+#cardOil .back .big{margin-top:10px}
+#cardOil .back .kv{margin-top:auto!important}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* launch tiles */
 .launch{display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:14px;border-radius:var(--r-lg);background:var(--panel);border:1px solid var(--line);color:var(--fg);text-decoration:none;transition:transform .15s ease,background .2s;min-width:0}
@@ -237,15 +267,15 @@ button{cursor:pointer}
   .bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(160px,auto);
     grid-template-areas:
       "clu clu clu clu"
-      "cool cool fuel batt"
+      "oil oil cool batt"
+      "oil oil fuel fuel"
       "trip trip home home"
-      "trip trip maps waze"
-      "music music spot spot";}
+      "maps maps music spot";}
   .gauge{width:min(100%,440px)}
 }
 @media (max-width:640px){
   .bento{grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-template-areas:"clu clu" "cool cool" "fuel batt" "trip trip" "home home" "maps waze" "music spot";}
+    grid-template-areas:"clu clu" "oil oil" "cool batt" "fuel fuel" "trip trip" "home home" "maps music" "spot spot";}
   .flip{touch-action:pan-y}
   .clock{font-size:28px}
   .ambient{display:none}
@@ -303,6 +333,42 @@ button{cursor:pointer}
       </div>
     </section>
 
+    <!-- engine oil -->
+    <div class="flip a-oil" id="cardOil" data-face="0" data-state="none" tabindex="0" role="button" aria-label="Engine oil. Flick or tap for oil change.">
+      <div class="spin">
+        <div class="face front">
+          <div class="fh"><span class="lbl">Engine oil</span><span class="sdot"></span></div>
+          <div class="svc-mini">
+            <div class="fh"><span class="k">Next oil change</span><span class="num" id="svcMini">Not set</span></div>
+            <div class="svc"><i id="svcFillMini"></i></div>
+          </div>
+          <div class="oilg">
+            <svg viewBox="-10 -10 220 140" aria-hidden="true">
+              <path class="o-track" id="oTrack"></path>
+              <path class="o-band" id="oBand"></path>
+              <path class="o-hot" id="oHot"></path>
+              <path class="o-fill" id="oFill" pathLength="1000" stroke-dasharray="0 1000"></path>
+              <text class="o-lab" id="oMin" x="18" y="126">40°</text>
+              <text class="o-lab" id="oMax" x="182" y="126">150°</text>
+            </svg>
+            <div class="read"><span class="num" id="oilV">—</span><span class="u" data-tu></span></div>
+          </div>
+          <div class="vs" id="oilNote">—</div>
+        </div>
+        <div class="face back">
+          <div class="fh"><span class="lbl">Oil change</span></div>
+          <div class="big"><span class="num" id="svcV">—</span><span class="u" id="svcU"></span></div>
+          <div class="svc" id="svcBar"><i id="svcFill"></i></div>
+          <div class="vs" id="svcNote">Add your last oil change in settings to track the next one.</div>
+          <div class="kv" style="grid-template-columns:1fr 1fr;margin-top:4px">
+            <div><div class="num" id="svcDays">—</div><div class="k" id="svcDaysK">days left</div></div>
+            <div><div class="num" id="svcOdo">—</div><div class="k" id="svcOdoK">odometer</div></div>
+          </div>
+        </div>
+      </div>
+      <span class="pips" aria-hidden="true"><i></i><i></i></span>
+    </div>
+
     <!-- coolant -->
     <div class="flip a-cool" id="cardCool" data-face="0" data-state="none" tabindex="0" role="button" aria-label="Coolant. Flick or tap for trend.">
       <div class="spin">
@@ -313,7 +379,7 @@ button{cursor:pointer}
           <div class="vs" id="coolNote">—</div>
         </div>
         <div class="face back">
-          <div class="fh"><span class="lbl">Coolant · last 10 min</span><span class="hint">Intake <b class="num" id="intakeV" style="font-size:15px;color:var(--fg)">—</b></span></div>
+          <div class="fh"><span class="lbl">Coolant · 10 min</span></div>
           <div class="spark" id="coolSpark">
             <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
               <line class="gr" x1="0" y1="10" x2="100" y2="10"></line><line class="gr" x1="0" y1="30" x2="100" y2="30"></line>
@@ -321,7 +387,7 @@ button{cursor:pointer}
             </svg>
             <span class="end" id="coolEnd" hidden></span>
           </div>
-          <div class="spark-meta"><span id="coolLo">—</span><span id="coolHi">—</span></div>
+          <div class="spark-meta"><span id="coolLo">—</span><span id="intakeV">—</span></div>
         </div>
       </div>
       <span class="pips" aria-hidden="true"><i></i><i></i></span>
@@ -380,7 +446,6 @@ button{cursor:pointer}
             <div><div class="num" id="tripTime">0:00</div><div class="k">driving</div></div>
             <div><div class="num" id="tripAvg">—</div><div class="k" id="tripAvgU">avg km/h</div></div>
           </div>
-          <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>Flick for top speed, idle and stops</div>
         </div>
         <div class="face back">
           <div class="fh"><span class="lbl">This trip · more</span></div>
@@ -396,17 +461,13 @@ button{cursor:pointer}
     </div>
 
     <!-- launch -->
-    <a class="launch primary a-home" id="homeLink" href="https://maps.apple.com/" target="_blank" rel="noopener">
+    <a class="launch primary a-home" id="homeLink" href="https://www.google.com/maps" target="_blank" rel="noopener">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>
       <span><div class="t">Go home</div><div class="s" id="homeSub">Set your address in settings</div></span>
     </a>
-    <a class="launch a-maps" href="https://maps.apple.com/" target="_blank" rel="noopener">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l7 19-7-4-7 4z"/></svg></span>
-      <span><div class="t">Maps</div><div class="s">Apple Maps</div></span>
-    </a>
-    <a class="launch a-waze" href="https://waze.com/ul" target="_blank" rel="noopener">
+    <a class="launch a-maps" href="https://www.google.com/maps/@?api=1&amp;map_action=map" target="_blank" rel="noopener">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-      <span><div class="t">Waze</div><div class="s">Traffic, cameras</div></span>
+      <span><div class="t">Google Maps</div><div class="s">Traffic, search</div></span>
     </a>
     <a class="launch a-music" href="https://music.apple.com/" target="_blank" rel="noopener">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
@@ -450,6 +511,17 @@ button{cursor:pointer}
   </section>
 
   <section>
+    <h3>Oil change</h3>
+    <div class="grid2">
+      <div class="field"><label for="oilDate" class="muted" style="font-size:13px">Last changed</label><input id="oilDate" type="date"></div>
+      <div class="field"><label for="oilAt" class="muted" style="font-size:13px">Odometer then (<span data-du>km</span>)</label><input id="oilAt" type="number" inputmode="numeric" min="0" placeholder="84500"></div>
+      <div class="field"><label for="odoNow" class="muted" style="font-size:13px">Odometer now (<span data-du>km</span>)</label><input id="odoNow" type="number" inputmode="numeric" min="0" placeholder="93900"></div>
+      <div class="field"><label for="oilEvery" class="muted" style="font-size:13px">Change every (<span data-du>km</span>)</label><input id="oilEvery" type="number" inputmode="numeric" min="1000" placeholder="15000"></div>
+    </div>
+    <p class="muted" style="margin-top:8px;font-size:13px">Ford's schedule for the PX3 is 15,000 km or 12 months, whichever comes first. Shorten it if you tow, do lots of short trips or drive dusty roads. Odometer now counts up by itself while OBD or GPS is running.</p>
+  </section>
+
+  <section>
     <h3>Home</h3>
     <div class="field">
       <label for="homeInput" class="muted" style="font-size:13px">Address for the Go home button</label>
@@ -490,7 +562,9 @@ button{cursor:pointer}
     eco23:  { name:'2.3 EcoBoost', max:7000, red:6000, idle:720, boostPsi:16, tank:68, l100:11.0, gears:[0,118,74,52,40,33,28,24,21,18.5,16.5] },
   };
 
-  const T = { speed:0, rpm:0, throttle:null, boostKpa:null, coolant:null, intake:null, fuel:null, volts:null, ambient:null };
+  const T = { speed:0, rpm:0, throttle:null, boostKpa:null, coolant:null, oil:null, intake:null, fuel:null, volts:null, ambient:null };
+  const oil = Object.assign({ date:'', at:null, every:15000, months:12 }, store.get('oil', {}));
+  const odo = Object.assign({ km:null }, store.get('odo', {}));
   const D = { speed:0, rpm:0, throttle:0, boost:0 };
   const S = { src:'demo', units: store.get('units', navigator.language === 'en-US' ? 'imperial' : 'metric'),
               engine: store.get('engine', 'tdci32'), home: store.get('home', ''), fresh:0 };
@@ -531,12 +605,25 @@ button{cursor:pointer}
     $('subline').textContent = '2019 Ranger · ' + E().name;
   }
 
+  // ---------- oil gauge (180° arc, 40–150 °C) ----------
+  (() => {
+    const oP = (f, r) => { const a = (180 + 180 * f) * Math.PI / 180; return [100 + r * Math.cos(a), 100 + r * Math.sin(a)]; };
+    const oArc = (f0, f1, r) => { const [x0, y0] = oP(f0, r), [x1, y1] = oP(f1, r); return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`; };
+    const f = c => (c - 40) / 110;
+    $('oTrack').setAttribute('d', oArc(0, 1, 82));
+    $('oFill').setAttribute('d', oArc(0, 1, 82));
+    $('oBand').setAttribute('d', oArc(f(90), f(115), 96));
+    $('oHot').setAttribute('d', oArc(f(135), 1, 96));
+  })();
+
   // ---------- front-face metrics ----------
   const METRICS = {
     coolant:{ card:'cardCool', v:'coolV', mk:'coolMk', band:'coolBand', min:40, max:125, rng:[80,105],
               state:v => v >= 110 ? 'crit' : v >= 105 ? 'warn' : v < 70 ? 'cold' : 'ok' },
     fuel:   { card:'cardFuel', v:'fuelV', tank:'fuelTank', min:0, max:100, rng:[15,100],
               state:v => v < 8 ? 'crit' : v < 15 ? 'warn' : 'ok' },
+    oil:    { card:'cardOil', v:'oilV', gauge:'oFill', min:40, max:150, rng:[90,115],
+              state:v => v >= 135 ? 'crit' : v >= 120 ? 'warn' : v < 80 ? 'cold' : 'ok' },
     volts:  { card:'cardBatt', v:'voltV', mk:'voltMk', band:'voltBand', min:11, max:15.5, rng:[13.2,14.8],
               state:v => v < 11.8 ? 'crit' : (v < 12.6 || v > 15) ? 'warn' : 'ok' },
   };
@@ -549,17 +636,49 @@ button{cursor:pointer}
     const alerts = [];
     for (const [k, m] of Object.entries(METRICS)) {
       const card = $(m.card), val = T[k];
-      if (val == null) { card.dataset.state = 'none'; $(m.v).textContent = '—'; if (m.mk) $(m.mk).style.opacity = 0; if (m.tank) $(m.tank).style.height = '0'; continue; }
+      if (val == null) { card.dataset.state = 'none'; $(m.v).textContent = '—'; if (m.mk) $(m.mk).style.opacity = 0; if (m.tank) $(m.tank).style.height = '0'; if (m.gauge) $(m.gauge).setAttribute('stroke-dasharray', '0 1000'); continue; }
       const s = m.state(val); card.dataset.state = s;
-      $(m.v).textContent = k === 'coolant' ? Math.round(tmp(val)) : k === 'volts' ? val.toFixed(1) : Math.round(val);
+      $(m.v).textContent = (k === 'coolant' || k === 'oil') ? Math.round(tmp(val)) : k === 'volts' ? val.toFixed(1) : Math.round(val);
       if (m.mk) { $(m.mk).style.opacity = 1; $(m.mk).style.left = m.pct(val) + '%'; }
       if (m.tank) $(m.tank).style.height = m.pct(val) + '%';
+      if (m.gauge) $(m.gauge).setAttribute('stroke-dasharray', `${(m.pct(val) * 10).toFixed(1)} 1000`);
       if (s === 'warn' || s === 'crit') { alerts.push({ s, k, val }); if (card.dataset.face === '1') flipTo(card, 0); }
     }
     document.querySelectorAll('[data-tu]').forEach(e => e.textContent = tU());
     const c = T.coolant;
     $('coolNote').textContent = c == null ? 'Not available on this source' : c < 70 ? 'Warming up. Go easy.' : `Normal ${fmtT(80)}–${fmtT(105)}`;
-    $('intakeV').textContent = T.intake == null ? '—' : fmtT(T.intake);
+    $('intakeV').textContent = 'Intake ' + (T.intake == null ? '—' : fmtT(T.intake));
+    const o = T.oil, os = o == null ? 'none' : METRICS.oil.state(o);
+    $('oilNote').textContent = o == null
+      ? (S.src === 'gps' ? 'Needs the OBD adapter' : S.src === 'obd' && OBD.oilMode === 'none' ? 'This truck does not report oil temperature' : 'Waiting for data')
+      : { cold:'Warming up. Hold off on hard revs.', ok:`Normal ${fmtT(90)}–${fmtT(115)}`, warn:'Running hot. Ease off.', crit:'Too hot. Pull over when safe.' }[os];
+    $('oMin').textContent = Math.round(tmp(40)) + '°'; $('oMax').textContent = Math.round(tmp(150)) + '°';
+
+    // oil change
+    const sv = service(), nf = n => Math.round(n).toLocaleString();
+    const mini = $('svcMini').closest('.svc-mini');
+    mini.classList.toggle('over', !!sv && (sv.left < 0 || (sv.days != null && sv.days < 0)));
+    mini.querySelector('.svc').classList.toggle('over', mini.classList.contains('over'));
+    $('svcMini').textContent = !sv ? 'Not set' : `${nf(dist(Math.abs(sv.left)))} ${imp() ? 'mi' : 'km'}${sv.left < 0 ? ' overdue' : ''}`;
+    $('svcFillMini').style.width = sv ? Math.min(100, sv.frac * 100) + '%' : '0';
+    if (!sv) {
+      $('svcV').textContent = '—'; $('svcU').textContent = ''; $('svcFill').style.width = '0'; $('svcBar').classList.remove('over');
+      $('svcNote').textContent = 'Add your last oil change in settings to track the next one.';
+      $('svcDays').textContent = '—'; $('svcDaysK').textContent = 'days left';
+    } else {
+      const over = sv.left < 0 || (sv.days != null && sv.days < 0);
+      $('svcV').textContent = nf(dist(Math.abs(sv.left)));
+      $('svcU').textContent = (imp() ? 'mi' : 'km') + (sv.left < 0 ? ' overdue' : ' to go');
+      $('svcBar').classList.toggle('over', over);
+      $('svcFill').style.width = Math.min(100, sv.frac * 100) + '%';
+      $('svcNote').textContent = (sv.due ? `Due ${sv.due.toLocaleDateString([], { day:'numeric', month:'short', year:'numeric' })} or at ` : 'Due at ')
+        + `${nf(dist(oil.at + oil.every))} ${imp() ? 'mi' : 'km'}`;
+      $('svcDays').textContent = sv.days == null ? '—' : nf(Math.abs(sv.days));
+      $('svcDaysK').textContent = sv.days != null && sv.days < 0 ? 'days overdue' : 'days left';
+      if (over) alerts.push({ s:'warn', k:'service', val:0 });
+    }
+    $('svcOdo').textContent = odo.km == null ? '—' : nf(dist(odo.km));
+    $('svcOdoK').textContent = imp() ? 'odometer mi' : 'odometer km';
     if (T.intake != null && T.intake > 65) alerts.push({ s:'warn', k:'intake', val:T.intake });
 
     // coolant sparkline
@@ -571,8 +690,8 @@ button{cursor:pointer}
       $('coolLine').setAttribute('d', d);
       $('coolArea').setAttribute('d', d + ' L100 40 L0 40 Z');
       const e = $('coolEnd'); e.hidden = false; e.style.left = '100%'; e.style.top = (pts[pts.length - 1][1] / 40 * 100) + '%';
-      $('coolLo').textContent = 'Low ' + fmtT(Math.min(...h)); $('coolHi').textContent = 'Now ' + fmtT(h[h.length - 1]);
-    } else { $('coolLine').setAttribute('d', ''); $('coolArea').setAttribute('d', ''); $('coolEnd').hidden = true; $('coolLo').textContent = 'No data yet'; $('coolHi').textContent = ''; }
+      $('coolLo').textContent = 'Low ' + fmtT(Math.min(...h));
+    } else { $('coolLine').setAttribute('d', ''); $('coolArea').setAttribute('d', ''); $('coolEnd').hidden = true; $('coolLo').textContent = 'No data yet'; }
 
     // fuel range
     const t = S.trip, f = T.fuel;
@@ -617,6 +736,8 @@ button{cursor:pointer}
       fuel:    x => `Fuel at ${Math.round(x.val)}%. Find a servo.`,
       volts:   x => `Battery ${x.val.toFixed(1)} V. Charging system needs a check.`,
       intake:  x => `Intake air ${fmtT(x.val)}. Ease off if towing.`,
+      oil:     x => x.s === 'crit' ? `Oil at ${fmtT(x.val)}. Pull over when safe and let it idle down.` : `Oil at ${fmtT(x.val)}. Ease off, especially if towing.`,
+      service: () => 'Oil change overdue. Book a service.',
     };
     alerts.sort((p, q) => (q.s === 'crit') - (p.s === 'crit'));
     const a = $('alert');
@@ -675,7 +796,7 @@ button{cursor:pointer}
   function sheetMsg(text, sev){ const n = $('obdMsg'); n.hidden = !text; n.textContent = text || ''; n.dataset.sev = sev || ''; }
 
   // ---------- source: demo ----------
-  const sim = { phase:'stop', t:3, target:0, v:0, coolant:66, fuel:63 };
+  const sim = { phase:'stop', t:3, target:0, v:0, coolant:66, oil:58, fuel:63 };
   function seedDemoHistory(){ hist.cool = Array.from({ length:60 }, (_, i) => 28 + (sim.coolant - 28) * (1 - Math.exp(-i / 18)) / (1 - Math.exp(-59 / 18))); hist.vmin = 12.1; hist.vmax = 14.3; }
   function simStep(dt){
     const eng = E(), G = eng.gears, top = G.length - 1;
@@ -689,15 +810,16 @@ button{cursor:pointer}
     if (sim.phase === 'cruise') { acc = (sim.target - sim.v)*.25 + Math.sin(sim.t*.5)*.5; thr = 17 + 6*Math.sin(sim.t*.5); }
     if (sim.phase === 'brake')  { acc = -3; thr = 0; }
     sim.v = Math.max(0, sim.v + acc*dt*3.6);
-    const floor = thr > 40 ? eng.red * .5 : eng.red * .3;
+    const floor = thr > 40 ? eng.red * .42 : eng.red * .3;
     let g = 1; for (let i = top; i >= 1; i--) if (sim.v * G[i] >= floor) { g = i; break; }
     const rpm = sim.v < 3 ? eng.idle + thr*8 + Math.sin(sim.t*3)*12 : Math.max(eng.idle + 200, sim.v*G[g]) + thr*5;
     sim.coolant += (90 - sim.coolant) * dt * .018;
+    sim.oil += (102 + thr * .12 - sim.oil) * dt * .009;
     sim.fuel = Math.max(0, sim.fuel - sim.v*dt*0.00002);
     const psi = thr > 25 ? (thr - 25) / 50 * eng.boostPsi : -(9 - thr * .3);
     Object.assign(T, {
       speed: sim.v, rpm, throttle: thr, boostKpa: psi / 0.145038,
-      coolant: sim.coolant, fuel: sim.fuel, volts: 14.1 + Math.sin(sim.t*.3)*.08,
+      coolant: sim.coolant, oil: sim.oil, fuel: sim.fuel, volts: 14.1 + Math.sin(sim.t*.3)*.08,
       intake: 24 + thr*.07, ambient: 19
     });
     S.fresh = performance.now();
@@ -710,7 +832,7 @@ button{cursor:pointer}
     const h = Math.sin(dLa/2)**2 + Math.cos(a.latitude*r)*Math.cos(b.latitude*r)*Math.sin(dLo/2)**2;
     return 12742000 * Math.asin(Math.sqrt(h));
   }
-  function clearEngine(){ for (const k of ['rpm','throttle','boostKpa','coolant','intake','fuel','volts','ambient']) T[k] = null; T.speed = 0; }
+  function clearEngine(){ for (const k of ['rpm','throttle','boostKpa','coolant','oil','intake','fuel','volts','ambient']) T[k] = null; T.speed = 0; }
   function startGPS(){
     clearEngine();
     if (!('geolocation' in navigator)) { setStatus('err', 'No location on this device'); return; }
@@ -799,6 +921,7 @@ button{cursor:pointer}
         if (n % 10 === 0) {
           const b  = await this.read('33'); if (b) baro = b[0];
           const ct = await this.read('05'); T.coolant = ct ? ct[0] - 40 : null;
+          T.oil = await this.readOil();
           const fl = await this.read('2F'); T.fuel = fl ? fl[0]*100/255 : null;
           const vb = await this.read('42'); T.volts = vb ? (vb[0]*256 + vb[1]) / 1000 : null;
           const ia = await this.read('0F'); T.intake = ia ? ia[0] - 40 : null;
@@ -808,7 +931,28 @@ button{cursor:pointer}
         n++;
       }
     },
-    stop(){ this.on = false; try { this.dev && this.dev.gatt.connected && this.dev.gatt.disconnect(); } catch {} this.rx = this.tx = null; this.waiters = []; this.buf = ''; }
+    async read22(did){
+      try {
+        await this.cmd('ATSH7E0');
+        const r = clean(await this.cmd('22' + did, 2500)), i = r.indexOf('62' + did); if (i < 0) return null;
+        const hex = r.slice(i + 6), b = []; for (let k = 0; k + 1 < hex.length && b.length < 4; k += 2) b.push(parseInt(hex.substr(k, 2), 16));
+        return b.length && !b.some(isNaN) ? b : null;
+      } catch { return null; }
+      finally { try { await this.cmd('ATSH7DF'); } catch {} }
+    },
+    oilMode:null,
+    async readOil(){
+      if (this.oilMode === 'none') return null;
+      if (this.oilMode !== 'ford') {
+        const b = await this.read('5C'); if (b) { this.oilMode = 'std'; return b[0] - 40; }
+        if (this.oilMode === 'std') return null;
+      }
+      const f = await this.read22('1310');
+      if (f) { this.oilMode = 'ford'; const v = f[0] - 40; return v > -40 && v < 180 ? v : null; }
+      if (!this.oilMode) this.oilMode = 'none';
+      return null;
+    },
+    stop(){ this.oilMode = null; this.on = false; try { this.dev && this.dev.gatt.connected && this.dev.gatt.disconnect(); } catch {} this.rx = this.tx = null; this.waiters = []; this.buf = ''; }
   };
 
   // ---------- source switching ----------
@@ -858,19 +1002,38 @@ button{cursor:pointer}
   }
   document.querySelectorAll('[data-engine]').forEach(b => b.addEventListener('click', () => { S.engine = b.dataset.engine; store.set('engine', S.engine); applyEngine(); }));
 
+  function service(){
+    if (oil.at == null || odo.km == null) return null;
+    const used = Math.max(0, odo.km - oil.at), left = oil.every - used;
+    let due = null, days = null;
+    if (oil.date) { due = new Date(oil.date + 'T00:00'); due.setMonth(due.getMonth() + oil.months); days = Math.ceil((due - Date.now()) / 864e5); }
+    const frac = Math.max(used / oil.every, days == null ? 0 : 1 - days / (oil.months * 30.44));
+    return { used, left, due, days, frac };
+  }
+  const toKm = v => { const n = parseFloat(v); return isNaN(n) ? null : (imp() ? n / 0.621371 : n); };
+  function fillOilForm(){
+    const u = x => x == null ? '' : Math.round(dist(x));
+    $('oilDate').value = oil.date || ''; $('oilAt').value = u(oil.at); $('odoNow').value = u(odo.km); $('oilEvery').value = u(oil.every);
+    document.querySelectorAll('[data-du]').forEach(e => e.textContent = imp() ? 'mi' : 'km');
+  }
+  $('oilDate').addEventListener('change', e => { oil.date = e.target.value; store.set('oil', oil); render(); });
+  $('oilAt').addEventListener('change', e => { oil.at = toKm(e.target.value); store.set('oil', oil); render(); });
+  $('odoNow').addEventListener('change', e => { odo.km = toKm(e.target.value); store.set('odo', odo); render(); });
+  $('oilEvery').addEventListener('change', e => { oil.every = toKm(e.target.value) || 15000; store.set('oil', oil); fillOilForm(); render(); });
+
   function applyUnits(){
     $('uMetric').setAttribute('aria-pressed', String(!imp()));
     $('uImperial').setAttribute('aria-pressed', String(imp()));
     $('speedUnit').textContent = imp() ? 'mph' : 'km/h';
-    render();
+    fillOilForm(); render();
   }
   document.querySelectorAll('[data-units]').forEach(b => b.addEventListener('click', () => { S.units = b.dataset.units; store.set('units', S.units); applyUnits(); }));
 
   function applyHome(){
     $('homeInput').value = S.home;
     const link = $('homeLink');
-    if (S.home) { link.href = 'https://maps.apple.com/?daddr=' + encodeURIComponent(S.home) + '&dirflg=d'; $('homeSub').textContent = S.home; }
-    else { link.href = 'https://maps.apple.com/'; $('homeSub').textContent = 'Set your address in settings'; }
+    if (S.home) { link.href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(S.home) + '&travelmode=driving&dir_action=navigate'; $('homeSub').textContent = 'Google Maps · ' + S.home; }
+    else { link.href = 'https://www.google.com/maps'; $('homeSub').textContent = 'Set your address in settings'; }
   }
   $('homeInput').addEventListener('change', e => { S.home = e.target.value.trim(); store.set('home', S.home); applyHome(); });
   $('homeLink').addEventListener('click', e => { if (!S.home && app.dataset.moving !== 'true') { e.preventDefault(); openSheet(); $('homeInput').focus(); } });
@@ -910,7 +1073,7 @@ button{cursor:pointer}
     if (S.src === 'demo') simStep(dt);
 
     const t = S.trip, v = T.speed || 0;
-    if (v > 1) { t.km += v * dt / 3600; t.sec += dt; t.top = Math.max(t.top, v); }
+    if (v > 1) { t.km += v * dt / 3600; t.sec += dt; t.top = Math.max(t.top, v); if (S.src !== 'demo' && odo.km != null) odo.km += v * dt / 3600; }
     else if (T.rpm) t.idle += dt;
     if (t.fuel0 == null && T.fuel != null) t.fuel0 = T.fuel;
     if (T.volts != null) { hist.vmin = Math.min(hist.vmin ?? T.volts, T.volts); hist.vmax = Math.max(hist.vmax ?? T.volts, T.volts); }
@@ -956,7 +1119,7 @@ button{cursor:pointer}
     if (slow > .5) {
       slow = 0; render();
       if (S.src !== 'demo' && S.fresh && now - S.fresh > 5000 && $('status').dataset.state === 'live') setStatus('wait', 'No data from source');
-      if ((saveT += 1) > 20) { saveT = 0; if (S.src !== 'demo') store.set('trip', S.trip); }
+      if ((saveT += 1) > 20) { saveT = 0; if (S.src !== 'demo') { store.set('trip', S.trip); store.set('odo', odo); } }
     }
     requestAnimationFrame(frame);
   }
