@@ -7,32 +7,34 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
 <style>
-/* Layout: landscape instrument panel. Gauge cluster left, vitals + trip centre, one-tap launch rail right.
-   Two columns under 1000px, one column under 640px (iPad Split View / phone). Night-first. */
+/* Layout: 8-column bento. Gauge cluster holds the left three columns at full height; flip cards (coolant, fuel,
+   battery, trip) and launch tiles fill the rest in mixed sizes. 4 columns under 1000px, 2 under 640px.
+   Palette: night = open water after dark (abyssal ink, lagoon teal, coral for danger, sand for caution);
+   day = shallows (sea mist ground, deep-channel teal). */
 :root{
-  --bg:#0c0f0d; --panel:#141815; --raise:#1b201c; --line:#2a312b;
-  --fg:#e9ece5; --muted:#8c948b; --dim:#566057;
-  --accent:#f0a33c; --accent-ink:#1b1206; --glow:rgba(240,163,60,.10);
-  --ok:#6cc08b; --warn:#f2c94c; --crit:#ff5c50;
+  --bg:#04121a; --panel:#0a1f2a; --raise:#10303f; --line:#173949;
+  --fg:#e2f3f1; --muted:#7ea3ab; --dim:#48707a;
+  --accent:#46c9c0; --accent-ink:#032421; --glow:rgba(70,201,192,.11); --glow2:rgba(64,140,210,.09);
+  --ok:#8fd16b; --warn:#f0c869; --crit:#ff6f5e; --cold:#6aa8ff;
   --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
   --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
-  --r-lg:18px; --r-sm:11px;
+  --r-lg:20px; --r-sm:12px; --gap:12px;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
-    --bg:#e7eae4; --panel:#f7f8f5; --raise:#ffffff; --line:#d2d7ce;
-    --fg:#111411; --muted:#566057; --dim:#8c948b;
-    --accent:#b4600c; --accent-ink:#fff8ee; --glow:rgba(180,96,12,.08);
-    --ok:#2c8650; --warn:#9a6f00; --crit:#c92d22;
+    --bg:#e1edef; --panel:#f3f9f9; --raise:#ffffff; --line:#c6dade;
+    --fg:#062330; --muted:#44656f; --dim:#86a4ac;
+    --accent:#0a7c86; --accent-ink:#effcfb; --glow:rgba(10,124,134,.09); --glow2:rgba(40,110,190,.07);
+    --ok:#3d7f22; --warn:#9c6d00; --crit:#cf3e2c; --cold:#2d6fd0;
     color-scheme:light;
   }
 }
 :root[data-theme="light"]{
-  --bg:#e7eae4; --panel:#f7f8f5; --raise:#ffffff; --line:#d2d7ce;
-  --fg:#111411; --muted:#566057; --dim:#8c948b;
-  --accent:#b4600c; --accent-ink:#fff8ee; --glow:rgba(180,96,12,.08);
-  --ok:#2c8650; --warn:#9a6f00; --crit:#c92d22;
+  --bg:#e1edef; --panel:#f3f9f9; --raise:#ffffff; --line:#c6dade;
+  --fg:#062330; --muted:#44656f; --dim:#86a4ac;
+  --accent:#0a7c86; --accent-ink:#effcfb; --glow:rgba(10,124,134,.09); --glow2:rgba(40,110,190,.07);
+  --ok:#3d7f22; --warn:#9c6d00; --crit:#cf3e2c; --cold:#2d6fd0;
   color-scheme:light;
 }
 
@@ -50,14 +52,14 @@ button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.app{min-height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:12px}
+.app{min-height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:var(--gap)}
 .lbl{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .num{font-family:var(--f-display);font-variant-numeric:tabular-nums}
 
 /* ---------- header ---------- */
 .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .ident{display:flex;align-items:center;gap:10px;margin-right:6px}
-.mark{width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink)}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink)}
 .name{font-family:var(--f-display);font-weight:700;font-size:21px;letter-spacing:.02em;line-height:1}
 .sub{font-size:12px;color:var(--muted);margin-top:2px}
 .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
@@ -73,18 +75,37 @@ button{cursor:pointer}
 .spacer{flex:1}
 .ambient{display:flex;flex-direction:column;align-items:flex-end;line-height:1}
 .ambient .num{font-size:22px;font-weight:600;margin-top:3px}
-.clock{font-family:var(--f-display);font-size:34px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.01em;line-height:1}
+.clock{font-family:var(--f-display);font-size:34px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
 .icon-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;color:var(--fg)}
 .icon-btn svg{width:20px;height:20px}
 
-/* ---------- main grid ---------- */
-.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(210px,.6fr);gap:12px;min-height:0}
+/* ---------- bento ---------- */
+.bento{display:grid;gap:var(--gap);min-height:0;
+  grid-template-columns:repeat(8,minmax(0,1fr));
+  grid-template-rows:repeat(3,minmax(168px,1fr));
+  grid-template-areas:
+    "clu clu clu cool cool batt home home"
+    "clu clu clu trip trip fuel maps waze"
+    "clu clu clu trip trip fuel music spot";
+}
+.a-clu{grid-area:clu}.a-cool{grid-area:cool}.a-fuel{grid-area:fuel}.a-batt{grid-area:batt}.a-trip{grid-area:trip}
+.a-home{grid-area:home}.a-maps{grid-area:maps}.a-waze{grid-area:waze}.a-music{grid-area:music}.a-spot{grid-area:spot}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
 
-/* cluster */
-.cluster{padding:16px 18px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden}
-.cluster::before{content:"";position:absolute;inset:-20% -10% auto;height:80%;background:radial-gradient(closest-side,var(--glow),transparent);pointer-events:none}
-.gauge{position:relative;container-type:inline-size;width:clamp(240px, min(100%, calc(100dvh - 300px)), 540px);aspect-ratio:1;max-width:100%}
+/* cluster with slow caustic light */
+.cluster{padding:16px 18px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;position:relative;overflow:hidden;min-width:0}
+.cluster::before{content:"";position:absolute;inset:-30%;pointer-events:none;
+  background:
+    radial-gradient(38% 30% at 30% 28%, var(--glow), transparent 70%),
+    radial-gradient(34% 26% at 72% 60%, var(--glow2), transparent 70%),
+    radial-gradient(26% 22% at 50% 92%, var(--glow), transparent 70%);
+  animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{
+  0%{transform:translate3d(-4%,-2%,0) rotate(0deg)}
+  50%{transform:translate3d(3%,2%,0) rotate(6deg)}
+  100%{transform:translate3d(-2%,4%,0) rotate(-4deg)}
+}
+.gauge{position:relative;container-type:inline-size;width:clamp(220px, min(100%, calc(100dvh - 310px)), 520px);aspect-ratio:1;max-width:100%}
 .gauge svg{width:100%;height:100%;display:block;overflow:visible}
 .g-track{fill:none;stroke:var(--raise);stroke-width:14;stroke-linecap:round}
 .g-red{fill:none;stroke:var(--crit);stroke-width:3;opacity:.85}
@@ -101,59 +122,85 @@ button{cursor:pointer}
 .unit{font-size:4.2cqw;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:2.4cqw}
 .rpmtxt{font-family:var(--f-display);font-size:5cqw;font-weight:500;color:var(--muted);margin-top:3cqw;font-variant-numeric:tabular-nums}
 .rpmtxt b{color:var(--fg);font-weight:600}
-
-.bars{width:100%;max-width:540px;display:grid;gap:10px}
+.bars{width:100%;max-width:520px;display:grid;gap:10px;position:relative}
 .barrow{display:grid;grid-template-columns:76px 1fr 84px;align-items:center;gap:12px}
 .meter{height:8px;border-radius:99px;background:var(--raise);overflow:hidden;position:relative}
 .meter i{position:absolute;inset:0 auto 0 0;width:0;background:var(--fg);border-radius:99px}
 .meter.boost i{background:var(--accent)}
 .barrow .val{font-family:var(--f-display);font-size:20px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
-.barrow .val small{font-family:var(--f-ui);font-size:12px;color:var(--muted);font-weight:500;margin-left:3px}
+.barrow .val small,.big small{font-family:var(--f-ui);font-size:12px;color:var(--muted);font-weight:500;margin-left:3px}
 
-/* vitals */
-.mid{display:grid;grid-template-rows:1fr auto;gap:12px;min-width:0}
-.vitals{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.vital{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px 15px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.vh{display:flex;align-items:center;justify-content:space-between}
-.sdot{width:9px;height:9px;border-radius:50%;background:var(--ok)}
-.vv{display:flex;align-items:baseline;gap:5px;margin-top:auto}
-.vv .num{font-size:clamp(40px,5.6vw,76px);font-weight:600;line-height:.9}
-.vv .u{font-size:14px;font-weight:600;color:var(--muted)}
+/* ---------- flip cards ---------- */
+.flip{position:relative;perspective:1100px;min-width:0;outline:none;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none}
+.flip:focus-visible .face{outline:2px solid var(--accent);outline-offset:2px}
+.spin{display:grid;height:100%;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.3,1.32,.48,1);will-change:transform}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:14px 16px 15px;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden}
+.back{transform:rotateX(180deg);background:var(--raise)}
+.fh{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sdot{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none}
+.pips{position:absolute;right:14px;bottom:12px;display:flex;gap:4px;pointer-events:none;z-index:2}
+.pips i{width:5px;height:5px;border-radius:50%;background:var(--dim);transition:background .3s,transform .3s}
+.flip[data-face="0"] .pips i:first-child,.flip[data-face="1"] .pips i:last-child{background:var(--accent);transform:scale(1.25)}
+.hint{font-size:11.5px;color:var(--dim);display:flex;align-items:center;gap:5px}
+.hint svg{width:12px;height:12px}
+
+.big{display:flex;align-items:baseline;gap:5px;margin-top:auto}
+.big .num{font-size:clamp(40px,4.8vw,70px);font-weight:600;line-height:.9}
+.big .u{font-size:14px;font-weight:600;color:var(--muted)}
 .range{height:6px;border-radius:99px;background:var(--raise);position:relative}
+.back .range{background:var(--panel)}
 .range .band{position:absolute;top:0;bottom:0;border-radius:99px;background:color-mix(in srgb,var(--ok) 30%,transparent)}
 .range .mk{position:absolute;top:-4px;width:4px;height:14px;border-radius:2px;background:var(--fg);transform:translateX(-50%);transition:left .6s cubic-bezier(.2,.8,.2,1)}
-.vs{font-size:12.5px;color:var(--muted)}
-.vital[data-state="warn"] .sdot{background:var(--warn)}
-.vital[data-state="warn"] .vv .num{color:var(--warn)}
-.vital[data-state="crit"] .sdot{background:var(--crit);animation:blink .8s infinite}
-.vital[data-state="crit"] .vv .num{color:var(--crit)}
-.vital[data-state="cold"] .sdot{background:#5d9ad6}
-.vital[data-state="none"] .sdot{background:var(--dim)}
+.vs{font-size:12.5px;color:var(--muted);padding-right:30px}
+.flip[data-state="warn"] .front .sdot{background:var(--warn)}
+.flip[data-state="warn"] .front .big .num{color:var(--warn)}
+.flip[data-state="crit"] .front .sdot{background:var(--crit);animation:blink .8s infinite}
+.flip[data-state="crit"] .front .big .num{color:var(--crit)}
+.flip[data-state="cold"] .front .sdot{background:var(--cold)}
+.flip[data-state="none"] .front .sdot{background:var(--dim)}
 
-.trip{padding:14px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 14px;align-items:end}
-.trip .lbl{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}
-.trip .k{font-size:12px;color:var(--muted);margin-top:2px}
-.trip .num{font-size:30px;font-weight:600;line-height:1}
-.link-btn{border:0;background:none;color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:6px 0}
+.tankwrap{display:grid;grid-template-columns:minmax(0,1fr) 18px;gap:12px;flex:1;min-height:0}
+.tankwrap .col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tank{position:relative;margin-bottom:16px;border-radius:9px;background:var(--raise);overflow:hidden;min-height:90px}
+.tank .low{position:absolute;left:0;right:0;bottom:0;height:15%;background:color-mix(in srgb,var(--crit) 22%,transparent)}
+.tank .lvl{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(to top,var(--accent),color-mix(in srgb,var(--accent) 55%,transparent));transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
+.tank .lvl::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--fg);opacity:.7}
+.flip[data-state="warn"] .tank .lvl{background:var(--warn)}
+.flip[data-state="crit"] .tank .lvl{background:var(--crit)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:10px 14px;margin-top:auto}
+.kv .num{font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1}
+.kv .k{font-size:12px;color:var(--muted);margin-top:3px}
+.trip-front .big{margin-top:auto}
+.trip-front .big .num{font-size:clamp(56px,6.4vw,92px)}
+.trip-front .kv{margin-top:6px;grid-template-columns:1fr 1fr}
 
-/* rail */
-.rail{display:grid;grid-auto-rows:minmax(74px,1fr);gap:12px;min-width:0}
-.launch{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-lg);background:var(--panel);border:1px solid var(--line);color:var(--fg);text-decoration:none;transition:transform .15s ease,background .2s}
+.spark{position:relative;flex:1;min-height:44px}
+.spark svg{position:absolute;inset:0;width:100%;height:100%}
+.spark .ln{fill:none;stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.spark .ar{fill:color-mix(in srgb,var(--accent) 16%,transparent);stroke:none}
+.spark .gr{stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 4}
+.spark .end{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent);transform:translate(-50%,-50%)}
+.spark-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding-right:30px}
+
+/* launch tiles */
+.launch{display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:14px;border-radius:var(--r-lg);background:var(--panel);border:1px solid var(--line);color:var(--fg);text-decoration:none;transition:transform .15s ease,background .2s;min-width:0}
 .launch:active{transform:scale(.97);background:var(--raise)}
-.launch .ic{width:44px;height:44px;border-radius:12px;background:var(--raise);display:grid;place-items:center}
-.launch .ic svg{width:22px;height:22px}
+.launch .ic{width:42px;height:42px;border-radius:12px;background:var(--raise);display:grid;place-items:center;flex:none}
+.launch .ic svg{width:21px;height:21px}
+.launch .t{font-weight:600;font-size:18px;line-height:1.1}
+.launch .s{font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .launch.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink)}
 .launch.primary .ic{background:color-mix(in srgb,var(--accent-ink) 14%,transparent)}
 .launch.primary .s{color:color-mix(in srgb,var(--accent-ink) 72%,transparent)}
-.launch .t{font-weight:600;font-size:18px;line-height:1.1}
-.launch .s{font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.launch.primary .t{font-family:var(--f-display);font-size:30px;font-weight:600}
 
 /* footer strip */
 .strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--panel);min-height:52px}
 .chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:var(--raise)}
 .chip .dot{background:var(--ok)}
 [data-moving="true"] .chip .dot{background:var(--accent)}
-.alert{flex:1;min-width:200px;font-size:14px;display:flex;align-items:center;gap:8px}
+.alert{flex:1;min-width:200px;font-size:14px}
 .alert[data-sev="warn"]{color:var(--warn)}
 .alert[data-sev="crit"]{color:var(--crit);font-weight:600}
 
@@ -161,14 +208,14 @@ button{cursor:pointer}
 [data-moving="true"] .lockable, [data-moving="true"][data-live="true"] .lockable-live{opacity:.32;pointer-events:none}
 
 /* settings sheet */
-.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20}
+.scrim{position:fixed;inset:0;background:rgba(2,10,14,.5);z-index:20}
 .sheet{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);z-index:21;background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;
   padding:calc(20px + env(safe-area-inset-top,0px)) max(22px, env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) 22px;
   display:flex;flex-direction:column;gap:22px;animation:slide .28s cubic-bezier(.2,.8,.2,1)}
 @keyframes slide{from{transform:translateX(24px);opacity:.4}}
-.sheet h2{font-family:var(--f-display);font-size:28px;font-weight:600;margin:0;text-wrap:balance}
+.sheet h2{font-family:var(--f-display);font-size:28px;font-weight:600;margin:0}
 .sheet h3{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
-.sheet p,.sheet li{font-size:14.5px;line-height:1.5;color:var(--fg);margin:0}
+.sheet p,.sheet li{font-size:14.5px;line-height:1.5;margin:0}
 .sheet ol{margin:0;padding-left:20px;display:grid;gap:8px}
 .sheet .muted{color:var(--muted)}
 .sheet-head{display:flex;justify-content:space-between;align-items:center}
@@ -181,17 +228,27 @@ button{cursor:pointer}
 .note{padding:12px 14px;border-radius:var(--r-sm);background:var(--raise);font-size:14px;line-height:1.45}
 .note[data-sev="err"]{color:var(--crit)}
 
+@media (min-width:1001px) and (min-height:640px){
+  .app{height:100%}
+  .bento{grid-template-rows:repeat(3,minmax(0,1fr))}
+}
 @media (max-width:1000px){
-  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  .rail{grid-column:1/-1;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));grid-auto-rows:auto}
-  .gauge{width:min(100%,460px)}
+  .bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(160px,auto);
+    grid-template-areas:
+      "clu clu clu clu"
+      "cool cool fuel batt"
+      "trip trip home home"
+      "trip trip maps waze"
+      "music music spot spot";}
+  .gauge{width:min(100%,440px)}
 }
 @media (max-width:640px){
-  .grid{grid-template-columns:minmax(0,1fr)}
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:"clu clu" "cool cool" "fuel batt" "trip trip" "home home" "maps waze" "music spot";}
+  .flip{touch-action:pan-y}
   .clock{font-size:28px}
   .ambient{display:none}
   .barrow{grid-template-columns:64px 1fr 76px}
-  .trip .num{font-size:24px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
@@ -202,7 +259,7 @@ button{cursor:pointer}
   <header class="bar">
     <div class="ident">
       <span class="mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4.5-5"/></svg></span>
-      <div><div class="name">Cab Dash</div><div class="sub">2019 Ranger · 2.3 EcoBoost</div></div>
+      <div><div class="name">Cab Dash</div><div class="sub" id="subline">2019 Ranger · 3.2 TDCi</div></div>
     </div>
     <div class="seg lockable-live" role="radiogroup" aria-label="Data source">
       <button type="button" role="radio" data-src="demo" aria-checked="true">Demo</button>
@@ -221,19 +278,20 @@ button{cursor:pointer}
     </button>
   </header>
 
-  <main class="grid">
-    <section class="panel cluster" aria-label="Speed and engine">
+  <main class="bento">
+    <!-- cluster: never flips; speed is always on screen -->
+    <section class="panel cluster a-clu" aria-label="Speed and engine">
       <div class="gauge" id="gauge">
         <svg viewBox="-14 -14 328 328" aria-hidden="true">
           <g id="ticks"></g>
           <path class="g-track" id="gTrack"></path>
           <path class="g-red" id="gRed"></path>
           <path class="g-fill" id="gFill" pathLength="1000" stroke-dasharray="0 1000"></path>
-          <circle class="g-tip" id="gTip" r="6" cx="0" cy="0"></circle>
+          <circle class="g-tip" id="gTip" r="6" cx="150" cy="150"></circle>
           <text class="g-cap" x="150" y="272">RPM × 1000</text>
         </svg>
         <div class="readout">
-          <div class="speed" id="speed" aria-live="off">0</div>
+          <div class="speed" id="speed">0</div>
           <div class="unit" id="speedUnit">km/h</div>
           <div class="rpmtxt"><b id="rpm">0</b> rpm</div>
         </div>
@@ -244,38 +302,119 @@ button{cursor:pointer}
       </div>
     </section>
 
-    <section class="mid">
-      <div class="vitals" id="vitals"></div>
-      <div class="panel trip">
-        <div class="lbl"><span>This trip</span><button type="button" class="link-btn lockable" id="tripReset">Reset</button></div>
-        <div><div class="num" id="tripDist">0.0</div><div class="k" id="tripDistU">km</div></div>
-        <div><div class="num" id="tripTime">0:00</div><div class="k">driving</div></div>
-        <div><div class="num" id="tripAvg">0</div><div class="k" id="tripAvgU">avg km/h</div></div>
+    <!-- coolant -->
+    <div class="flip a-cool" id="cardCool" data-face="0" data-state="none" tabindex="0" role="button" aria-label="Coolant. Flick or tap for trend.">
+      <div class="spin">
+        <div class="face front">
+          <div class="fh"><span class="lbl">Coolant</span><span class="sdot"></span></div>
+          <div class="big"><span class="num" id="coolV">—</span><span class="u" data-tu></span></div>
+          <div class="range"><span class="band" id="coolBand"></span><span class="mk" id="coolMk"></span></div>
+          <div class="vs" id="coolNote">—</div>
+        </div>
+        <div class="face back">
+          <div class="fh"><span class="lbl">Coolant · last 10 min</span><span class="hint">Intake <b class="num" id="intakeV" style="font-size:15px;color:var(--fg)">—</b></span></div>
+          <div class="spark" id="coolSpark">
+            <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+              <line class="gr" x1="0" y1="10" x2="100" y2="10"></line><line class="gr" x1="0" y1="30" x2="100" y2="30"></line>
+              <path class="ar" id="coolArea"></path><path class="ln" id="coolLine"></path>
+            </svg>
+            <span class="end" id="coolEnd" hidden></span>
+          </div>
+          <div class="spark-meta"><span id="coolLo">—</span><span id="coolHi">—</span></div>
+        </div>
       </div>
-    </section>
+      <span class="pips" aria-hidden="true"><i></i><i></i></span>
+    </div>
 
-    <nav class="rail" aria-label="Quick launch">
-      <a class="launch primary" id="homeLink" href="https://maps.apple.com/" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>
-        <span><div class="t">Go home</div><div class="s" id="homeSub">Set your address in settings</div></span>
-      </a>
-      <a class="launch" href="https://maps.apple.com/" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l7 19-7-4-7 4z"/></svg></span>
-        <span><div class="t">Apple Maps</div><div class="s">Uses the iPad's GPS</div></span>
-      </a>
-      <a class="launch" href="https://waze.com/ul" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-        <span><div class="t">Waze</div><div class="s">Traffic and cameras</div></span>
-      </a>
-      <a class="launch" href="https://music.apple.com/" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
-        <span><div class="t">Music</div><div class="s">Plays through SYNC 3</div></span>
-      </a>
-      <a class="launch" href="https://open.spotify.com/" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9c5-2 11-1.5 16 1M5.5 13c4-1.4 9-1 13 .8M7 16.8c3.3-1 6.8-.7 9.8.7"/></svg></span>
-        <span><div class="t">Spotify</div><div class="s">Plays through SYNC 3</div></span>
-      </a>
-    </nav>
+    <!-- fuel -->
+    <div class="flip a-fuel" id="cardFuel" data-face="0" data-state="none" tabindex="0" role="button" aria-label="Fuel. Flick or tap for range.">
+      <div class="spin">
+        <div class="face front">
+          <div class="fh"><span class="lbl">Fuel</span><span class="sdot"></span></div>
+          <div class="tankwrap">
+            <div class="col">
+              <div class="big"><span class="num" id="fuelV">—</span><span class="u">%</span></div>
+              <div class="vs" id="fuelL" style="padding-right:0">—</div>
+            </div>
+            <div class="tank" aria-hidden="true"><span class="low"></span><span class="lvl" id="fuelTank"></span></div>
+          </div>
+        </div>
+        <div class="face back">
+          <div class="fh"><span class="lbl">Range</span></div>
+          <div class="big"><span class="num" id="rangeV">—</span><span class="u" id="rangeU">km</span></div>
+          <div class="vs" id="rangeNote">—</div>
+        </div>
+      </div>
+      <span class="pips" aria-hidden="true"><i></i><i></i></span>
+    </div>
+
+    <!-- battery -->
+    <div class="flip a-batt" id="cardBatt" data-face="0" data-state="none" tabindex="0" role="button" aria-label="Battery. Flick or tap for history.">
+      <div class="spin">
+        <div class="face front">
+          <div class="fh"><span class="lbl">Battery</span><span class="sdot"></span></div>
+          <div class="big"><span class="num" id="voltV">—</span><span class="u">V</span></div>
+          <div class="range"><span class="band" id="voltBand"></span><span class="mk" id="voltMk"></span></div>
+          <div class="vs">Charging 13.2–14.8 V</div>
+        </div>
+        <div class="face back">
+          <div class="fh"><span class="lbl">Battery · today</span></div>
+          <div class="kv" style="grid-template-columns:1fr 1fr">
+            <div><div class="num" id="vMin">—</div><div class="k">low</div></div>
+            <div><div class="num" id="vMax">—</div><div class="k">high</div></div>
+          </div>
+          <div class="vs">Rests at 12.4–12.7 V</div>
+        </div>
+      </div>
+      <span class="pips" aria-hidden="true"><i></i><i></i></span>
+    </div>
+
+    <!-- trip -->
+    <div class="flip a-trip" id="cardTrip" data-face="0" data-state="ok" tabindex="0" role="button" aria-label="Trip. Flick or tap for more.">
+      <div class="spin">
+        <div class="face front trip-front">
+          <div class="fh"><span class="lbl">This trip</span><button type="button" class="hint lockable" id="tripReset" style="border:0;background:none;color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 0">Reset</button></div>
+          <div class="big"><span class="num" id="tripDist">0.0</span><span class="u" id="tripDistU">km</span></div>
+          <div class="kv">
+            <div><div class="num" id="tripTime">0:00</div><div class="k">driving</div></div>
+            <div><div class="num" id="tripAvg">—</div><div class="k" id="tripAvgU">avg km/h</div></div>
+          </div>
+          <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>Flick for top speed, idle and stops</div>
+        </div>
+        <div class="face back">
+          <div class="fh"><span class="lbl">This trip · more</span></div>
+          <div class="kv">
+            <div><div class="num" id="tripTop">0</div><div class="k" id="tripTopU">top km/h</div></div>
+            <div><div class="num" id="tripIdle">0:00</div><div class="k">idling</div></div>
+            <div><div class="num" id="tripStops">0</div><div class="k">stops</div></div>
+          </div>
+          <div class="vs">Idling burns about 1 L an hour in a diesel Ranger.</div>
+        </div>
+      </div>
+      <span class="pips" aria-hidden="true"><i></i><i></i></span>
+    </div>
+
+    <!-- launch -->
+    <a class="launch primary a-home" id="homeLink" href="https://maps.apple.com/" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>
+      <span><div class="t">Go home</div><div class="s" id="homeSub">Set your address in settings</div></span>
+    </a>
+    <a class="launch a-maps" href="https://maps.apple.com/" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l7 19-7-4-7 4z"/></svg></span>
+      <span><div class="t">Maps</div><div class="s">Apple Maps</div></span>
+    </a>
+    <a class="launch a-waze" href="https://waze.com/ul" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+      <span><div class="t">Waze</div><div class="s">Traffic, cameras</div></span>
+    </a>
+    <a class="launch a-music" href="https://music.apple.com/" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
+      <span><div class="t">Music</div><div class="s">Via SYNC 3</div></span>
+    </a>
+    <a class="launch a-spot" href="https://open.spotify.com/" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9c5-2 11-1.5 16 1M5.5 13c4-1.4 9-1 13 .8M7 16.8c3.3-1 6.8-.7 9.8.7"/></svg></span>
+      <span><div class="t">Spotify</div><div class="s">Via SYNC 3</div></span>
+    </a>
   </main>
 
   <footer class="strip">
@@ -304,6 +443,12 @@ button{cursor:pointer}
   </section>
 
   <section>
+    <h3>Engine</h3>
+    <div class="row" role="group" aria-label="Engine" id="engineRow"></div>
+    <p class="muted" style="margin-top:8px;font-size:13px">Sets the rev limit on the gauge, boost scale and tank size.</p>
+  </section>
+
+  <section>
     <h3>Home</h3>
     <div class="field">
       <label for="homeInput" class="muted" style="font-size:13px">Address for the Go home button</label>
@@ -321,16 +466,13 @@ button{cursor:pointer}
 
   <section>
     <h3>Screen</h3>
-    <div class="row">
-      <button type="button" class="btn" id="wakeBtn" aria-pressed="false">Keep screen on</button>
-    </div>
-    <p class="muted" style="margin-top:8px;font-size:13px">Settings lock while the truck is moving. Pull over to change them.</p>
+    <div class="row"><button type="button" class="btn" id="wakeBtn" aria-pressed="false">Keep screen on</button></div>
+    <p class="muted" style="margin-top:8px;font-size:13px">Settings lock while the truck is moving. Cards you flick over return to the front after 8 seconds on the move, and any warning spins its card to the front.</p>
   </section>
 </aside>
 
 <script>
 (() => {
-  // ---------- storage (per-viewer conveniences only) ----------
   const store = {
     get(k, d){ try { const v = localStorage.getItem('cabdash.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
     set(k, v){ try { localStorage.setItem('cabdash.' + k, JSON.stringify(v)); } catch {} }
@@ -339,12 +481,23 @@ button{cursor:pointer}
   const app = $('app');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---------- state ----------
-  // T = latest readings (metric, internal). null = not available from this source.
+  // ---------- engine profiles (approximate; typical L/100 km is a fallback for range only) ----------
+  const ENGINES = {
+    tdci32: { name:'3.2 TDCi',     max:5000, red:4000, idle:750, boostPsi:24, tank:80, l100:9.0, gears:[0,95,55,38,29,22,17.5] },
+    tdci22: { name:'2.2 TDCi',     max:5000, red:4200, idle:800, boostPsi:24, tank:80, l100:8.0, gears:[0,100,58,40,30,23,18.5] },
+    bt20:   { name:'2.0 Bi-Turbo', max:5000, red:4500, idle:750, boostPsi:30, tank:80, l100:7.6, gears:[0,110,70,50,38,31,26,22,19.5,17.5,15.5] },
+    eco23:  { name:'2.3 EcoBoost', max:7000, red:6000, idle:720, boostPsi:16, tank:68, l100:11.0, gears:[0,118,74,52,40,33,28,24,21,18.5,16.5] },
+  };
+
   const T = { speed:0, rpm:0, throttle:null, boostKpa:null, coolant:null, intake:null, fuel:null, volts:null, ambient:null };
-  const D = { speed:0, rpm:0, throttle:0, boost:0 };          // eased display values
+  const D = { speed:0, rpm:0, throttle:0, boost:0 };
   const S = { src:'demo', units: store.get('units', navigator.language === 'en-US' ? 'imperial' : 'metric'),
-              home: store.get('home', ''), fresh: 0, trip: { km:0, sec:0 } };
+              engine: store.get('engine', 'tdci32'), home: store.get('home', ''), fresh:0 };
+  if (!ENGINES[S.engine]) S.engine = 'tdci32';
+  const E = () => ENGINES[S.engine];
+  const newTrip = () => ({ km:0, sec:0, idle:0, top:0, stops:0, fuel0:null });
+  S.trip = newTrip();
+  const hist = { cool:[], vmin:null, vmax:null };
 
   // ---------- units ----------
   const imp = () => S.units === 'imperial';
@@ -352,124 +505,213 @@ button{cursor:pointer}
   const tmp = c => imp() ? c * 9/5 + 32 : c;
   const tU = () => imp() ? '°F' : '°C';
   const dist = km => imp() ? km * 0.621371 : km;
+  const fmtT = c => Math.round(tmp(c)) + tU();
 
   // ---------- gauge ----------
-  const CX=150, CY=150, R=118, A0=135, SW=270, MAX=7000, RED=6000;
+  const CX=150, CY=150, R=118, A0=135, SW=270;
   const P = (deg, r) => { const a = deg * Math.PI / 180; return [CX + r*Math.cos(a), CY + r*Math.sin(a)]; };
   const arc = (f0, f1, r) => {
     const a0 = A0 + SW*f0, a1 = A0 + SW*f1, [x0,y0] = P(a0,r), [x1,y1] = P(a1,r);
     return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1-a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
   };
-  $('gTrack').setAttribute('d', arc(0, 1, R));
-  $('gFill').setAttribute('d', arc(0, 1, R));
-  $('gRed').setAttribute('d', arc(RED/MAX, 1, R + 12));
-  (() => {
+  function buildGauge(){
+    const { max, red } = E();
+    $('gTrack').setAttribute('d', arc(0, 1, R));
+    $('gFill').setAttribute('d', arc(0, 1, R));
+    $('gRed').setAttribute('d', arc(red/max, 1, R + 12));
     let html = '';
-    for (let v = 0; v <= MAX; v += 500) {
-      const f = v / MAX, a = A0 + SW*f, major = v % 1000 === 0;
+    for (let v = 0; v <= max; v += 500) {
+      const a = A0 + SW*v/max, major = v % 1000 === 0;
       const [x0,y0] = P(a, R + 17), [x1,y1] = P(a, R + (major ? 27 : 22));
-      html += `<line class="g-tick${major ? ' major' : ''}${v >= RED ? ' hot' : ''}" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
+      html += `<line class="g-tick${major ? ' major' : ''}${v >= red ? ' hot' : ''}" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
       if (major) { const [lx,ly] = P(a, R + 40); html += `<text class="g-lab" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}">${v/1000}</text>`; }
     }
     $('ticks').innerHTML = html;
-  })();
+    $('subline').textContent = '2019 Ranger · ' + E().name;
+  }
 
-  // ---------- vitals ----------
-  const VITALS = [
-    { k:'coolant', label:'Coolant', min:40, max:125, band:[80,105], temp:true,
-      state:v => v >= 110 ? 'crit' : v >= 105 ? 'warn' : v < 70 ? 'cold' : 'ok',
-      note:(v,s) => s === 'cold' ? 'Warming up. Go easy.' : `Normal ${fmtT(80)}–${fmtT(105)}` },
-    { k:'fuel', label:'Fuel', min:0, max:100, band:[15,100], unit:'%', dec:0,
-      state:v => v < 8 ? 'crit' : v < 15 ? 'warn' : 'ok', note:() => 'Low below 15%' },
-    { k:'volts', label:'Battery', min:11, max:15.5, band:[13.2,14.8], unit:'V', dec:1,
-      state:v => v < 11.8 ? 'crit' : (v < 12.6 || v > 15) ? 'warn' : 'ok', note:() => 'Charging 13.2–14.8 V' },
-    { k:'intake', label:'Intake air', min:-10, max:80, band:[-10,50], temp:true,
-      state:v => v > 65 ? 'warn' : 'ok', note:() => 'After intercooler' },
-  ];
-  const fmtT = c => Math.round(tmp(c)) + tU();
-  const vit = {};
-  $('vitals').innerHTML = VITALS.map(v => `
-    <div class="vital" data-k="${v.k}" data-state="none">
-      <div class="vh"><span class="lbl">${v.label}</span><span class="sdot"></span></div>
-      <div class="vv"><span class="num">—</span><span class="u"></span></div>
-      <div class="range"><span class="band"></span><span class="mk" style="left:0"></span></div>
-      <div class="vs"></div>
-    </div>`).join('');
-  VITALS.forEach(v => {
-    const el = document.querySelector(`.vital[data-k="${v.k}"]`);
-    const pct = x => Math.max(0, Math.min(100, (x - v.min) / (v.max - v.min) * 100));
-    el.querySelector('.band').style.cssText = `left:${pct(v.band[0])}%;width:${pct(v.band[1]) - pct(v.band[0])}%`;
-    vit[v.k] = { el, num: el.querySelector('.num'), u: el.querySelector('.u'), mk: el.querySelector('.mk'), vs: el.querySelector('.vs'), pct };
-  });
+  // ---------- front-face metrics ----------
+  const METRICS = {
+    coolant:{ card:'cardCool', v:'coolV', mk:'coolMk', band:'coolBand', min:40, max:125, rng:[80,105],
+              state:v => v >= 110 ? 'crit' : v >= 105 ? 'warn' : v < 70 ? 'cold' : 'ok' },
+    fuel:   { card:'cardFuel', v:'fuelV', tank:'fuelTank', min:0, max:100, rng:[15,100],
+              state:v => v < 8 ? 'crit' : v < 15 ? 'warn' : 'ok' },
+    volts:  { card:'cardBatt', v:'voltV', mk:'voltMk', band:'voltBand', min:11, max:15.5, rng:[13.2,14.8],
+              state:v => v < 11.8 ? 'crit' : (v < 12.6 || v > 15) ? 'warn' : 'ok' },
+  };
+  for (const m of Object.values(METRICS)) {
+    m.pct = x => Math.max(0, Math.min(100, (x - m.min) / (m.max - m.min) * 100));
+    if (m.band) $(m.band).style.cssText = `left:${m.pct(m.rng[0])}%;width:${m.pct(m.rng[1]) - m.pct(m.rng[0])}%`;
+  }
 
-  function renderVitals(){
+  function render(){
     const alerts = [];
-    VITALS.forEach(v => {
-      const r = vit[v.k], val = T[v.k];
-      r.u.textContent = v.temp ? tU() : v.unit;
-      if (val == null) { r.num.textContent = '—'; r.el.dataset.state = 'none'; r.vs.textContent = 'Not available on this source'; r.mk.style.opacity = 0; return; }
-      const s = v.state(val);
-      r.el.dataset.state = s;
-      r.num.textContent = v.temp ? Math.round(tmp(val)) : val.toFixed(v.dec);
-      r.mk.style.opacity = 1; r.mk.style.left = r.pct(val) + '%';
-      r.vs.textContent = v.note(val, s);
-      if (s === 'warn' || s === 'crit') alerts.push({ s, k:v.k, val });
-    });
-    const a = $('alert');
+    for (const [k, m] of Object.entries(METRICS)) {
+      const card = $(m.card), val = T[k];
+      if (val == null) { card.dataset.state = 'none'; $(m.v).textContent = '—'; if (m.mk) $(m.mk).style.opacity = 0; if (m.tank) $(m.tank).style.height = '0'; continue; }
+      const s = m.state(val); card.dataset.state = s;
+      $(m.v).textContent = k === 'coolant' ? Math.round(tmp(val)) : k === 'volts' ? val.toFixed(1) : Math.round(val);
+      if (m.mk) { $(m.mk).style.opacity = 1; $(m.mk).style.left = m.pct(val) + '%'; }
+      if (m.tank) $(m.tank).style.height = m.pct(val) + '%';
+      if (s === 'warn' || s === 'crit') { alerts.push({ s, k, val }); if (card.dataset.face === '1') flipTo(card, 0); }
+    }
+    document.querySelectorAll('[data-tu]').forEach(e => e.textContent = tU());
+    const c = T.coolant;
+    $('coolNote').textContent = c == null ? 'Not available on this source' : c < 70 ? 'Warming up. Go easy.' : `Normal ${fmtT(80)}–${fmtT(105)}`;
+    $('intakeV').textContent = T.intake == null ? '—' : fmtT(T.intake);
+    if (T.intake != null && T.intake > 65) alerts.push({ s:'warn', k:'intake', val:T.intake });
+
+    // coolant sparkline
+    const h = hist.cool;
+    if (h.length > 1) {
+      const lo = Math.min(...h) - 2, hi = Math.max(...h) + 2;
+      const pts = h.map((v, i) => [i / (h.length - 1) * 100, 38 - (v - lo) / (hi - lo) * 34]);
+      const d = 'M' + pts.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join(' L');
+      $('coolLine').setAttribute('d', d);
+      $('coolArea').setAttribute('d', d + ' L100 40 L0 40 Z');
+      const e = $('coolEnd'); e.hidden = false; e.style.left = '100%'; e.style.top = (pts[pts.length - 1][1] / 40 * 100) + '%';
+      $('coolLo').textContent = 'Low ' + fmtT(Math.min(...h)); $('coolHi').textContent = 'Now ' + fmtT(h[h.length - 1]);
+    } else { $('coolLine').setAttribute('d', ''); $('coolArea').setAttribute('d', ''); $('coolEnd').hidden = true; $('coolLo').textContent = 'No data yet'; $('coolHi').textContent = ''; }
+
+    // fuel range
+    const t = S.trip, f = T.fuel;
+    if (f == null) { $('rangeV').textContent = '—'; $('rangeNote').textContent = 'Needs fuel level from OBD'; }
+    else {
+      const used = t.fuel0 != null ? t.fuel0 - f : 0;
+      let km, note;
+      if (used >= 1.5 && t.km > 5) {
+        const l100 = (used / 100 * E().tank) / t.km * 100;
+        km = f / 100 * E().tank / l100 * 100;
+        note = imp() ? `At this trip's ${(235.2 / l100).toFixed(1)} mpg` : `At this trip's ${l100.toFixed(1)} L/100 km`;
+      } else {
+        km = f / 100 * E().tank / E().l100 * 100;
+        note = imp() ? `Estimate at a typical ${(235.2 / E().l100).toFixed(0)} mpg` : `Estimate at a typical ${E().l100.toFixed(1)} L/100 km`;
+      }
+      $('rangeV').textContent = Math.round(dist(km)); $('rangeNote').textContent = note;
+    }
+    $('rangeU').textContent = imp() ? 'mi' : 'km';
+
+    $('fuelL').textContent = f == null ? 'Not available on this source' : imp()
+      ? `≈ ${(f / 100 * E().tank * 0.264172).toFixed(1)} gal of ${(E().tank * 0.264172).toFixed(0)}`
+      : `≈ ${Math.round(f / 100 * E().tank)} L of ${E().tank} L`;
+    // battery history
+    $('vMin').textContent = hist.vmin == null ? '—' : hist.vmin.toFixed(1);
+    $('vMax').textContent = hist.vmax == null ? '—' : hist.vmax.toFixed(1);
+
+    // trip
+    $('tripDist').textContent = dist(t.km).toFixed(1);
+    const mm = s => { const m = Math.floor(s / 60); return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`; };
+    $('tripTime').textContent = mm(t.sec);
+    $('tripAvg').textContent = t.sec > 30 ? Math.round(spd(t.km / (t.sec / 3600))) : '—';
+    $('tripTop').textContent = Math.round(spd(t.top));
+    $('tripIdle').textContent = mm(t.idle);
+    $('tripStops').textContent = t.stops;
+    $('tripDistU').textContent = imp() ? 'mi' : 'km';
+    $('tripAvgU').textContent = imp() ? 'avg mph' : 'avg km/h';
+    $('tripTopU').textContent = imp() ? 'top mph' : 'top km/h';
+
+    // alert strip
     const msg = {
       coolant: x => `Coolant ${fmtT(x.val)}. Pull over when safe and switch off.`,
-      fuel:    x => `Fuel at ${Math.round(x.val)}%. Find a station.`,
+      fuel:    x => `Fuel at ${Math.round(x.val)}%. Find a servo.`,
       volts:   x => `Battery ${x.val.toFixed(1)} V. Charging system needs a check.`,
       intake:  x => `Intake air ${fmtT(x.val)}. Ease off if towing.`,
     };
     alerts.sort((p, q) => (q.s === 'crit') - (p.s === 'crit'));
+    const a = $('alert');
     if (alerts.length) { a.dataset.sev = alerts[0].s; a.textContent = msg[alerts[0].k](alerts[0]); }
     else { a.dataset.sev = 'ok'; a.textContent = S.src === 'gps' ? 'GPS gives speed only. Connect OBD for engine data.' : 'All readings normal'; }
     $('ambient').textContent = T.ambient == null ? '—' : fmtT(T.ambient);
   }
 
+  // ---------- flip cards ----------
+  const cards = [...document.querySelectorAll('.flip')];
+  function setAngle(card, angle){
+    card._angle = angle;
+    card._spin.style.transform = `rotateX(${angle}deg)`;
+    const face = ((Math.round(angle / 180) % 2) + 2) % 2;
+    card.dataset.face = String(face);
+    card._since = performance.now();
+  }
+  function flip(card, dir){ setAngle(card, card._angle + dir * 180); }
+  function flipTo(card, face){ if (card.dataset.face !== String(face)) flip(card, 1); }
+  cards.forEach(card => {
+    card._spin = card.querySelector('.spin'); card._angle = 0; card._since = 0;
+    let y0 = 0, x0 = 0, t0 = 0, pid = null, dragging = false;
+    card.addEventListener('pointerdown', e => {
+      if (e.target.closest('button')) return;
+      pid = e.pointerId; y0 = e.clientY; x0 = e.clientX; t0 = performance.now(); dragging = false;
+      try { card.setPointerCapture(pid); } catch {}
+    });
+    card.addEventListener('pointermove', e => {
+      if (e.pointerId !== pid) return;
+      const dy = e.clientY - y0;
+      if (!dragging && Math.abs(dy) > 6 && Math.abs(dy) > Math.abs(e.clientX - x0)) dragging = true;
+      if (dragging && !reduce) {
+        card._spin.style.transition = 'none';
+        const pull = Math.max(-80, Math.min(80, -dy * 0.55));
+        card._spin.style.transform = `rotateX(${card._angle + pull}deg)`;
+      }
+    });
+    const end = e => {
+      if (e.pointerId !== pid) return; pid = null;
+      card._spin.style.transition = '';
+      const dy = e.clientY - y0, dx = e.clientX - x0, dt = Math.max(1, performance.now() - t0);
+      if (e.type === 'pointercancel') { setAngle(card, card._angle); return; }
+      if (Math.abs(dy) > 28 && Math.abs(dy) > Math.abs(dx) * 1.2 && (Math.abs(dy) / dt > 0.25 || Math.abs(dy) > 70)) flip(card, dy < 0 ? 1 : -1);
+      else if (Math.abs(dy) < 8 && Math.abs(dx) < 8 && dt < 400) flip(card, 1);
+      else setAngle(card, card._angle);
+    };
+    card.addEventListener('pointerup', end);
+    card.addEventListener('pointercancel', end);
+    card.addEventListener('keydown', e => {
+      if (['Enter',' ','ArrowUp','ArrowDown'].includes(e.key)) { e.preventDefault(); flip(card, e.key === 'ArrowDown' ? -1 : 1); }
+    });
+  });
+
   // ---------- status ----------
-  function setStatus(state, text){ const p = $('status'); p.dataset.state = state; $('statusText').textContent = text; }
+  function setStatus(state, text){ $('status').dataset.state = state; $('statusText').textContent = text; }
   function sheetMsg(text, sev){ const n = $('obdMsg'); n.hidden = !text; n.textContent = text || ''; n.dataset.sev = sev || ''; }
 
   // ---------- source: demo ----------
-  const sim = { phase:'stop', t:3, target:0, v:0, coolant:64, fuel:63 };
-  const GEAR = [0,118,74,52,40,33,28,24,21,18.5,16.5];    // rpm per km/h, 10R80-ish ratios
+  const sim = { phase:'stop', t:3, target:0, v:0, coolant:66, fuel:63 };
+  function seedDemoHistory(){ hist.cool = Array.from({ length:60 }, (_, i) => 28 + (sim.coolant - 28) * (1 - Math.exp(-i / 18)) / (1 - Math.exp(-59 / 18))); hist.vmin = 12.1; hist.vmax = 14.3; }
   function simStep(dt){
+    const eng = E(), G = eng.gears, top = G.length - 1;
     sim.t += dt;
     if (sim.phase === 'stop' && sim.t > 6) { sim.phase = 'go'; sim.t = 0; sim.target = [50,60,80,100][Math.random()*4|0]; }
     else if (sim.phase === 'go' && sim.v >= sim.target - 1) { sim.phase = 'cruise'; sim.t = 0; }
     else if (sim.phase === 'cruise' && sim.t > 14) { sim.phase = 'brake'; sim.t = 0; }
     else if (sim.phase === 'brake' && sim.v <= 0.3) { sim.phase = 'stop'; sim.t = 0; sim.v = 0; }
     let acc = 0, thr = 0;
-    if (sim.phase === 'go')     { acc = Math.max(1.1, 3.8 - sim.v/38); thr = 52 + 18*Math.sin(sim.t*.8); }
+    if (sim.phase === 'go')     { acc = Math.max(1.1, 3.4 - sim.v/40); thr = 52 + 18*Math.sin(sim.t*.8); }
     if (sim.phase === 'cruise') { acc = (sim.target - sim.v)*.25 + Math.sin(sim.t*.5)*.5; thr = 17 + 6*Math.sin(sim.t*.5); }
     if (sim.phase === 'brake')  { acc = -3; thr = 0; }
     sim.v = Math.max(0, sim.v + acc*dt*3.6);
-    const floor = thr > 40 ? 2200 : 1300;
-    let g = 1; for (let i = 10; i >= 1; i--) if (sim.v * GEAR[i] >= floor) { g = i; break; }
-    const rpm = sim.v < 3 ? 720 + thr*8 + Math.sin(sim.t*3)*12 : Math.max(950, sim.v*GEAR[g]) + thr*6;
-    sim.coolant += (91 - sim.coolant) * dt * .018;
-    sim.fuel = Math.max(0, sim.fuel - sim.v*dt*0.000015);
+    const floor = thr > 40 ? eng.red * .5 : eng.red * .3;
+    let g = 1; for (let i = top; i >= 1; i--) if (sim.v * G[i] >= floor) { g = i; break; }
+    const rpm = sim.v < 3 ? eng.idle + thr*8 + Math.sin(sim.t*3)*12 : Math.max(eng.idle + 200, sim.v*G[g]) + thr*5;
+    sim.coolant += (90 - sim.coolant) * dt * .018;
+    sim.fuel = Math.max(0, sim.fuel - sim.v*dt*0.00002);
+    const psi = thr > 25 ? (thr - 25) / 50 * eng.boostPsi : -(9 - thr * .3);
     Object.assign(T, {
-      speed: sim.v, rpm, throttle: thr,
-      boostKpa: thr > 30 ? (thr - 30) / 48 * 95 : -(62 - thr*1.4),
+      speed: sim.v, rpm, throttle: thr, boostKpa: psi / 0.145038,
       coolant: sim.coolant, fuel: sim.fuel, volts: 14.1 + Math.sin(sim.t*.3)*.08,
-      intake: 26 + thr*.07, ambient: 19
+      intake: 24 + thr*.07, ambient: 19
     });
     S.fresh = performance.now();
   }
 
-  // ---------- source: GPS (speed only; needs a cellular iPad) ----------
+  // ---------- source: GPS ----------
   let geoId = null, lastFix = null;
   function hav(a, b){
     const r = Math.PI/180, dLa = (b.latitude-a.latitude)*r, dLo = (b.longitude-a.longitude)*r;
     const h = Math.sin(dLa/2)**2 + Math.cos(a.latitude*r)*Math.cos(b.latitude*r)*Math.sin(dLo/2)**2;
     return 12742000 * Math.asin(Math.sqrt(h));
   }
+  function clearEngine(){ for (const k of ['rpm','throttle','boostKpa','coolant','intake','fuel','volts','ambient']) T[k] = null; T.speed = 0; }
   function startGPS(){
-    for (const k of ['rpm','throttle','boostKpa','coolant','intake','fuel','volts','ambient']) T[k] = null;
-    T.speed = 0;
+    clearEngine();
     if (!('geolocation' in navigator)) { setStatus('err', 'No location on this device'); return; }
     setStatus('wait', 'Finding GPS…');
     geoId = navigator.geolocation.watchPosition(p => {
@@ -492,6 +734,7 @@ button{cursor:pointer}
     'e7810a71-73ae-499d-8c15-faa9aef0c3f2',  // OBDLink CX
     '000018f0-0000-1000-8000-00805f9b34fb'   // iCar Pro BLE
   ];
+  const clean = s => (s || '').toUpperCase().replace(/SEARCHING\.\.\.|\s/g, '');
   const OBD = {
     dev:null, rx:null, tx:null, buf:'', waiters:[], chain:Promise.resolve(), on:false,
     async connect(){
@@ -566,10 +809,14 @@ button{cursor:pointer}
     },
     stop(){ this.on = false; try { this.dev && this.dev.gatt.connected && this.dev.gatt.disconnect(); } catch {} this.rx = this.tx = null; this.waiters = []; this.buf = ''; }
   };
-  const clean = s => (s || '').toUpperCase().replace(/SEARCHING\.\.\.|\s/g, '');
 
   // ---------- source switching ----------
   function markSeg(){ document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-checked', String(b.dataset.src === S.src))); app.dataset.live = String(S.src !== 'demo'); }
+  function resetSession(src){
+    S.trip = src === 'demo' ? newTrip() : Object.assign(newTrip(), store.get('trip', {}));
+    hist.cool = []; hist.vmin = hist.vmax = null;
+    if (src === 'demo') seedDemoHistory();
+  }
   async function setSource(src){
     if (src === S.src && src !== 'obd') return;
     if (src === 'obd' && !navigator.bluetooth) {
@@ -578,12 +825,11 @@ button{cursor:pointer}
       return;
     }
     stopGPS(); OBD.stop();
-    S.src = src; markSeg(); sheetMsg('');
-    S.trip = src === 'demo' ? { km:0, sec:0 } : store.get('trip', { km:0, sec:0 });
+    S.src = src; markSeg(); sheetMsg(''); resetSession(src);
     if (src === 'demo') { sim.phase = 'stop'; sim.t = 3; setStatus('demo', 'Demo drive'); }
     if (src === 'gps') startGPS();
     if (src === 'obd') {
-      for (const k of Object.keys(T)) T[k] = k === 'speed' || k === 'rpm' ? 0 : null;
+      clearEngine(); T.rpm = 0;
       try { await OBD.connect(); closeSheet(); }
       catch (e) {
         OBD.stop();
@@ -596,7 +842,7 @@ button{cursor:pointer}
   document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => setSource(b.dataset.src)));
   $('obdBtn').addEventListener('click', () => setSource('obd'));
 
-  // ---------- settings sheet ----------
+  // ---------- settings ----------
   function openSheet(){ $('sheet').hidden = false; $('scrim').hidden = false; }
   function closeSheet(){ $('sheet').hidden = true; $('scrim').hidden = true; }
   $('setBtn').addEventListener('click', openSheet);
@@ -604,13 +850,18 @@ button{cursor:pointer}
   $('scrim').addEventListener('click', closeSheet);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 
+  $('engineRow').innerHTML = Object.entries(ENGINES).map(([k, e]) => `<button type="button" class="btn" data-engine="${k}">${e.name}</button>`).join('');
+  function applyEngine(){
+    document.querySelectorAll('[data-engine]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.engine === S.engine)));
+    buildGauge();
+  }
+  document.querySelectorAll('[data-engine]').forEach(b => b.addEventListener('click', () => { S.engine = b.dataset.engine; store.set('engine', S.engine); applyEngine(); }));
+
   function applyUnits(){
     $('uMetric').setAttribute('aria-pressed', String(!imp()));
     $('uImperial').setAttribute('aria-pressed', String(imp()));
     $('speedUnit').textContent = imp() ? 'mph' : 'km/h';
-    $('tripDistU').textContent = imp() ? 'mi' : 'km';
-    $('tripAvgU').textContent = imp() ? 'avg mph' : 'avg km/h';
-    renderVitals();
+    render();
   }
   document.querySelectorAll('[data-units]').forEach(b => b.addEventListener('click', () => { S.units = b.dataset.units; store.set('units', S.units); applyUnits(); }));
 
@@ -623,7 +874,6 @@ button{cursor:pointer}
   $('homeInput').addEventListener('change', e => { S.home = e.target.value.trim(); store.set('home', S.home); applyHome(); });
   $('homeLink').addEventListener('click', e => { if (!S.home && app.dataset.moving !== 'true') { e.preventDefault(); openSheet(); $('homeInput').focus(); } });
 
-  // theme: day = light (readable in sun glare), night = dark
   const savedTheme = store.get('theme', null);
   if (savedTheme) document.documentElement.dataset.theme = savedTheme;
   $('themeBtn').addEventListener('click', () => {
@@ -632,7 +882,6 @@ button{cursor:pointer}
     document.documentElement.dataset.theme = next; store.set('theme', next);
   });
 
-  // keep screen awake
   let wake = null, wantWake = store.get('wake', true);
   async function requestWake(){
     if (!wantWake || !('wakeLock' in navigator) || wake) return;
@@ -647,72 +896,81 @@ button{cursor:pointer}
   document.addEventListener('pointerdown', requestWake, { once:true });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') requestWake(); });
 
-  // trip
-  $('tripReset').addEventListener('click', () => { S.trip = { km:0, sec:0 }; if (S.src !== 'demo') store.set('trip', S.trip); });
+  $('tripReset').addEventListener('click', e => { e.stopPropagation(); S.trip = newTrip(); if (S.src !== 'demo') store.set('trip', S.trip); render(); });
 
-  // ---------- clock ----------
   function tick(){ $('clock').textContent = new Date().toLocaleTimeString([], { hour:'numeric', minute:'2-digit' }); }
   tick(); setInterval(tick, 5000);
 
-  // ---------- render loop ----------
-  let last = performance.now(), slow = 0, saveT = 0;
-  const sweepStart = reduce ? -1 : last;
+  // ---------- loop ----------
+  let last = performance.now(), slow = 0, sample = 0, saveT = 0, wasMoving = false;
+  const t0 = last;
   function frame(now){
     const dt = Math.max(0, Math.min(.1, (now - last) / 1000)); last = now;
     if (S.src === 'demo') simStep(dt);
 
-    // trip accumulates only while moving
-    if (T.speed > 1) { S.trip.km += T.speed * dt / 3600; S.trip.sec += dt; }
+    const t = S.trip, v = T.speed || 0;
+    if (v > 1) { t.km += v * dt / 3600; t.sec += dt; t.top = Math.max(t.top, v); }
+    else if (T.rpm) t.idle += dt;
+    if (t.fuel0 == null && T.fuel != null) t.fuel0 = T.fuel;
+    if (T.volts != null) { hist.vmin = Math.min(hist.vmin ?? T.volts, T.volts); hist.vmax = Math.max(hist.vmax ?? T.volts, T.volts); }
 
-    // ease toward targets
     const k = reduce ? 1 : 1 - Math.exp(-dt * 7);
-    D.speed += ((T.speed || 0) - D.speed) * k;
+    D.speed += (v - D.speed) * k;
     D.rpm += ((T.rpm || 0) - D.rpm) * k;
     D.throttle += ((T.throttle || 0) - D.throttle) * k;
     D.boost += ((T.boostKpa || 0) - D.boost) * k;
 
-    // start-up needle sweep, like the real cluster
+    const MAX = E().max;
     let rpmShown = D.rpm;
-    if (sweepStart > 0) { const s = Math.max(0, (now - sweepStart) / 1300); if (s < 1) rpmShown = MAX * Math.sin(Math.PI * Math.min(1, s)) ** 1.4; }
-
+    if (!reduce) { const s = Math.max(0, (now - t0) / 1300); if (s < 1) rpmShown = MAX * Math.sin(Math.PI * s) ** 1.4; }
     const f = Math.max(0, Math.min(1, rpmShown / MAX));
     $('gFill').setAttribute('stroke-dasharray', `${(f * 1000).toFixed(1)} 1000`);
     const [tx, ty] = P(A0 + SW * f, R); $('gTip').setAttribute('cx', tx.toFixed(1)); $('gTip').setAttribute('cy', ty.toFixed(1));
-    $('gauge').classList.toggle('shift', rpmShown >= RED);
+    $('gauge').classList.toggle('shift', rpmShown >= E().red);
     $('speed').textContent = Math.round(spd(D.speed));
     $('rpm').textContent = T.rpm == null ? '—' : (Math.round(rpmShown / 10) * 10).toLocaleString();
 
-    if (T.boostKpa == null) { $('boost').innerHTML = '—'; $('boostBar').style.width = '0'; }
+    if (T.boostKpa == null) { $('boost').textContent = '—'; $('boostBar').style.width = '0'; }
     else {
       const psi = D.boost * 0.145038;
       $('boost').innerHTML = imp() ? `${psi.toFixed(1)}<small>psi</small>` : `${(D.boost / 100).toFixed(2)}<small>bar</small>`;
-      $('boostBar').style.width = Math.max(0, Math.min(100, psi / 16 * 100)) + '%';
+      $('boostBar').style.width = Math.max(0, Math.min(100, psi / E().boostPsi * 100)) + '%';
     }
-    if (T.throttle == null) { $('thr').innerHTML = '—'; $('thrBar').style.width = '0'; }
+    if (T.throttle == null) { $('thr').textContent = '—'; $('thrBar').style.width = '0'; }
     else { $('thr').innerHTML = `${Math.round(D.throttle)}<small>%</small>`; $('thrBar').style.width = Math.min(100, D.throttle) + '%'; }
 
-    // drive lock
-    const moving = (T.speed || 0) > 5;
-    if (String(moving) !== app.dataset.moving) {
+    // drive state + lock
+    const moving = v > 5;
+    if (moving !== wasMoving) {
+      if (!moving) t.stops++;
+      wasMoving = moving;
       app.dataset.moving = String(moving);
       $('driveState').textContent = moving ? 'Moving · settings locked' : 'Parked';
       if (moving && S.src !== 'demo') closeSheet();
     }
+    if (moving) cards.forEach(c => { if (c.dataset.face === '1' && now - c._since > 8000) flipTo(c, 0); });
 
-    slow += dt;
+    slow += dt; sample += dt;
+    if (sample > 5) { sample = 0; if (T.coolant != null) { hist.cool.push(T.coolant); if (hist.cool.length > 120) hist.cool.shift(); } }
     if (slow > .5) {
-      slow = 0; renderVitals();
-      $('tripDist').textContent = dist(S.trip.km).toFixed(1);
-      const m = Math.floor(S.trip.sec / 60); $('tripTime').textContent = `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
-      $('tripAvg').textContent = S.trip.sec > 30 ? Math.round(spd(S.trip.km / (S.trip.sec / 3600))) : '—';
+      slow = 0; render();
       if (S.src !== 'demo' && S.fresh && now - S.fresh > 5000 && $('status').dataset.state === 'live') setStatus('wait', 'No data from source');
       if ((saveT += 1) > 20) { saveT = 0; if (S.src !== 'demo') store.set('trip', S.trip); }
     }
     requestAnimationFrame(frame);
   }
 
-  markSeg(); applyUnits(); applyHome(); markWake();
+  // teach the gesture once: the trip card peeks after the needle sweep
+  function peek(){
+    if (reduce) return;
+    const c = $('cardTrip');
+    c._spin.style.transform = 'rotateX(24deg)';
+    setTimeout(() => setAngle(c, c._angle), 420);
+  }
+
+  markSeg(); seedDemoHistory(); applyEngine(); applyUnits(); applyHome(); markWake(); render();
   requestAnimationFrame(frame);
+  setTimeout(peek, 1700);
 })();
 </script>
 
