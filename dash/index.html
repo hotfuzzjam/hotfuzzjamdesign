@@ -9,13 +9,14 @@
 <style>
 /* Layout: 8-column bento. Gauge cluster holds the left three columns at full height; flip cards (coolant, fuel,
    battery, trip) and launch tiles fill the rest in mixed sizes. 4 columns under 1000px, 2 under 640px.
-   Palette: night = open water after dark (abyssal ink, lagoon teal, coral for danger, sand for caution);
-   day = shallows (sea mist ground, deep-channel teal). */
+   Palette: Anthropic brand colours. Night = near-black #141413 with clay orange #d97757; day = ivory #faf9f5
+   on warm grey #e8e6dc. Brand blue #6a9bcc reads "cold", brand olive #788c5d reads "normal".
+   Danger is a truer red than the orange accent, and also blinks, so the two never get confused. */
 :root{
-  --bg:#04121a; --panel:#0a1f2a; --raise:#10303f; --line:#173949;
-  --fg:#e2f3f1; --muted:#7ea3ab; --dim:#48707a;
-  --accent:#46c9c0; --accent-ink:#032421; --glow:rgba(70,201,192,.11); --glow2:rgba(64,140,210,.09);
-  --ok:#8fd16b; --warn:#f0c869; --crit:#ff6f5e; --cold:#6aa8ff;
+  --bg:#141413; --panel:#1c1c1a; --raise:#262624; --line:#32312d;
+  --fg:#faf9f5; --muted:#b0aea5; --dim:#6b6a63;
+  --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.07);
+  --ok:#8c9f6e; --warn:#e2b04f; --crit:#f2463f; --cold:#6a9bcc;
   --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
   --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
   --r-lg:20px; --r-sm:12px; --gap:12px;
@@ -23,18 +24,18 @@
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
-    --bg:#e1edef; --panel:#f3f9f9; --raise:#ffffff; --line:#c6dade;
-    --fg:#062330; --muted:#44656f; --dim:#86a4ac;
-    --accent:#0a7c86; --accent-ink:#effcfb; --glow:rgba(10,124,134,.09); --glow2:rgba(40,110,190,.07);
-    --ok:#3d7f22; --warn:#9c6d00; --crit:#cf3e2c; --cold:#2d6fd0;
+    --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
+    --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
+    --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
+    --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4;
     color-scheme:light;
   }
 }
 :root[data-theme="light"]{
-  --bg:#e1edef; --panel:#f3f9f9; --raise:#ffffff; --line:#c6dade;
-  --fg:#062330; --muted:#44656f; --dim:#86a4ac;
-  --accent:#0a7c86; --accent-ink:#effcfb; --glow:rgba(10,124,134,.09); --glow2:rgba(40,110,190,.07);
-  --ok:#3d7f22; --warn:#9c6d00; --crit:#cf3e2c; --cold:#2d6fd0;
+  --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
+  --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
+  --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
+  --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4;
   color-scheme:light;
 }
 
@@ -164,7 +165,7 @@ button{cursor:pointer}
 .tankwrap .col{display:flex;flex-direction:column;gap:8px;min-width:0}
 .tank{position:relative;margin-bottom:16px;border-radius:9px;background:var(--raise);overflow:hidden;min-height:90px}
 .tank .low{position:absolute;left:0;right:0;bottom:0;height:15%;background:color-mix(in srgb,var(--crit) 22%,transparent)}
-.tank .lvl{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(to top,var(--accent),color-mix(in srgb,var(--accent) 55%,transparent));transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
+.tank .lvl{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(to top,var(--muted),color-mix(in srgb,var(--muted) 45%,transparent));transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
 .tank .lvl::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--fg);opacity:.7}
 .flip[data-state="warn"] .tank .lvl{background:var(--warn)}
 .flip[data-state="crit"] .tank .lvl{background:var(--crit)}
@@ -208,7 +209,7 @@ button{cursor:pointer}
 [data-moving="true"] .lockable, [data-moving="true"][data-live="true"] .lockable-live{opacity:.32;pointer-events:none}
 
 /* settings sheet */
-.scrim{position:fixed;inset:0;background:rgba(2,10,14,.5);z-index:20}
+.scrim{position:fixed;inset:0;background:rgba(20,20,19,.5);z-index:20}
 .sheet{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);z-index:21;background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;
   padding:calc(20px + env(safe-area-inset-top,0px)) max(22px, env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) 22px;
   display:flex;flex-direction:column;gap:22px;animation:slide .28s cubic-bezier(.2,.8,.2,1)}
