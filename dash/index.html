@@ -19,7 +19,7 @@
   --bg:#141413; --panel:#1c1c1a; --raise:#262624; --line:#33322e;
   --fg:#faf9f5; --muted:#b0aea5; --dim:#6b6a63;
   --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.11); --glow2:rgba(106,155,204,.09);
-  --dial:#5ad48a; --info:#7fb0e0; --oil:#a48fe0; --apps:#a9cdf2; --pa:.15;
+  --dial:#5ad48a; --info:#7fb0e0; --oil:#a48fe0; --apps:#a9cdf2; --pa:.15; --leather:.2;
   --ok:#8fb573; --warn:#e2b04f; --crit:#f2463f; --cold:#7fb0e0;
   --sheen:rgba(250,249,245,.045); --hl:rgba(255,255,255,.05); --shade:rgba(0,0,0,.85);
   --weave-a:rgba(250,249,245,.03); --weave-b:rgba(0,0,0,.35); --stitch:rgba(217,119,87,.4);
@@ -35,7 +35,7 @@
     --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
     --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
     --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.09);
-    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8; --pa:.13;
+    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8; --pa:.13; --leather:.3;
     --ok:#5f7a45; --warn:#a6760c; --crit:#c92a24; --cold:#3f74b0;
     --sheen:rgba(255,255,255,.7); --hl:rgba(255,255,255,.95); --shade:rgba(60,50,30,.3);
     --weave-a:rgba(20,20,19,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(217,119,87,.45);
@@ -48,7 +48,7 @@
   --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
     --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
     --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.09);
-    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8; --pa:.13;
+    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8; --pa:.13; --leather:.3;
     --ok:#5f7a45; --warn:#a6760c; --crit:#c92a24; --cold:#3f74b0;
     --sheen:rgba(255,255,255,.7); --hl:rgba(255,255,255,.95); --shade:rgba(60,50,30,.3);
     --weave-a:rgba(20,20,19,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(217,119,87,.45);
@@ -186,11 +186,10 @@ button{cursor:pointer}
 .tankwrap{display:grid;grid-template-columns:minmax(0,1fr) 18px;gap:12px;flex:1;min-height:0}
 .tankwrap .col{display:flex;flex-direction:column;gap:8px;min-width:0}
 .tank{position:relative;margin-bottom:16px;border-radius:9px;background:var(--raise);overflow:hidden;min-height:90px}
-.tank .low{position:absolute;left:0;right:0;bottom:0;height:15%;background:color-mix(in srgb,var(--crit) 22%,transparent)}
-.tank .lvl{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(to top,var(--info),color-mix(in srgb,var(--info) 40%,transparent));transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
+/* reserve zone: bottom 10% of the tank runs orange to red (red = empty); always faintly visible in the empty track */
+.tank .low{position:absolute;left:0;right:0;bottom:0;height:10%;background:linear-gradient(to top,var(--crit),var(--accent));opacity:.35}
+.tank .lvl{position:absolute;left:0;right:0;bottom:0;height:0;--f:.01;background:linear-gradient(to top,var(--crit) 0%,var(--accent) 10%,var(--info) 13.5%,color-mix(in srgb,var(--info) 40%,transparent) 100%) bottom / 100% calc(100% / max(var(--f), .01)) no-repeat;transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
 .tank .lvl::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--fg);opacity:.7}
-.flip[data-state="warn"] .tank .lvl{background:var(--warn)}
-.flip[data-state="crit"] .tank .lvl{background:var(--crit)}
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:10px 14px;margin-top:auto}
 .kv .num{font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1}
 .kv .k{font-size:12px;color:var(--muted);margin-top:3px}
@@ -602,6 +601,13 @@ body[data-view="home"] .aurora{display:none}
 .panel, .face:not(.back), .strip, .launch:not(.primary):not(.gc){background-color:color-mix(in srgb, var(--panel) 84%, transparent)}
 .face.back{background-color:color-mix(in srgb, var(--raise) 92%, transparent)}
 
+
+/* app row: pebble-grain leather with a stitched edge, like a trimmed dash pad */
+.apps{position:relative;isolation:isolate;overflow:hidden}
+.apps::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='l' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.16' numOctaves='3' seed='11' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' surfaceScale='2.2' lighting-color='%23ffffff' diffuseConstant='1.05'%3E%3CfeDistantLight azimuth='235' elevation='52'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23l)'/%3E%3C/svg%3E");background-size:260px 260px;mix-blend-mode:overlay;opacity:var(--leather)}
+.apps::after{content:"";position:absolute;inset:7px;z-index:-1;border-radius:calc(var(--r-lg) - 6px);pointer-events:none;
+  border:1.5px dashed var(--stitch);box-shadow:0 0 0 1px color-mix(in srgb, var(--shade) 25%, transparent) inset}
 /* ---------- app row: brand marks in light blue, evenly spaced, generous air ---------- */
 .apps{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));align-items:center;justify-items:center;gap:8px;
   padding-block:clamp(14px,2.6vh,28px);padding-inline:clamp(16px,3vw,44px);min-height:0}
@@ -1137,7 +1143,7 @@ body[data-view="home"] .aurora{display:none}
       const s = m.state(val); card.dataset.state = s;
       $(m.v).textContent = (k === 'coolant' || k === 'oil') ? Math.round(tmp(val)) : k === 'volts' ? val.toFixed(1) : Math.round(val);
       if (m.mk) { $(m.mk).style.opacity = 1; $(m.mk).style.left = m.pct(val) + '%'; }
-      if (m.tank) $(m.tank).style.height = m.pct(val) + '%';
+      if (m.tank) { $(m.tank).style.height = m.pct(val) + '%'; $(m.tank).style.setProperty('--f', Math.max(.01, m.pct(val) / 100).toFixed(3)); }
       if (m.gauge) $(m.gauge).setAttribute('stroke-dasharray', `${(m.pct(val) * 10).toFixed(1)} 1000`);
       if (s === 'warn' || s === 'crit') { alerts.push({ s, k, val }); if (card.dataset.face === '1') flipTo(card, 0); }
     }
