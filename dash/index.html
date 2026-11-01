@@ -11,12 +11,13 @@
    battery, trip) and launch tiles fill the rest in mixed sizes. 4 columns under 1000px, 2 under 640px.
    Palette: Anthropic brand colours. Night = near-black #141413 with clay orange #d97757; day = ivory #faf9f5
    on warm grey #e8e6dc. Brand blue #6a9bcc reads "cold", brand olive #788c5d reads "normal".
+   The main dial uses a high-contrast green (--dial) so it stands apart from the orange accent.
    Danger is a truer red than the orange accent, and also blinks, so the two never get confused. */
 :root{
   --bg:#141413; --panel:#1c1c1a; --raise:#262624; --line:#32312d;
   --fg:#faf9f5; --muted:#b0aea5; --dim:#6b6a63;
   --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.07);
-  --ok:#8c9f6e; --warn:#e2b04f; --crit:#f2463f; --cold:#6a9bcc;
+  --ok:#8c9f6e; --warn:#e2b04f; --crit:#f2463f; --cold:#6a9bcc; --dial:#5ad48a;
   --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
   --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
   --r-lg:20px; --r-sm:12px; --gap:12px;
@@ -27,7 +28,7 @@
     --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
     --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
     --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
-    --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4;
+    --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4; --dial:#1f8f4e;
     color-scheme:light;
   }
 }
@@ -35,7 +36,7 @@
   --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
   --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
   --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.12); --glow2:rgba(106,155,204,.10);
-  --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4;
+  --ok:#788c5d; --warn:#a6760c; --crit:#c92a24; --cold:#4f80b4; --dial:#1f8f4e;
   color-scheme:light;
 }
 
@@ -110,7 +111,7 @@ button{cursor:pointer}
 .gauge svg{width:100%;height:100%;display:block;overflow:visible}
 .g-track{fill:none;stroke:var(--raise);stroke-width:14;stroke-linecap:round}
 .g-red{fill:none;stroke:var(--crit);stroke-width:3;opacity:.85}
-.g-fill{fill:none;stroke:var(--accent);stroke-width:14;stroke-linecap:round;transition:stroke .3s}
+.g-fill{fill:none;stroke:var(--dial);stroke-width:14;stroke-linecap:round;transition:stroke .3s;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--dial) 40%,transparent))}
 .g-tip{fill:var(--fg);stroke:var(--panel);stroke-width:3}
 .g-tick{stroke:var(--dim);stroke-width:1.5}
 .g-tick.major{stroke:var(--muted);stroke-width:2.2}
