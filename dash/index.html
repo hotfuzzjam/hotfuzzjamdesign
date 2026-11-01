@@ -41,6 +41,7 @@
 }
 
 html,body{height:100%}
+html{background:var(--bg)}
 body{
   background:var(--bg); color:var(--fg); font-family:var(--f-ui); font-size:15px;
   padding-block:12px;
@@ -344,6 +345,10 @@ button{cursor:pointer}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg><span>Auto</span>
       </button>
     </div>
+    <button type="button" class="icon-btn" id="fsBtn" aria-label="Full screen" aria-pressed="false">
+      <svg id="fsIn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      <svg id="fsOut" hidden viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+    </button>
     <button type="button" class="icon-btn lockable" id="setBtn" aria-label="Settings and connection">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
     </button>
@@ -1164,6 +1169,28 @@ button{cursor:pointer}
   }
   $('homeInput').addEventListener('change', e => { S.home = e.target.value.trim(); store.set('home', S.home); applyHome(); });
   $('homeLink').addEventListener('click', e => { if (!S.home && app.dataset.moving !== 'true') { e.preventDefault(); openSheet(); $('homeInput').focus(); } });
+
+  // full screen: works in desktop browsers and most iPad browsers; hidden where the browser has no API
+  const fsEl = document.documentElement;
+  const fsActive = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const canFs = !!(fsEl.requestFullscreen || fsEl.webkitRequestFullscreen) && (document.fullscreenEnabled ?? document.webkitFullscreenEnabled ?? true) !== false;
+  function markFs(){
+    const on = fsActive();
+    $('fsBtn').setAttribute('aria-pressed', String(on));
+    $('fsBtn').setAttribute('aria-label', on ? 'Exit full screen' : 'Full screen');
+    $('fsIn').hidden = on; $('fsOut').hidden = !on;
+  }
+  $('fsBtn').hidden = !canFs;
+  $('fsBtn').addEventListener('click', async () => {
+    try {
+      if (fsActive()) await (document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen());
+      else await (fsEl.requestFullscreen ? fsEl.requestFullscreen({ navigationUI:'hide' }) : fsEl.webkitRequestFullscreen());
+    } catch {}
+    markFs();
+  });
+  document.addEventListener('fullscreenchange', markFs);
+  document.addEventListener('webkitfullscreenchange', markFs);
+  markFs();
 
   // Day / Night / Auto. Auto follows the iPad's appearance (Settings › Display › Automatic switches at sunset).
   let themePref = store.get('theme', 'auto');
