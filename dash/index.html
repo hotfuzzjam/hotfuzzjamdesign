@@ -19,11 +19,11 @@
   --bg:#141413; --panel:#1c1c1a; --raise:#262624; --line:#33322e;
   --fg:#faf9f5; --muted:#b0aea5; --dim:#6b6a63;
   --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.11); --glow2:rgba(106,155,204,.09);
-  --dial:#5ad48a; --info:#7fb0e0; --oil:#a48fe0; --apps:#a9cdf2;
+  --dial:#5ad48a; --info:#7fb0e0; --oil:#a48fe0; --apps:#a9cdf2; --pa:.15;
   --ok:#8fb573; --warn:#e2b04f; --crit:#f2463f; --cold:#7fb0e0;
   --sheen:rgba(250,249,245,.045); --hl:rgba(255,255,255,.05); --shade:rgba(0,0,0,.85);
   --weave-a:rgba(250,249,245,.03); --weave-b:rgba(0,0,0,.35); --stitch:rgba(217,119,87,.4);
-  --metal-1:#2a2926; --metal-2:#cfccc2; --metal-3:#5d5b55; --face:#111110; --face-hi:#262521;
+  --metal-1:#2a2926; --metal-2:#cfccc2; --metal-3:#5d5b55; --face:#111110; --face-hi:#262521; --track:#262624;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
   --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
@@ -35,11 +35,11 @@
     --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
     --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
     --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.09);
-    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8;
+    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8; --pa:.13;
     --ok:#5f7a45; --warn:#a6760c; --crit:#c92a24; --cold:#3f74b0;
     --sheen:rgba(255,255,255,.7); --hl:rgba(255,255,255,.95); --shade:rgba(60,50,30,.3);
     --weave-a:rgba(20,20,19,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(217,119,87,.45);
-    --metal-1:#b6b2a6; --metal-2:#fdfcf8; --metal-3:#d8d4c9; --face:#f1efe8; --face-hi:#ffffff;
+    --metal-1:#7d796f; --metal-2:#f4f2ec; --metal-3:#a9a59a; --face:#dcd9cf; --face-hi:#f3f1eb; --track:#c9c5ba;
     --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     color-scheme:light;
   }
@@ -48,11 +48,11 @@
   --bg:#e8e6dc; --panel:#faf9f5; --raise:#ffffff; --line:#d4d1c5;
     --fg:#141413; --muted:#5c5b55; --dim:#b0aea5;
     --accent:#d97757; --accent-ink:#141413; --glow:rgba(217,119,87,.10); --glow2:rgba(106,155,204,.09);
-    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8;
+    --dial:#1f8f4e; --info:#3f74b0; --oil:#6b54c4; --apps:#3d78b8; --pa:.13;
     --ok:#5f7a45; --warn:#a6760c; --crit:#c92a24; --cold:#3f74b0;
     --sheen:rgba(255,255,255,.7); --hl:rgba(255,255,255,.95); --shade:rgba(60,50,30,.3);
     --weave-a:rgba(20,20,19,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(217,119,87,.45);
-    --metal-1:#b6b2a6; --metal-2:#fdfcf8; --metal-3:#d8d4c9; --face:#f1efe8; --face-hi:#ffffff;
+    --metal-1:#7d796f; --metal-2:#f4f2ec; --metal-3:#a9a59a; --face:#dcd9cf; --face-hi:#f3f1eb; --track:#c9c5ba;
     --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme:light;
 }
@@ -72,7 +72,7 @@ button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.app{min-height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:var(--gap)}
+.app{position:relative;z-index:1;min-height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:var(--gap)}
 .lbl{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .num{font-family:var(--f-display);font-variant-numeric:tabular-nums}
 
@@ -107,12 +107,12 @@ button{cursor:pointer}
   grid-template-columns:repeat(8,minmax(0,1fr));
   grid-template-rows:repeat(3,minmax(168px,1fr));
   grid-template-areas:
-    "clu clu clu gas gas oil oil cool"
+    "clu clu clu gas gas wx wx cool"
     "clu clu clu fuel home oil oil batt"
     "clu clu clu fuel trip trip maps dock";
 }
 .a-clu{grid-area:clu}.a-cool{grid-area:cool}.a-fuel{grid-area:fuel}.a-batt{grid-area:batt}.a-trip{grid-area:trip}
-.a-home{grid-area:home}.a-maps{grid-area:maps}.a-dock{grid-area:dock}.a-oil{grid-area:oil}.a-gas{grid-area:gas}
+.a-home{grid-area:home}.a-maps{grid-area:maps}.a-dock{grid-area:dock}.a-oil{grid-area:oil}.a-gas{grid-area:gas}.a-wx{grid-area:wx}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
 
 /* cluster with slow caustic light */
@@ -130,7 +130,7 @@ button{cursor:pointer}
 }
 .gauge{position:relative;container-type:inline-size;width:clamp(220px, min(100%, calc(100dvh - 310px)), 520px);aspect-ratio:1;max-width:100%}
 .gauge svg{width:100%;height:100%;display:block;overflow:visible;position:relative;z-index:1}
-.g-track{fill:none;stroke:var(--raise);stroke-width:14;stroke-linecap:round}
+.g-track{fill:none;stroke:var(--track);stroke-width:14;stroke-linecap:round}
 .g-red{fill:none;stroke:var(--crit);stroke-width:3;opacity:.85}
 .g-fill{fill:none;stroke:var(--dial);stroke-width:14;stroke-linecap:round;transition:stroke .3s;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--dial) 40%,transparent))}
 .g-tip{fill:var(--fg);stroke:var(--panel);stroke-width:3}
@@ -338,6 +338,23 @@ button{cursor:pointer}
   #cardTrip .back .vs{display:none}
   #cardTrip .kv{grid-template-columns:repeat(3,minmax(0,1fr))}
   #tripReset{padding:0!important}
+  .a-oil .front{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;
+    grid-template-areas:"fh fh" "g s" "n n";column-gap:16px;row-gap:4px}
+  .a-oil .front > .fh{grid-area:fh}
+  .a-oil .front .oilg{grid-area:g;align-self:end;height:100%;width:auto;aspect-ratio:220/140;max-width:150px!important;margin:0!important}
+  .a-oil .front .oilg svg{height:100%;width:100%}
+  .a-oil .front .svc-mini{grid-area:s;align-self:center}
+  .a-oil .front #oilNote{grid-area:n;padding-right:26px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .a-oil .front .svc-mini > .fh{flex-direction:column;align-items:flex-start;gap:2px}
+  .a-oil .back .vs{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .wx-h{gap:2px}
+  .wx-h svg{width:20px;height:20px}
+  .wx-h b{font-size:16px}
+  .wx-h em{min-height:0;font-size:10px;line-height:1}
+  .a-wx .back{gap:4px}
+  .wx-h small{font-size:11px}
+  .a-oil .back .kv{display:none}
+  .a-oil .back .big .num{font-size:clamp(28px,3vw,42px)}
   .gas .go{min-height:40px;padding:6px 12px}
   .gas .go b{font-size:15px}
 }
@@ -524,8 +541,69 @@ body[data-view="home"]{overflow:hidden}
 .g-lab{filter:drop-shadow(0 0 4px var(--glow))}
 
 
+
+/* ---------- Gold Coast maps card ---------- */
+.launch.gc{position:relative;overflow:hidden;color:#faf9f5;border-color:transparent;background-color:#1e2433}
+.gc-art{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.launch.gc::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg, rgba(20,20,19,0) 35%, rgba(20,20,19,.72));pointer-events:none}
+.launch.gc > span{position:relative;z-index:1}
+.launch.gc .ic{background:rgba(20,20,19,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#faf9f5}
+.launch.gc .s{color:rgba(250,249,245,.78)}
+.launch.gc .t{text-shadow:0 1px 8px rgba(0,0,0,.5)}
+
+/* ---------- weather card: sky follows the conditions, like a weather app ---------- */
+.wx .face.front{color:#fff;border-color:transparent;justify-content:space-between;
+  background-image:linear-gradient(180deg, rgba(255,255,255,.12), transparent 45%), var(--sky), var(--grain)}
+.wx[data-sky="day-clear"]  {--sky:linear-gradient(180deg,#2f6db5 0%,#6ea6dc 100%)}
+.wx[data-sky="day-cloud"]  {--sky:linear-gradient(180deg,#56687f 0%,#93a3b6 100%)}
+.wx[data-sky="rain"]       {--sky:linear-gradient(180deg,#38465a 0%,#64748a 100%)}
+.wx[data-sky="storm"]      {--sky:linear-gradient(180deg,#262a39 0%,#4b4a63 100%)}
+.wx[data-sky="night-clear"]{--sky:linear-gradient(180deg,#0b1730 0%,#22365a 100%)}
+.wx[data-sky="night-cloud"]{--sky:linear-gradient(180deg,#1b212d 0%,#3a4354 100%)}
+.wx-top,.wx-sub{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wx-place{font-size:14px;font-weight:600;letter-spacing:.01em}
+.wx .tag{background:rgba(255,255,255,.18);color:rgba(255,255,255,.85)}
+.wx-main{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.wx-temp{font-size:clamp(42px,4.6vw,64px);font-weight:500;line-height:.9;letter-spacing:-.02em}
+.wx-ic svg{width:clamp(36px,3.8vw,52px);height:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+.wx-sub{font-size:13px;font-weight:500;color:rgba(255,255,255,.88);padding-right:26px}
+.wx-sub span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wx-sub span:last-child{white-space:nowrap}
+.wx-rain{font-size:12px;color:var(--muted)}
+.wx-hours{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:auto;padding-right:22px}
+.wx-h{display:grid;justify-items:center;gap:4px}
+.wx-h small{font-size:11.5px;color:var(--muted);font-weight:600}
+.wx-h svg{width:22px;height:22px;color:var(--info)}
+.wx-h b{font-family:var(--f-display);font-size:18px;font-weight:600}
+.wx-h em{font-style:normal;font-size:10.5px;color:var(--info);min-height:12px}
+
+
+/* ---------- background pulses: wide soft bands of light drifting behind the gauges, one palette tint at a time ---------- */
+.aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aurora i{position:absolute;left:50%;top:50%;width:110vmax;height:34vmax;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side, var(--c), transparent);animation:pulse var(--d) ease-in-out infinite var(--delay);will-change:transform,opacity}
+.aurora i:nth-child(1){--c:rgba(217,119,87,var(--pa)); --d:24s;--delay:0s;  --r:-14deg}
+.aurora i:nth-child(2){--c:rgba(106,155,204,var(--pa));--d:28s;--delay:-7s; --r:9deg}
+.aurora i:nth-child(3){--c:rgba(90,212,138,var(--pa)); --d:26s;--delay:-13s;--r:-5deg}
+.aurora i:nth-child(4){--c:rgba(164,143,224,var(--pa));--d:30s;--delay:-20s;--r:16deg}
+@keyframes pulse{
+  0%  {opacity:0;  transform:translate(-95%,-5%)  rotate(var(--r)) scaleY(.55)}
+  30% {opacity:1}
+  50% {opacity:.75;transform:translate(-50%,-62%) rotate(calc(var(--r) * -1)) scaleY(1)}
+  70% {opacity:1}
+  100%{opacity:0;  transform:translate(-5%,-30%)  rotate(var(--r)) scaleY(.55)}
+}
+@media (prefers-reduced-motion:reduce){
+  .aurora i{animation:none;opacity:.6;transform:translate(-50%,-50%) rotate(var(--r))}
+  .aurora i:nth-child(2),.aurora i:nth-child(4){display:none}
+}
+body[data-view="home"] .aurora{display:none}
+/* panels become faintly translucent so the pulses read through them, like tinted glass */
+.panel, .face:not(.back), .strip, .launch:not(.primary):not(.gc){background-color:color-mix(in srgb, var(--panel) 84%, transparent)}
+.face.back{background-color:color-mix(in srgb, var(--raise) 92%, transparent)}
+
 /* ---------- app row: brand marks in light blue, evenly spaced, generous air ---------- */
-.apps{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:center;justify-items:center;gap:8px;
+.apps{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));align-items:center;justify-items:center;gap:8px;
   padding-block:clamp(14px,2.6vh,28px);padding-inline:clamp(16px,3vw,44px);min-height:0}
 .app-link{display:grid;justify-items:center;gap:10px;padding:10px 6px;border:0;background:none;border-radius:20px;
   color:var(--apps);text-decoration:none;font:inherit;min-width:0;width:100%;max-width:120px;transition:transform .15s ease}
@@ -542,21 +620,23 @@ body[data-view="home"]{overflow:hidden}
   max-width:min(520px,calc(100% - 32px));padding:12px 18px;border-radius:14px;background:var(--fg);color:var(--bg);font-size:14px;line-height:1.4;
   box-shadow:0 16px 40px -12px var(--shade);animation:toast-in .25s cubic-bezier(.2,.8,.2,1)}
 @keyframes toast-in{from{opacity:0;transform:translate(-50%,8px)}}
-@media (max-width:1000px){ .apps{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:16px} }
+@media (max-width:1000px){ .apps{grid-template-columns:repeat(5,minmax(0,1fr));row-gap:16px} }
+@media (max-width:640px){ .apps{grid-template-columns:repeat(3,minmax(0,1fr))} }
 
 @media (max-width:1000px){
   .bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(160px,auto);
     grid-template-areas:
       "clu clu clu clu"
-      "gas gas home maps"
+      "gas gas wx wx"
       "oil oil cool batt"
       "oil oil fuel fuel"
-      "trip trip dock dock";}
+      "trip trip home maps"
+      "dock dock dock dock";}
   .gauge{width:min(100%,440px)}
 }
 @media (max-width:640px){
   .bento{grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-template-areas:"clu clu" "gas gas" "oil oil" "cool batt" "fuel fuel" "trip trip" "home maps" "dock dock";}
+    grid-template-areas:"clu clu" "gas gas" "wx wx" "oil oil" "cool batt" "fuel fuel" "trip trip" "home maps" "dock dock";}
   .flip{touch-action:pan-y}
   .clock{font-size:28px}
   .theme-seg span{display:none}
@@ -569,6 +649,7 @@ body[data-view="home"]{overflow:hidden}
 }
 </style>
 
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <div class="app" id="app" data-moving="false" data-live="false">
   <header class="bar">
     <div class="ident">
@@ -646,6 +727,22 @@ body[data-view="home"]{overflow:hidden}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
           <div class="alts" id="gasAlts"></div>
+        </div>
+      </div>
+      <span class="pips" aria-hidden="true"><i></i><i></i></span>
+    </div>
+
+    <!-- weather -->
+    <div class="flip wx a-wx" id="cardWx" data-face="0" data-state="ok" data-sky="day-clear" tabindex="0" role="button" aria-label="Weather. Flick or tap for the next six hours.">
+      <div class="spin">
+        <div class="face front">
+          <div class="wx-top"><span class="wx-place" id="wxPlace">Gold Coast</span><span class="tag" id="wxTag">Example</span></div>
+          <div class="wx-main"><span class="num wx-temp" id="wxTemp">—</span><span class="wx-ic" id="wxIcon"></span></div>
+          <div class="wx-sub"><span id="wxCond">Loading forecast…</span><span id="wxHL"></span></div>
+        </div>
+        <div class="face back">
+          <div class="fh"><span class="lbl">Next 6 hours</span><span class="wx-rain" id="wxRain"></span></div>
+          <div class="wx-hours" id="wxHours"></div>
         </div>
       </div>
       <span class="pips" aria-hidden="true"><i></i><i></i></span>
@@ -783,9 +880,27 @@ body[data-view="home"]{overflow:hidden}
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>
       <span><div class="t">Go home</div><div class="s" id="homeSub">Set your address in settings</div></span>
     </a>
-    <a class="launch a-maps" href="https://www.google.com/maps/@?api=1&amp;map_action=map" target="_blank" rel="noopener">
+    <a class="launch a-maps gc" href="https://www.google.com/maps/@?api=1&amp;map_action=map" target="_blank" rel="noopener" aria-label="Google Maps">
+      <svg class="gc-art" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="gcSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e2433"/><stop offset=".45" stop-color="#5b4f6e"/><stop offset=".72" stop-color="#c9775a"/><stop offset=".8" stop-color="#eba06f"/></linearGradient>
+          <linearGradient id="gcSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a66"/><stop offset="1" stop-color="#121722"/></linearGradient>
+          <radialGradient id="gcSun"><stop offset="0" stop-color="#ffd2a1"/><stop offset=".4" stop-color="#f3a46e" stop-opacity=".8"/><stop offset="1" stop-color="#f3a46e" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="200" height="140" fill="url(#gcSky)"/>
+        <circle cx="150" cy="122" r="34" fill="url(#gcSun)"/>
+        <g fill="#191a20"><rect x="14" y="74" width="8" height="58" rx="1"/><rect x="24" y="86" width="8" height="46" rx="1"/><rect x="33" y="68" width="8" height="64" rx="1"/><rect x="43" y="80" width="8" height="52" rx="1"/><rect x="52" y="60" width="8" height="72" rx="1"/><rect x="62" y="72" width="8" height="60" rx="1"/><rect x="71" y="48" width="8" height="84" rx="1"/><rect x="80" y="66" width="8" height="66" rx="1"/><rect x="98" y="56" width="8" height="76" rx="1"/><rect x="108" y="40" width="8" height="92" rx="1"/><rect x="118" y="64" width="8" height="68" rx="1"/><rect x="127" y="74" width="8" height="58" rx="1"/><rect x="136" y="58" width="8" height="74" rx="1"/><rect x="146" y="82" width="8" height="50" rx="1"/><rect x="155" y="70" width="8" height="62" rx="1"/><rect x="165" y="88" width="8" height="44" rx="1"/><rect x="174" y="78" width="8" height="54" rx="1"/><rect x="184" y="94" width="8" height="38" rx="1"/><path d="M88 132 V40 L91 30 L93 30 L96 40 V132 Z"/><path d="M92 30 V8" stroke="#141413" stroke-width="1.6"/><path d="M99 132 V58 Q103 50 107 58 V132 Z"/></g>
+        <g fill="#f4c98d" opacity=".75"><rect x="17.0" y="87.2" width="1.6" height="1.6"/><rect x="18.4" y="83.5" width="1.6" height="1.6"/><rect x="17.9" y="97.6" width="1.6" height="1.6"/><rect x="25.8" y="110.3" width="1.6" height="1.6"/><rect x="25.7" y="107.6" width="1.6" height="1.6"/><rect x="34.8" y="78.9" width="1.6" height="1.6"/><rect x="36.4" y="118.7" width="1.6" height="1.6"/><rect x="35.1" y="86.1" width="1.6" height="1.6"/><rect x="47.3" y="125.8" width="1.6" height="1.6"/><rect x="47.1" y="102.7" width="1.6" height="1.6"/><rect x="57.9" y="68.9" width="1.6" height="1.6"/><rect x="57.4" y="84.0" width="1.6" height="1.6"/><rect x="54.1" y="73.3" width="1.6" height="1.6"/><rect x="54.9" y="116.6" width="1.6" height="1.6"/><rect x="64.3" y="107.1" width="1.6" height="1.6"/><rect x="66.4" y="96.6" width="1.6" height="1.6"/><rect x="66.0" y="81.1" width="1.6" height="1.6"/><rect x="72.8" y="69.2" width="1.6" height="1.6"/><rect x="75.6" y="85.6" width="1.6" height="1.6"/><rect x="73.9" y="97.3" width="1.6" height="1.6"/><rect x="74.5" y="76.2" width="1.6" height="1.6"/><rect x="85.1" y="111.1" width="1.6" height="1.6"/><rect x="82.6" y="104.2" width="1.6" height="1.6"/><rect x="83.9" y="121.0" width="1.6" height="1.6"/><rect x="102.8" y="81.0" width="1.6" height="1.6"/><rect x="103.9" y="69.8" width="1.6" height="1.6"/><rect x="101.4" y="112.0" width="1.6" height="1.6"/><rect x="100.2" y="94.3" width="1.6" height="1.6"/><rect x="109.7" y="100.8" width="1.6" height="1.6"/><rect x="112.9" y="93.0" width="1.6" height="1.6"/><rect x="113.4" y="71.7" width="1.6" height="1.6"/><rect x="112.6" y="94.7" width="1.6" height="1.6"/><rect x="112.1" y="83.4" width="1.6" height="1.6"/><rect x="123.3" y="124.8" width="1.6" height="1.6"/><rect x="121.6" y="108.5" width="1.6" height="1.6"/><rect x="119.8" y="110.7" width="1.6" height="1.6"/><rect x="131.4" y="127.7" width="1.6" height="1.6"/><rect x="132.2" y="93.7" width="1.6" height="1.6"/><rect x="130.2" y="112.1" width="1.6" height="1.6"/><rect x="137.6" y="93.5" width="1.6" height="1.6"/><rect x="138.3" y="71.5" width="1.6" height="1.6"/><rect x="137.8" y="113.2" width="1.6" height="1.6"/><rect x="138.1" y="79.8" width="1.6" height="1.6"/><rect x="149.3" y="122.9" width="1.6" height="1.6"/><rect x="147.9" y="106.0" width="1.6" height="1.6"/><rect x="159.0" y="121.9" width="1.6" height="1.6"/><rect x="160.2" y="120.9" width="1.6" height="1.6"/><rect x="157.8" y="97.6" width="1.6" height="1.6"/><rect x="168.1" y="124.1" width="1.6" height="1.6"/><rect x="170.8" y="99.1" width="1.6" height="1.6"/><rect x="176.3" y="94.2" width="1.6" height="1.6"/><rect x="176.6" y="105.3" width="1.6" height="1.6"/><rect x="178.2" y="95.6" width="1.6" height="1.6"/><rect x="185.5" y="111.7" width="1.6" height="1.6"/><rect x="187.2" y="115.9" width="1.6" height="1.6"/><rect x="93.8" y="102.6" width="1.6" height="1.6"/><rect x="91.8" y="96.6" width="1.6" height="1.6"/><rect x="92.5" y="50.4" width="1.6" height="1.6"/><rect x="93.5" y="110.0" width="1.6" height="1.6"/><rect x="93.4" y="111.4" width="1.6" height="1.6"/><rect x="102.3" y="89.5" width="1.6" height="1.6"/><rect x="101.0" y="104.6" width="1.6" height="1.6"/><rect x="100.8" y="68.3" width="1.6" height="1.6"/><rect x="101.4" y="74.4" width="1.6" height="1.6"/></g>
+        <path d="M0 132 H200 V141 Q150 138 100 141 T0 140 Z" fill="#b99269"/>
+        <rect y="140" width="200" height="60" fill="url(#gcSea)"/>
+        <g stroke="#f3b07a" stroke-linecap="round" opacity=".6"><path d="M140 150 h22M136 158 h30M144 166 h16" stroke-width="1.6"/></g>
+        <g fill="none" stroke="#ffffff" stroke-opacity=".28" stroke-width="1.2" stroke-linecap="round">
+          <path d="M0 146 q10 -3 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+          <path d="M0 156 q10 -3 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke-opacity=".16"/>
+        </g>
+      </svg>
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-      <span><div class="t">Google Maps</div><div class="s">Traffic, search</div></span>
+      <span><div class="t">Google Maps</div><div class="s">Gold Coast</div></span>
     </a>
     <nav class="panel dock a-dock" aria-label="Music">
       <a href="https://music.apple.com/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>Music</a>
@@ -801,6 +916,7 @@ body[data-view="home"]{overflow:hidden}
     <a class="app-link" href="https://app.fastmail.com/" target="_blank" rel="noopener"><span class="app-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="16" height="13" rx="2.5"/><path d="M5.5 6.5l7.5 6 7.5-6"/><path d="M1.5 9h2.5M2.5 12.5h2"/></svg></span><span class="app-name">Fastmail</span></a>
     <a class="app-link" href="facetime-audio://" target="_blank" rel="noopener"><span class="app-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 14.5V18a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.2 2 2 0 0 1 5 3z"/></svg></span><span class="app-name">Phone</span></a>
     <a class="app-link" href="sms:" target="_blank" rel="noopener"><span class="app-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.285 0A5.273 5.273 0 0 0 0 5.285v13.43A5.273 5.273 0 0 0 5.285 24h13.43A5.273 5.273 0 0 0 24 18.715V5.285A5.273 5.273 0 0 0 18.715 0ZM12 4.154a8.809 7.337 0 0 1 8.809 7.338A8.809 7.337 0 0 1 12 18.828a8.809 7.337 0 0 1-2.492-.303A8.656 7.337 0 0 1 5.93 19.93a9.929 7.337 0 0 0 1.54-2.155 8.809 7.337 0 0 1-4.279-6.283A8.809 7.337 0 0 1 12 4.154"/></svg></span><span class="app-name">Messages</span></a>
+    <a class="app-link" href="https://www.surfline.com/" target="_blank" rel="noopener"><span class="app-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="slMask"><path d="M12 1.5 L18.13 10.68 A7.5 7.5 0 1 1 5.87 10.68 Z" fill="#fff"/><path d="M12.9 10.1 C9.6 10.3 7.2 12.6 7 15.2 C6.9 16.4 8.4 16.7 8.8 15.6 C9.5 13.2 10.9 11.3 12.9 10.1 Z" fill="#000"/><path transform="rotate(180 11.95 15.1)" d="M12.9 10.1 C9.6 10.3 7.2 12.6 7 15.2 C6.9 16.4 8.4 16.7 8.8 15.6 C9.5 13.2 10.9 11.3 12.9 10.1 Z" fill="#000"/></mask></defs><rect width="24" height="24" fill="currentColor" mask="url(#slMask)"/></svg></span><span class="app-name">Surfline</span></a>
     <button type="button" class="app-link" id="siriBtn"><span class="app-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5 12c1.2-3 2.4-3 3.5 0s2.3 3 3.5 0 2.3-3 3.5 0 2.3 3 3.5 0"/><path d="M6.5 12c1-1.6 2-1.6 3 0" opacity=".5"/></svg></span><span class="app-name">Siri</span></button>
   </nav>
 
@@ -1409,6 +1525,80 @@ body[data-view="home"]{overflow:hidden}
     $('hDieselLink').href = $('hDieselDock').href = gasUrl(st);
   }
 
+  // ---------- weather (Open-Meteo, BOM-based models for Australia; no key needed) ----------
+  const WX_HOME = { lat:-28.0023, lon:153.4145, name:'Gold Coast' };
+  const wx = { data:null, place:'Gold Coast', example:false, at:0 };
+  function wmo(c){
+    if (c === 0) return ['Clear', 'clear'];
+    if (c === 1) return ['Mostly clear', 'clear'];
+    if (c === 2) return ['Partly cloudy', 'partly'];
+    if (c === 3) return ['Cloudy', 'cloud'];
+    if (c === 45 || c === 48) return ['Fog', 'fog'];
+    if (c >= 51 && c <= 57) return ['Drizzle', 'rain'];
+    if (c >= 61 && c <= 67) return ['Rain', 'rain'];
+    if (c >= 71 && c <= 77) return ['Snow', 'cloud'];
+    if (c >= 80 && c <= 82) return ['Showers', 'rain'];
+    if (c >= 95) return ['Thunderstorms', 'storm'];
+    return ['—', 'cloud'];
+  }
+  function wxSvg(key, night){
+    const sun = '<circle cx="12" cy="12" r="4.2" fill="#ffd36b" stroke="none"/><g stroke="#ffd36b" stroke-width="1.8" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g>';
+    const moon = '<path d="M17.5 14.6A7 7 0 0 1 9.4 6.5a7 7 0 1 0 8.1 8.1z" fill="#e8eefc" stroke="none"/>';
+    const cloud = (x = 0, y = 0, f = '#ffffff') => `<path transform="translate(${x} ${y})" d="M7 19h10.5a4 4 0 0 0 .4-8 5.5 5.5 0 0 0-10.6-1.2A4.6 4.6 0 0 0 7 19z" fill="${f}" stroke="none"/>`;
+    const drops = '<g stroke="#9ccaf5" stroke-width="1.8" stroke-linecap="round"><path d="M8.5 20.5l-1 2M12.5 20.5l-1 2M16.5 20.5l-1 2"/></g>';
+    let b;
+    if (key === 'clear') b = night ? moon : sun;
+    else if (key === 'partly') b = `<g transform="translate(-3 -4) scale(.8)">${night ? moon : sun}</g>${cloud(1, 1)}`;
+    else if (key === 'rain') b = `${cloud(0, -2, '#e6edf6')}${drops}`;
+    else if (key === 'storm') b = `${cloud(0, -2, '#d4dae6')}<path d="M12.5 17l-2 3.5h2.4l-1.4 3" fill="none" stroke="#ffd36b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+    else if (key === 'fog') b = `${cloud(0, -3, '#e6edf6')}<g stroke="#e6edf6" stroke-width="1.6" stroke-linecap="round"><path d="M4 20h16M6 23h12"/></g>`;
+    else b = cloud(0, 0, '#eef2f8');
+    return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">${b}</svg>`;
+  }
+  function wxExample(){
+    const now = new Date(), pad = n => String(n).padStart(2, '0'), iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:00`;
+    const time = [], temperature_2m = [], weather_code = [], precipitation_probability = [];
+    const temps = [23, 24, 25, 25, 24, 23, 22], codes = [1, 1, 2, 2, 3, 80, 80], rain = [0, 0, 10, 20, 30, 60, 55];
+    for (let i = 0; i < 7; i++) { const d = new Date(now); d.setHours(now.getHours() + i, 0, 0, 0); time.push(iso(d)); temperature_2m.push(temps[i]); weather_code.push(codes[i]); precipitation_probability.push(rain[i]); }
+    return { current:{ time:iso(now), temperature_2m:24, weather_code:1, is_day: now.getHours() >= 6 && now.getHours() < 19 ? 1 : 0 },
+             hourly:{ time, temperature_2m, weather_code, precipitation_probability }, daily:{ temperature_2m_max:[27], temperature_2m_min:[19] } };
+  }
+  async function wxLoad(){
+    const here = gas.pos ? { lat:gas.pos.latitude, lon:gas.pos.longitude, name:'Near you' } : WX_HOME;
+    try {
+      const u = `https://api.open-meteo.com/v1/forecast?latitude=${here.lat.toFixed(3)}&longitude=${here.lon.toFixed(3)}`
+        + '&current=temperature_2m,weather_code,is_day&hourly=temperature_2m,weather_code,precipitation_probability'
+        + '&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=2';
+      const r = await fetch(u); if (!r.ok) throw new Error('weather');
+      Object.assign(wx, { data:await r.json(), place:here.name, example:false, at:Date.now() });
+    } catch { if (!wx.data) Object.assign(wx, { data:wxExample(), place:'Gold Coast', example:true }); }
+    renderWx();
+  }
+  function renderWx(){
+    const j = wx.data; if (!j) return;
+    const c = j.current, night = c.is_day === 0, [txt, key] = wmo(c.weather_code);
+    const sky = night ? (key === 'clear' || key === 'partly' ? 'night-clear' : 'night-cloud')
+      : key === 'clear' || key === 'partly' ? 'day-clear' : key === 'storm' ? 'storm' : key === 'rain' ? 'rain' : 'day-cloud';
+    const card = $('cardWx'); card.dataset.sky = sky;
+    $('wxPlace').textContent = wx.place;
+    $('wxTag').textContent = wx.example ? 'Example' : 'Live';
+    $('wxTemp').textContent = Math.round(tmp(c.temperature_2m)) + '°';
+    $('wxIcon').innerHTML = wxSvg(key, night);
+    $('wxCond').textContent = txt;
+    $('wxHL').textContent = `H ${Math.round(tmp(j.daily.temperature_2m_max[0]))}°  L ${Math.round(tmp(j.daily.temperature_2m_min[0]))}°`;
+    const hourNow = c.time.slice(0, 13), H = j.hourly;
+    let i0 = H.time.findIndex(t => t.slice(0, 13) >= hourNow); if (i0 < 0) i0 = 0;
+    const idx = Array.from({ length:6 }, (_, k) => i0 + k).filter(i => i < H.time.length);
+    const lab = (t, k) => { if (k === 0) return 'Now'; const h = +t.slice(11, 13); return `${h % 12 || 12}${h < 12 ? 'am' : 'pm'}`; };
+    $('wxHours').innerHTML = idx.map((i, k) => {
+      const [, hk] = wmo(H.weather_code[i]), h = +H.time[i].slice(11, 13), p = H.precipitation_probability?.[i] ?? 0;
+      return `<div class="wx-h"><small>${lab(H.time[i], k)}</small>${wxSvg(hk, h < 6 || h >= 19)}<b>${Math.round(tmp(H.temperature_2m[i]))}°</b><em>${p >= 20 ? p + '%' : ''}</em></div>`;
+    }).join('');
+    const wet = idx.find(i => (H.precipitation_probability?.[i] ?? 0) >= 40);
+    $('wxRain').textContent = wet != null ? `Rain likely from ${lab(H.time[wet], wet === i0 ? 0 : 1)}` : 'No rain expected';
+  }
+  wxLoad(); setInterval(wxLoad, 15 * 60 * 1000);
+
   // ---------- home screen ----------
   function hTile(id, val, txt, pct, state){
     const el = $(id); el.dataset.state = val == null ? 'none' : state;
@@ -1503,7 +1693,7 @@ body[data-view="home"]{overflow:hidden}
     $('uMetric').setAttribute('aria-pressed', String(!imp()));
     $('uImperial').setAttribute('aria-pressed', String(imp()));
     $('speedUnit').textContent = imp() ? 'mph' : 'km/h';
-    fillOilForm(); render();
+    fillOilForm(); render(); renderWx();
   }
   document.querySelectorAll('[data-units]').forEach(b => b.addEventListener('click', () => { S.units = b.dataset.units; store.set('units', S.units); applyUnits(); }));
 
