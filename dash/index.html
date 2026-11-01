@@ -23,7 +23,7 @@
   --ok:#8fb573; --warn:#e2b04f; --crit:#f2463f; --cold:#7fb0e0;
   --sheen:rgba(250,249,245,.045); --hl:rgba(255,255,255,.05); --shade:rgba(0,0,0,.85);
   --weave-a:rgba(250,249,245,.03); --weave-b:rgba(0,0,0,.35); --stitch:rgba(217,119,87,.4);
-  --metal-1:#2a2926; --metal-2:#cfccc2; --metal-3:#5d5b55; --face:#111110; --face-hi:#262521;
+  --metal-1:#2a2926; --metal-2:#cfccc2; --metal-3:#5d5b55; --face:#111110; --face-hi:#262521; --track:#262624;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
   --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
@@ -39,7 +39,7 @@
     --ok:#5f7a45; --warn:#a6760c; --crit:#c92a24; --cold:#3f74b0;
     --sheen:rgba(255,255,255,.7); --hl:rgba(255,255,255,.95); --shade:rgba(60,50,30,.3);
     --weave-a:rgba(20,20,19,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(217,119,87,.45);
-    --metal-1:#b6b2a6; --metal-2:#fdfcf8; --metal-3:#d8d4c9; --face:#f1efe8; --face-hi:#ffffff;
+    --metal-1:#7d796f; --metal-2:#f4f2ec; --metal-3:#a9a59a; --face:#dcd9cf; --face-hi:#f3f1eb; --track:#c9c5ba;
     --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     color-scheme:light;
   }
@@ -52,7 +52,7 @@
     --ok:#5f7a45; --warn:#a6760c; --crit:#c92a24; --cold:#3f74b0;
     --sheen:rgba(255,255,255,.7); --hl:rgba(255,255,255,.95); --shade:rgba(60,50,30,.3);
     --weave-a:rgba(20,20,19,.035); --weave-b:rgba(255,255,255,.55); --stitch:rgba(217,119,87,.45);
-    --metal-1:#b6b2a6; --metal-2:#fdfcf8; --metal-3:#d8d4c9; --face:#f1efe8; --face-hi:#ffffff;
+    --metal-1:#7d796f; --metal-2:#f4f2ec; --metal-3:#a9a59a; --face:#dcd9cf; --face-hi:#f3f1eb; --track:#c9c5ba;
     --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme:light;
 }
@@ -130,7 +130,7 @@ button{cursor:pointer}
 }
 .gauge{position:relative;container-type:inline-size;width:clamp(220px, min(100%, calc(100dvh - 310px)), 520px);aspect-ratio:1;max-width:100%}
 .gauge svg{width:100%;height:100%;display:block;overflow:visible;position:relative;z-index:1}
-.g-track{fill:none;stroke:var(--raise);stroke-width:14;stroke-linecap:round}
+.g-track{fill:none;stroke:var(--track);stroke-width:14;stroke-linecap:round}
 .g-red{fill:none;stroke:var(--crit);stroke-width:3;opacity:.85}
 .g-fill{fill:none;stroke:var(--dial);stroke-width:14;stroke-linecap:round;transition:stroke .3s;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--dial) 40%,transparent))}
 .g-tip{fill:var(--fg);stroke:var(--panel);stroke-width:3}
