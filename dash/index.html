@@ -1,0 +1,719 @@
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}[hidden]{display:none!important}</style></head><body>
+<title>Cab Dash</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Layout: landscape instrument panel. Gauge cluster left, vitals + trip centre, one-tap launch rail right.
+   Two columns under 1000px, one column under 640px (iPad Split View / phone). Night-first. */
+:root{
+  --bg:#0c0f0d; --panel:#141815; --raise:#1b201c; --line:#2a312b;
+  --fg:#e9ece5; --muted:#8c948b; --dim:#566057;
+  --accent:#f0a33c; --accent-ink:#1b1206; --glow:rgba(240,163,60,.10);
+  --ok:#6cc08b; --warn:#f2c94c; --crit:#ff5c50;
+  --f-display:"Barlow Condensed","Arial Narrow","Helvetica Neue",system-ui,sans-serif;
+  --f-ui:"Barlow",-apple-system,system-ui,"Segoe UI",sans-serif;
+  --r-lg:18px; --r-sm:11px;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#e7eae4; --panel:#f7f8f5; --raise:#ffffff; --line:#d2d7ce;
+    --fg:#111411; --muted:#566057; --dim:#8c948b;
+    --accent:#b4600c; --accent-ink:#fff8ee; --glow:rgba(180,96,12,.08);
+    --ok:#2c8650; --warn:#9a6f00; --crit:#c92d22;
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#e7eae4; --panel:#f7f8f5; --raise:#ffffff; --line:#d2d7ce;
+  --fg:#111411; --muted:#566057; --dim:#8c948b;
+  --accent:#b4600c; --accent-ink:#fff8ee; --glow:rgba(180,96,12,.08);
+  --ok:#2c8650; --warn:#9a6f00; --crit:#c92d22;
+  color-scheme:light;
+}
+
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--fg); font-family:var(--f-ui); font-size:15px;
+  padding-block:12px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  box-sizing:border-box; -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent; overflow-x:hidden;
+}
+*,*::before,*::after{box-sizing:border-box}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.app{min-height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:12px}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--f-display);font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ident{display:flex;align-items:center;gap:10px;margin-right:6px}
+.mark{width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink)}
+.name{font-family:var(--f-display);font-weight:700;font-size:21px;letter-spacing:.02em;line-height:1}
+.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:7px 14px;border-radius:999px;font-weight:600;font-size:14px;color:var(--muted);min-height:36px}
+.seg button[aria-checked="true"]{background:var(--fg);color:var(--bg)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--muted);min-height:36px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex:none}
+.pill[data-state="live"] .dot{background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 22%,transparent)}
+.pill[data-state="wait"] .dot{background:var(--warn);animation:blink 1.1s ease-in-out infinite}
+.pill[data-state="err"] .dot{background:var(--crit)}
+.pill[data-state="demo"] .dot{background:var(--accent)}
+@keyframes blink{50%{opacity:.25}}
+.spacer{flex:1}
+.ambient{display:flex;flex-direction:column;align-items:flex-end;line-height:1}
+.ambient .num{font-size:22px;font-weight:600;margin-top:3px}
+.clock{font-family:var(--f-display);font-size:34px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.01em;line-height:1}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;color:var(--fg)}
+.icon-btn svg{width:20px;height:20px}
+
+/* ---------- main grid ---------- */
+.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(210px,.6fr);gap:12px;min-height:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
+
+/* cluster */
+.cluster{padding:16px 18px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden}
+.cluster::before{content:"";position:absolute;inset:-20% -10% auto;height:80%;background:radial-gradient(closest-side,var(--glow),transparent);pointer-events:none}
+.gauge{position:relative;container-type:inline-size;width:clamp(240px, min(100%, calc(100dvh - 300px)), 540px);aspect-ratio:1;max-width:100%}
+.gauge svg{width:100%;height:100%;display:block;overflow:visible}
+.g-track{fill:none;stroke:var(--raise);stroke-width:14;stroke-linecap:round}
+.g-red{fill:none;stroke:var(--crit);stroke-width:3;opacity:.85}
+.g-fill{fill:none;stroke:var(--accent);stroke-width:14;stroke-linecap:round;transition:stroke .3s}
+.g-tip{fill:var(--fg);stroke:var(--panel);stroke-width:3}
+.g-tick{stroke:var(--dim);stroke-width:1.5}
+.g-tick.major{stroke:var(--muted);stroke-width:2.2}
+.g-tick.hot{stroke:var(--crit)}
+.g-lab{fill:var(--muted);font-family:var(--f-display);font-size:15px;font-weight:600;text-anchor:middle;dominant-baseline:middle}
+.g-cap{fill:var(--dim);font-family:var(--f-ui);font-size:10px;font-weight:600;letter-spacing:.16em;text-anchor:middle}
+.shift .g-fill{stroke:var(--crit)}
+.readout{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;padding-bottom:4cqw}
+.speed{font-family:var(--f-display);font-weight:600;font-size:30cqw;line-height:.82;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.unit{font-size:4.2cqw;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:2.4cqw}
+.rpmtxt{font-family:var(--f-display);font-size:5cqw;font-weight:500;color:var(--muted);margin-top:3cqw;font-variant-numeric:tabular-nums}
+.rpmtxt b{color:var(--fg);font-weight:600}
+
+.bars{width:100%;max-width:540px;display:grid;gap:10px}
+.barrow{display:grid;grid-template-columns:76px 1fr 84px;align-items:center;gap:12px}
+.meter{height:8px;border-radius:99px;background:var(--raise);overflow:hidden;position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;width:0;background:var(--fg);border-radius:99px}
+.meter.boost i{background:var(--accent)}
+.barrow .val{font-family:var(--f-display);font-size:20px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.barrow .val small{font-family:var(--f-ui);font-size:12px;color:var(--muted);font-weight:500;margin-left:3px}
+
+/* vitals */
+.mid{display:grid;grid-template-rows:1fr auto;gap:12px;min-width:0}
+.vitals{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vital{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px 15px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.vh{display:flex;align-items:center;justify-content:space-between}
+.sdot{width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.vv{display:flex;align-items:baseline;gap:5px;margin-top:auto}
+.vv .num{font-size:clamp(40px,5.6vw,76px);font-weight:600;line-height:.9}
+.vv .u{font-size:14px;font-weight:600;color:var(--muted)}
+.range{height:6px;border-radius:99px;background:var(--raise);position:relative}
+.range .band{position:absolute;top:0;bottom:0;border-radius:99px;background:color-mix(in srgb,var(--ok) 30%,transparent)}
+.range .mk{position:absolute;top:-4px;width:4px;height:14px;border-radius:2px;background:var(--fg);transform:translateX(-50%);transition:left .6s cubic-bezier(.2,.8,.2,1)}
+.vs{font-size:12.5px;color:var(--muted)}
+.vital[data-state="warn"] .sdot{background:var(--warn)}
+.vital[data-state="warn"] .vv .num{color:var(--warn)}
+.vital[data-state="crit"] .sdot{background:var(--crit);animation:blink .8s infinite}
+.vital[data-state="crit"] .vv .num{color:var(--crit)}
+.vital[data-state="cold"] .sdot{background:#5d9ad6}
+.vital[data-state="none"] .sdot{background:var(--dim)}
+
+.trip{padding:14px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 14px;align-items:end}
+.trip .lbl{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}
+.trip .k{font-size:12px;color:var(--muted);margin-top:2px}
+.trip .num{font-size:30px;font-weight:600;line-height:1}
+.link-btn{border:0;background:none;color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:6px 0}
+
+/* rail */
+.rail{display:grid;grid-auto-rows:minmax(74px,1fr);gap:12px;min-width:0}
+.launch{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-lg);background:var(--panel);border:1px solid var(--line);color:var(--fg);text-decoration:none;transition:transform .15s ease,background .2s}
+.launch:active{transform:scale(.97);background:var(--raise)}
+.launch .ic{width:44px;height:44px;border-radius:12px;background:var(--raise);display:grid;place-items:center}
+.launch .ic svg{width:22px;height:22px}
+.launch.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink)}
+.launch.primary .ic{background:color-mix(in srgb,var(--accent-ink) 14%,transparent)}
+.launch.primary .s{color:color-mix(in srgb,var(--accent-ink) 72%,transparent)}
+.launch .t{font-weight:600;font-size:18px;line-height:1.1}
+.launch .s{font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* footer strip */
+.strip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--panel);min-height:52px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:var(--raise)}
+.chip .dot{background:var(--ok)}
+[data-moving="true"] .chip .dot{background:var(--accent)}
+.alert{flex:1;min-width:200px;font-size:14px;display:flex;align-items:center;gap:8px}
+.alert[data-sev="warn"]{color:var(--warn)}
+.alert[data-sev="crit"]{color:var(--crit);font-weight:600}
+
+/* drive lock */
+[data-moving="true"] .lockable, [data-moving="true"][data-live="true"] .lockable-live{opacity:.32;pointer-events:none}
+
+/* settings sheet */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);z-index:21;background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;
+  padding:calc(20px + env(safe-area-inset-top,0px)) max(22px, env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) 22px;
+  display:flex;flex-direction:column;gap:22px;animation:slide .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes slide{from{transform:translateX(24px);opacity:.4}}
+.sheet h2{font-family:var(--f-display);font-size:28px;font-weight:600;margin:0;text-wrap:balance}
+.sheet h3{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.sheet p,.sheet li{font-size:14.5px;line-height:1.5;color:var(--fg);margin:0}
+.sheet ol{margin:0;padding-left:20px;display:grid;gap:8px}
+.sheet .muted{color:var(--muted)}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.field{display:grid;gap:6px}
+.field input{width:100%;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--raise);min-height:46px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:11px 16px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--raise);font-weight:600;min-height:44px}
+.btn.solid{background:var(--accent);border-color:transparent;color:var(--accent-ink)}
+.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:transparent}
+.note{padding:12px 14px;border-radius:var(--r-sm);background:var(--raise);font-size:14px;line-height:1.45}
+.note[data-sev="err"]{color:var(--crit)}
+
+@media (max-width:1000px){
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .rail{grid-column:1/-1;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));grid-auto-rows:auto}
+  .gauge{width:min(100%,460px)}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .clock{font-size:28px}
+  .ambient{display:none}
+  .barrow{grid-template-columns:64px 1fr 76px}
+  .trip .num{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="app" id="app" data-moving="false" data-live="false">
+  <header class="bar">
+    <div class="ident">
+      <span class="mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4.5-5"/></svg></span>
+      <div><div class="name">Cab Dash</div><div class="sub">2019 Ranger · 2.3 EcoBoost</div></div>
+    </div>
+    <div class="seg lockable-live" role="radiogroup" aria-label="Data source">
+      <button type="button" role="radio" data-src="demo" aria-checked="true">Demo</button>
+      <button type="button" role="radio" data-src="gps" aria-checked="false">GPS</button>
+      <button type="button" role="radio" data-src="obd" aria-checked="false">OBD</button>
+    </div>
+    <div class="pill" id="status" data-state="demo"><span class="dot"></span><span id="statusText">Demo drive</span></div>
+    <div class="spacer"></div>
+    <div class="ambient"><span class="lbl">Outside</span><span class="num" id="ambient">—</span></div>
+    <div class="clock" id="clock">--:--</div>
+    <button type="button" class="icon-btn" id="themeBtn" aria-label="Switch day or night display">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+    </button>
+    <button type="button" class="icon-btn lockable" id="setBtn" aria-label="Settings and connection">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+    </button>
+  </header>
+
+  <main class="grid">
+    <section class="panel cluster" aria-label="Speed and engine">
+      <div class="gauge" id="gauge">
+        <svg viewBox="-14 -14 328 328" aria-hidden="true">
+          <g id="ticks"></g>
+          <path class="g-track" id="gTrack"></path>
+          <path class="g-red" id="gRed"></path>
+          <path class="g-fill" id="gFill" pathLength="1000" stroke-dasharray="0 1000"></path>
+          <circle class="g-tip" id="gTip" r="6" cx="0" cy="0"></circle>
+          <text class="g-cap" x="150" y="272">RPM × 1000</text>
+        </svg>
+        <div class="readout">
+          <div class="speed" id="speed" aria-live="off">0</div>
+          <div class="unit" id="speedUnit">km/h</div>
+          <div class="rpmtxt"><b id="rpm">0</b> rpm</div>
+        </div>
+      </div>
+      <div class="bars">
+        <div class="barrow"><span class="lbl">Boost</span><div class="meter boost"><i id="boostBar"></i></div><span class="val" id="boost">—</span></div>
+        <div class="barrow"><span class="lbl">Throttle</span><div class="meter"><i id="thrBar"></i></div><span class="val" id="thr">—</span></div>
+      </div>
+    </section>
+
+    <section class="mid">
+      <div class="vitals" id="vitals"></div>
+      <div class="panel trip">
+        <div class="lbl"><span>This trip</span><button type="button" class="link-btn lockable" id="tripReset">Reset</button></div>
+        <div><div class="num" id="tripDist">0.0</div><div class="k" id="tripDistU">km</div></div>
+        <div><div class="num" id="tripTime">0:00</div><div class="k">driving</div></div>
+        <div><div class="num" id="tripAvg">0</div><div class="k" id="tripAvgU">avg km/h</div></div>
+      </div>
+    </section>
+
+    <nav class="rail" aria-label="Quick launch">
+      <a class="launch primary" id="homeLink" href="https://maps.apple.com/" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>
+        <span><div class="t">Go home</div><div class="s" id="homeSub">Set your address in settings</div></span>
+      </a>
+      <a class="launch" href="https://maps.apple.com/" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l7 19-7-4-7 4z"/></svg></span>
+        <span><div class="t">Apple Maps</div><div class="s">Uses the iPad's GPS</div></span>
+      </a>
+      <a class="launch" href="https://waze.com/ul" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span><div class="t">Waze</div><div class="s">Traffic and cameras</div></span>
+      </a>
+      <a class="launch" href="https://music.apple.com/" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
+        <span><div class="t">Music</div><div class="s">Plays through SYNC 3</div></span>
+      </a>
+      <a class="launch" href="https://open.spotify.com/" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9c5-2 11-1.5 16 1M5.5 13c4-1.4 9-1 13 .8M7 16.8c3.3-1 6.8-.7 9.8.7"/></svg></span>
+        <span><div class="t">Spotify</div><div class="s">Plays through SYNC 3</div></span>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="strip">
+    <span class="chip"><span class="dot"></span><span id="driveState">Parked</span></span>
+    <span class="alert" id="alert" data-sev="ok">All readings normal</span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="sheet" id="sheet" hidden aria-label="Settings">
+  <div class="sheet-head">
+    <h2>Settings</h2>
+    <button type="button" class="icon-btn" id="sheetClose" aria-label="Close settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+
+  <section>
+    <h3>Connect the truck</h3>
+    <div class="note" id="obdMsg" hidden></div>
+    <ol>
+      <li>Plug a <b>Bluetooth LE</b> OBD-II adapter (OBDLink CX or vLinker FS) into the diagnostic port under the dash on the driver's side.</li>
+      <li>Turn the ignition on.</li>
+      <li>Open this page in <b>Bluefy</b> on the iPad. Safari and Chrome on iPad can't talk to Bluetooth devices.</li>
+      <li>Tap <b>OBD</b> at the top and pick the adapter. Don't pair it in iPad Settings first.</li>
+    </ol>
+    <div class="row" style="margin-top:12px"><button type="button" class="btn solid" id="obdBtn">Connect adapter</button></div>
+  </section>
+
+  <section>
+    <h3>Home</h3>
+    <div class="field">
+      <label for="homeInput" class="muted" style="font-size:13px">Address for the Go home button</label>
+      <input id="homeInput" type="text" autocomplete="street-address" placeholder="12 Example Street, Town">
+    </div>
+  </section>
+
+  <section>
+    <h3>Units</h3>
+    <div class="row" role="group" aria-label="Units">
+      <button type="button" class="btn" data-units="metric" id="uMetric">km/h · °C</button>
+      <button type="button" class="btn" data-units="imperial" id="uImperial">mph · °F</button>
+    </div>
+  </section>
+
+  <section>
+    <h3>Screen</h3>
+    <div class="row">
+      <button type="button" class="btn" id="wakeBtn" aria-pressed="false">Keep screen on</button>
+    </div>
+    <p class="muted" style="margin-top:8px;font-size:13px">Settings lock while the truck is moving. Pull over to change them.</p>
+  </section>
+</aside>
+
+<script>
+(() => {
+  // ---------- storage (per-viewer conveniences only) ----------
+  const store = {
+    get(k, d){ try { const v = localStorage.getItem('cabdash.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v){ try { localStorage.setItem('cabdash.' + k, JSON.stringify(v)); } catch {} }
+  };
+  const $ = id => document.getElementById(id);
+  const app = $('app');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- state ----------
+  // T = latest readings (metric, internal). null = not available from this source.
+  const T = { speed:0, rpm:0, throttle:null, boostKpa:null, coolant:null, intake:null, fuel:null, volts:null, ambient:null };
+  const D = { speed:0, rpm:0, throttle:0, boost:0 };          // eased display values
+  const S = { src:'demo', units: store.get('units', navigator.language === 'en-US' ? 'imperial' : 'metric'),
+              home: store.get('home', ''), fresh: 0, trip: { km:0, sec:0 } };
+
+  // ---------- units ----------
+  const imp = () => S.units === 'imperial';
+  const spd = kmh => imp() ? kmh * 0.621371 : kmh;
+  const tmp = c => imp() ? c * 9/5 + 32 : c;
+  const tU = () => imp() ? '°F' : '°C';
+  const dist = km => imp() ? km * 0.621371 : km;
+
+  // ---------- gauge ----------
+  const CX=150, CY=150, R=118, A0=135, SW=270, MAX=7000, RED=6000;
+  const P = (deg, r) => { const a = deg * Math.PI / 180; return [CX + r*Math.cos(a), CY + r*Math.sin(a)]; };
+  const arc = (f0, f1, r) => {
+    const a0 = A0 + SW*f0, a1 = A0 + SW*f1, [x0,y0] = P(a0,r), [x1,y1] = P(a1,r);
+    return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1-a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+  };
+  $('gTrack').setAttribute('d', arc(0, 1, R));
+  $('gFill').setAttribute('d', arc(0, 1, R));
+  $('gRed').setAttribute('d', arc(RED/MAX, 1, R + 12));
+  (() => {
+    let html = '';
+    for (let v = 0; v <= MAX; v += 500) {
+      const f = v / MAX, a = A0 + SW*f, major = v % 1000 === 0;
+      const [x0,y0] = P(a, R + 17), [x1,y1] = P(a, R + (major ? 27 : 22));
+      html += `<line class="g-tick${major ? ' major' : ''}${v >= RED ? ' hot' : ''}" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
+      if (major) { const [lx,ly] = P(a, R + 40); html += `<text class="g-lab" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}">${v/1000}</text>`; }
+    }
+    $('ticks').innerHTML = html;
+  })();
+
+  // ---------- vitals ----------
+  const VITALS = [
+    { k:'coolant', label:'Coolant', min:40, max:125, band:[80,105], temp:true,
+      state:v => v >= 110 ? 'crit' : v >= 105 ? 'warn' : v < 70 ? 'cold' : 'ok',
+      note:(v,s) => s === 'cold' ? 'Warming up. Go easy.' : `Normal ${fmtT(80)}–${fmtT(105)}` },
+    { k:'fuel', label:'Fuel', min:0, max:100, band:[15,100], unit:'%', dec:0,
+      state:v => v < 8 ? 'crit' : v < 15 ? 'warn' : 'ok', note:() => 'Low below 15%' },
+    { k:'volts', label:'Battery', min:11, max:15.5, band:[13.2,14.8], unit:'V', dec:1,
+      state:v => v < 11.8 ? 'crit' : (v < 12.6 || v > 15) ? 'warn' : 'ok', note:() => 'Charging 13.2–14.8 V' },
+    { k:'intake', label:'Intake air', min:-10, max:80, band:[-10,50], temp:true,
+      state:v => v > 65 ? 'warn' : 'ok', note:() => 'After intercooler' },
+  ];
+  const fmtT = c => Math.round(tmp(c)) + tU();
+  const vit = {};
+  $('vitals').innerHTML = VITALS.map(v => `
+    <div class="vital" data-k="${v.k}" data-state="none">
+      <div class="vh"><span class="lbl">${v.label}</span><span class="sdot"></span></div>
+      <div class="vv"><span class="num">—</span><span class="u"></span></div>
+      <div class="range"><span class="band"></span><span class="mk" style="left:0"></span></div>
+      <div class="vs"></div>
+    </div>`).join('');
+  VITALS.forEach(v => {
+    const el = document.querySelector(`.vital[data-k="${v.k}"]`);
+    const pct = x => Math.max(0, Math.min(100, (x - v.min) / (v.max - v.min) * 100));
+    el.querySelector('.band').style.cssText = `left:${pct(v.band[0])}%;width:${pct(v.band[1]) - pct(v.band[0])}%`;
+    vit[v.k] = { el, num: el.querySelector('.num'), u: el.querySelector('.u'), mk: el.querySelector('.mk'), vs: el.querySelector('.vs'), pct };
+  });
+
+  function renderVitals(){
+    const alerts = [];
+    VITALS.forEach(v => {
+      const r = vit[v.k], val = T[v.k];
+      r.u.textContent = v.temp ? tU() : v.unit;
+      if (val == null) { r.num.textContent = '—'; r.el.dataset.state = 'none'; r.vs.textContent = 'Not available on this source'; r.mk.style.opacity = 0; return; }
+      const s = v.state(val);
+      r.el.dataset.state = s;
+      r.num.textContent = v.temp ? Math.round(tmp(val)) : val.toFixed(v.dec);
+      r.mk.style.opacity = 1; r.mk.style.left = r.pct(val) + '%';
+      r.vs.textContent = v.note(val, s);
+      if (s === 'warn' || s === 'crit') alerts.push({ s, k:v.k, val });
+    });
+    const a = $('alert');
+    const msg = {
+      coolant: x => `Coolant ${fmtT(x.val)}. Pull over when safe and switch off.`,
+      fuel:    x => `Fuel at ${Math.round(x.val)}%. Find a station.`,
+      volts:   x => `Battery ${x.val.toFixed(1)} V. Charging system needs a check.`,
+      intake:  x => `Intake air ${fmtT(x.val)}. Ease off if towing.`,
+    };
+    alerts.sort((p, q) => (q.s === 'crit') - (p.s === 'crit'));
+    if (alerts.length) { a.dataset.sev = alerts[0].s; a.textContent = msg[alerts[0].k](alerts[0]); }
+    else { a.dataset.sev = 'ok'; a.textContent = S.src === 'gps' ? 'GPS gives speed only. Connect OBD for engine data.' : 'All readings normal'; }
+    $('ambient').textContent = T.ambient == null ? '—' : fmtT(T.ambient);
+  }
+
+  // ---------- status ----------
+  function setStatus(state, text){ const p = $('status'); p.dataset.state = state; $('statusText').textContent = text; }
+  function sheetMsg(text, sev){ const n = $('obdMsg'); n.hidden = !text; n.textContent = text || ''; n.dataset.sev = sev || ''; }
+
+  // ---------- source: demo ----------
+  const sim = { phase:'stop', t:3, target:0, v:0, coolant:64, fuel:63 };
+  const GEAR = [0,118,74,52,40,33,28,24,21,18.5,16.5];    // rpm per km/h, 10R80-ish ratios
+  function simStep(dt){
+    sim.t += dt;
+    if (sim.phase === 'stop' && sim.t > 6) { sim.phase = 'go'; sim.t = 0; sim.target = [50,60,80,100][Math.random()*4|0]; }
+    else if (sim.phase === 'go' && sim.v >= sim.target - 1) { sim.phase = 'cruise'; sim.t = 0; }
+    else if (sim.phase === 'cruise' && sim.t > 14) { sim.phase = 'brake'; sim.t = 0; }
+    else if (sim.phase === 'brake' && sim.v <= 0.3) { sim.phase = 'stop'; sim.t = 0; sim.v = 0; }
+    let acc = 0, thr = 0;
+    if (sim.phase === 'go')     { acc = Math.max(1.1, 3.8 - sim.v/38); thr = 52 + 18*Math.sin(sim.t*.8); }
+    if (sim.phase === 'cruise') { acc = (sim.target - sim.v)*.25 + Math.sin(sim.t*.5)*.5; thr = 17 + 6*Math.sin(sim.t*.5); }
+    if (sim.phase === 'brake')  { acc = -3; thr = 0; }
+    sim.v = Math.max(0, sim.v + acc*dt*3.6);
+    const floor = thr > 40 ? 2200 : 1300;
+    let g = 1; for (let i = 10; i >= 1; i--) if (sim.v * GEAR[i] >= floor) { g = i; break; }
+    const rpm = sim.v < 3 ? 720 + thr*8 + Math.sin(sim.t*3)*12 : Math.max(950, sim.v*GEAR[g]) + thr*6;
+    sim.coolant += (91 - sim.coolant) * dt * .018;
+    sim.fuel = Math.max(0, sim.fuel - sim.v*dt*0.000015);
+    Object.assign(T, {
+      speed: sim.v, rpm, throttle: thr,
+      boostKpa: thr > 30 ? (thr - 30) / 48 * 95 : -(62 - thr*1.4),
+      coolant: sim.coolant, fuel: sim.fuel, volts: 14.1 + Math.sin(sim.t*.3)*.08,
+      intake: 26 + thr*.07, ambient: 19
+    });
+    S.fresh = performance.now();
+  }
+
+  // ---------- source: GPS (speed only; needs a cellular iPad) ----------
+  let geoId = null, lastFix = null;
+  function hav(a, b){
+    const r = Math.PI/180, dLa = (b.latitude-a.latitude)*r, dLo = (b.longitude-a.longitude)*r;
+    const h = Math.sin(dLa/2)**2 + Math.cos(a.latitude*r)*Math.cos(b.latitude*r)*Math.sin(dLo/2)**2;
+    return 12742000 * Math.asin(Math.sqrt(h));
+  }
+  function startGPS(){
+    for (const k of ['rpm','throttle','boostKpa','coolant','intake','fuel','volts','ambient']) T[k] = null;
+    T.speed = 0;
+    if (!('geolocation' in navigator)) { setStatus('err', 'No location on this device'); return; }
+    setStatus('wait', 'Finding GPS…');
+    geoId = navigator.geolocation.watchPosition(p => {
+      let v = p.coords.speed;
+      if (v == null || v < 0) v = lastFix ? hav(lastFix.coords, p.coords) / Math.max(.5, (p.timestamp - lastFix.timestamp)/1000) : 0;
+      lastFix = p; T.speed = v * 3.6; S.fresh = performance.now();
+      setStatus('live', `GPS · ±${Math.round(p.coords.accuracy)} m`);
+    }, err => {
+      setStatus('err', err.code === 1 ? 'Location blocked' : 'No GPS fix');
+      sheetMsg(err.code === 1 ? 'Location is blocked for this page. Allow it in Settings › Privacy › Location Services for your browser.' :
+        'No GPS fix. Wi-Fi-only iPads have no GPS chip; use a cellular iPad or an external receiver.', 'err');
+    }, { enableHighAccuracy:true, maximumAge:0, timeout:20000 });
+  }
+  function stopGPS(){ if (geoId != null) navigator.geolocation.clearWatch(geoId); geoId = null; lastFix = null; }
+
+  // ---------- source: OBD-II over Bluetooth LE (ELM327 command set) ----------
+  const SERVICES = [
+    '0000fff0-0000-1000-8000-00805f9b34fb',  // vLinker, Vgate, most clones
+    '0000ffe0-0000-1000-8000-00805f9b34fb',  // HM-10 style
+    'e7810a71-73ae-499d-8c15-faa9aef0c3f2',  // OBDLink CX
+    '000018f0-0000-1000-8000-00805f9b34fb'   // iCar Pro BLE
+  ];
+  const OBD = {
+    dev:null, rx:null, tx:null, buf:'', waiters:[], chain:Promise.resolve(), on:false,
+    async connect(){
+      this.dev = await navigator.bluetooth.requestDevice({ acceptAllDevices:true, optionalServices:SERVICES });
+      this.dev.addEventListener('gattserverdisconnected', () => { if (this.on) { this.on = false; setStatus('err', 'Adapter disconnected'); } });
+      setStatus('wait', 'Connecting…');
+      const server = await this.dev.gatt.connect();
+      for (const uuid of SERVICES) {
+        let svc; try { svc = await server.getPrimaryService(uuid); } catch { continue; }
+        const chars = await svc.getCharacteristics();
+        const rx = chars.find(c => c.properties.notify || c.properties.indicate);
+        const tx = chars.find(c => c.properties.write || c.properties.writeWithoutResponse);
+        if (rx && tx) { this.rx = rx; this.tx = tx; break; }
+      }
+      if (!this.rx) throw new Error('This adapter does not expose a serial service. Use an OBDLink CX or vLinker FS.');
+      await this.rx.startNotifications();
+      this.rx.addEventListener('characteristicvaluechanged', e => this.onData(e));
+      setStatus('wait', 'Waking the ECU…');
+      for (const c of ['ATZ','ATE0','ATL0','ATS0','ATH0','ATAT1','ATSP0']) await this.cmd(c, c === 'ATZ' ? 3000 : 1500);
+      const r = await this.cmd('0100', 9000);
+      if (!/4100/.test(clean(r))) throw new Error('The adapter is on but the truck is not answering. Turn the ignition on and try again.');
+      this.on = true;
+      setStatus('live', 'OBD · ' + (this.dev.name || 'adapter'));
+      this.poll();
+    },
+    onData(e){
+      this.buf += new TextDecoder().decode(e.target.value);
+      let i; while ((i = this.buf.indexOf('>')) >= 0) {
+        const msg = this.buf.slice(0, i); this.buf = this.buf.slice(i + 1);
+        const w = this.waiters.shift(); if (w) w(msg);
+      }
+    },
+    cmd(c, timeout = 1500){
+      const run = () => new Promise(async (res, rej) => {
+        const f = m => { clearTimeout(t); res(m); };
+        const t = setTimeout(() => { const i = this.waiters.indexOf(f); if (i >= 0) this.waiters.splice(i, 1); this.buf = ''; rej(new Error('timeout')); }, timeout);
+        this.waiters.push(f);
+        try {
+          const bytes = new TextEncoder().encode(c + '\r');
+          for (let i = 0; i < bytes.length; i += 20) {
+            const chunk = bytes.slice(i, i + 20);
+            if (this.tx.properties.writeWithoutResponse && this.tx.writeValueWithoutResponse) await this.tx.writeValueWithoutResponse(chunk);
+            else await this.tx.writeValue(chunk);
+          }
+        } catch (err) { clearTimeout(t); rej(err); }
+      });
+      const p = this.chain.then(run, run); this.chain = p.catch(() => {}); return p;
+    },
+    async read(pid){
+      try { const r = clean(await this.cmd('01' + pid)); const i = r.indexOf('41' + pid); if (i < 0) return null;
+        const hex = r.slice(i + 4), b = []; for (let k = 0; k + 1 < hex.length && b.length < 4; k += 2) b.push(parseInt(hex.substr(k, 2), 16));
+        return b.length && !b.some(isNaN) ? b : null; } catch { return null; }
+    },
+    async poll(){
+      let n = 0, baro = 101;
+      while (this.on) {
+        const rpm = await this.read('0C'); if (rpm) T.rpm = (rpm[0]*256 + rpm[1]) / 4;
+        const sp = await this.read('0D');  if (sp) T.speed = sp[0];
+        const th = await this.read('11');  T.throttle = th ? th[0]*100/255 : null;
+        const map = await this.read('0B'); T.boostKpa = map ? map[0] - baro : null;
+        if (n % 10 === 0) {
+          const b  = await this.read('33'); if (b) baro = b[0];
+          const ct = await this.read('05'); T.coolant = ct ? ct[0] - 40 : null;
+          const fl = await this.read('2F'); T.fuel = fl ? fl[0]*100/255 : null;
+          const vb = await this.read('42'); T.volts = vb ? (vb[0]*256 + vb[1]) / 1000 : null;
+          const ia = await this.read('0F'); T.intake = ia ? ia[0] - 40 : null;
+          const am = await this.read('46'); T.ambient = am ? am[0] - 40 : null;
+        }
+        if (rpm || sp) S.fresh = performance.now();
+        n++;
+      }
+    },
+    stop(){ this.on = false; try { this.dev && this.dev.gatt.connected && this.dev.gatt.disconnect(); } catch {} this.rx = this.tx = null; this.waiters = []; this.buf = ''; }
+  };
+  const clean = s => (s || '').toUpperCase().replace(/SEARCHING\.\.\.|\s/g, '');
+
+  // ---------- source switching ----------
+  function markSeg(){ document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-checked', String(b.dataset.src === S.src))); app.dataset.live = String(S.src !== 'demo'); }
+  async function setSource(src){
+    if (src === S.src && src !== 'obd') return;
+    if (src === 'obd' && !navigator.bluetooth) {
+      openSheet();
+      sheetMsg('This browser cannot reach Bluetooth. On iPad, open this page in Bluefy. Safari, Chrome and this preview all block it.', 'err');
+      return;
+    }
+    stopGPS(); OBD.stop();
+    S.src = src; markSeg(); sheetMsg('');
+    S.trip = src === 'demo' ? { km:0, sec:0 } : store.get('trip', { km:0, sec:0 });
+    if (src === 'demo') { sim.phase = 'stop'; sim.t = 3; setStatus('demo', 'Demo drive'); }
+    if (src === 'gps') startGPS();
+    if (src === 'obd') {
+      for (const k of Object.keys(T)) T[k] = k === 'speed' || k === 'rpm' ? 0 : null;
+      try { await OBD.connect(); closeSheet(); }
+      catch (e) {
+        OBD.stop();
+        const cancelled = e && e.name === 'NotFoundError';
+        setStatus('err', cancelled ? 'No adapter chosen' : 'Could not connect');
+        if (!cancelled) { openSheet(); sheetMsg(e.message || String(e), 'err'); }
+      }
+    }
+  }
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => setSource(b.dataset.src)));
+  $('obdBtn').addEventListener('click', () => setSource('obd'));
+
+  // ---------- settings sheet ----------
+  function openSheet(){ $('sheet').hidden = false; $('scrim').hidden = false; }
+  function closeSheet(){ $('sheet').hidden = true; $('scrim').hidden = true; }
+  $('setBtn').addEventListener('click', openSheet);
+  $('sheetClose').addEventListener('click', closeSheet);
+  $('scrim').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
+  function applyUnits(){
+    $('uMetric').setAttribute('aria-pressed', String(!imp()));
+    $('uImperial').setAttribute('aria-pressed', String(imp()));
+    $('speedUnit').textContent = imp() ? 'mph' : 'km/h';
+    $('tripDistU').textContent = imp() ? 'mi' : 'km';
+    $('tripAvgU').textContent = imp() ? 'avg mph' : 'avg km/h';
+    renderVitals();
+  }
+  document.querySelectorAll('[data-units]').forEach(b => b.addEventListener('click', () => { S.units = b.dataset.units; store.set('units', S.units); applyUnits(); }));
+
+  function applyHome(){
+    $('homeInput').value = S.home;
+    const link = $('homeLink');
+    if (S.home) { link.href = 'https://maps.apple.com/?daddr=' + encodeURIComponent(S.home) + '&dirflg=d'; $('homeSub').textContent = S.home; }
+    else { link.href = 'https://maps.apple.com/'; $('homeSub').textContent = 'Set your address in settings'; }
+  }
+  $('homeInput').addEventListener('change', e => { S.home = e.target.value.trim(); store.set('home', S.home); applyHome(); });
+  $('homeLink').addEventListener('click', e => { if (!S.home && app.dataset.moving !== 'true') { e.preventDefault(); openSheet(); $('homeInput').focus(); } });
+
+  // theme: day = light (readable in sun glare), night = dark
+  const savedTheme = store.get('theme', null);
+  if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+  $('themeBtn').addEventListener('click', () => {
+    const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next; store.set('theme', next);
+  });
+
+  // keep screen awake
+  let wake = null, wantWake = store.get('wake', true);
+  async function requestWake(){
+    if (!wantWake || !('wakeLock' in navigator) || wake) return;
+    try { wake = await navigator.wakeLock.request('screen'); wake.addEventListener('release', () => { wake = null; markWake(); }); } catch { wake = null; }
+    markWake();
+  }
+  function markWake(){ $('wakeBtn').setAttribute('aria-pressed', String(!!wake)); $('wakeBtn').textContent = wake ? 'Screen stays on' : 'Keep screen on'; }
+  $('wakeBtn').addEventListener('click', async () => {
+    if (wake) { wantWake = false; store.set('wake', false); try { await wake.release(); } catch {} wake = null; markWake(); }
+    else { wantWake = true; store.set('wake', true); requestWake(); }
+  });
+  document.addEventListener('pointerdown', requestWake, { once:true });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') requestWake(); });
+
+  // trip
+  $('tripReset').addEventListener('click', () => { S.trip = { km:0, sec:0 }; if (S.src !== 'demo') store.set('trip', S.trip); });
+
+  // ---------- clock ----------
+  function tick(){ $('clock').textContent = new Date().toLocaleTimeString([], { hour:'numeric', minute:'2-digit' }); }
+  tick(); setInterval(tick, 5000);
+
+  // ---------- render loop ----------
+  let last = performance.now(), slow = 0, saveT = 0;
+  const sweepStart = reduce ? -1 : last;
+  function frame(now){
+    const dt = Math.max(0, Math.min(.1, (now - last) / 1000)); last = now;
+    if (S.src === 'demo') simStep(dt);
+
+    // trip accumulates only while moving
+    if (T.speed > 1) { S.trip.km += T.speed * dt / 3600; S.trip.sec += dt; }
+
+    // ease toward targets
+    const k = reduce ? 1 : 1 - Math.exp(-dt * 7);
+    D.speed += ((T.speed || 0) - D.speed) * k;
+    D.rpm += ((T.rpm || 0) - D.rpm) * k;
+    D.throttle += ((T.throttle || 0) - D.throttle) * k;
+    D.boost += ((T.boostKpa || 0) - D.boost) * k;
+
+    // start-up needle sweep, like the real cluster
+    let rpmShown = D.rpm;
+    if (sweepStart > 0) { const s = Math.max(0, (now - sweepStart) / 1300); if (s < 1) rpmShown = MAX * Math.sin(Math.PI * Math.min(1, s)) ** 1.4; }
+
+    const f = Math.max(0, Math.min(1, rpmShown / MAX));
+    $('gFill').setAttribute('stroke-dasharray', `${(f * 1000).toFixed(1)} 1000`);
+    const [tx, ty] = P(A0 + SW * f, R); $('gTip').setAttribute('cx', tx.toFixed(1)); $('gTip').setAttribute('cy', ty.toFixed(1));
+    $('gauge').classList.toggle('shift', rpmShown >= RED);
+    $('speed').textContent = Math.round(spd(D.speed));
+    $('rpm').textContent = T.rpm == null ? '—' : (Math.round(rpmShown / 10) * 10).toLocaleString();
+
+    if (T.boostKpa == null) { $('boost').innerHTML = '—'; $('boostBar').style.width = '0'; }
+    else {
+      const psi = D.boost * 0.145038;
+      $('boost').innerHTML = imp() ? `${psi.toFixed(1)}<small>psi</small>` : `${(D.boost / 100).toFixed(2)}<small>bar</small>`;
+      $('boostBar').style.width = Math.max(0, Math.min(100, psi / 16 * 100)) + '%';
+    }
+    if (T.throttle == null) { $('thr').innerHTML = '—'; $('thrBar').style.width = '0'; }
+    else { $('thr').innerHTML = `${Math.round(D.throttle)}<small>%</small>`; $('thrBar').style.width = Math.min(100, D.throttle) + '%'; }
+
+    // drive lock
+    const moving = (T.speed || 0) > 5;
+    if (String(moving) !== app.dataset.moving) {
+      app.dataset.moving = String(moving);
+      $('driveState').textContent = moving ? 'Moving · settings locked' : 'Parked';
+      if (moving && S.src !== 'demo') closeSheet();
+    }
+
+    slow += dt;
+    if (slow > .5) {
+      slow = 0; renderVitals();
+      $('tripDist').textContent = dist(S.trip.km).toFixed(1);
+      const m = Math.floor(S.trip.sec / 60); $('tripTime').textContent = `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+      $('tripAvg').textContent = S.trip.sec > 30 ? Math.round(spd(S.trip.km / (S.trip.sec / 3600))) : '—';
+      if (S.src !== 'demo' && S.fresh && now - S.fresh > 5000 && $('status').dataset.state === 'live') setStatus('wait', 'No data from source');
+      if ((saveT += 1) > 20) { saveT = 0; if (S.src !== 'demo') store.set('trip', S.trip); }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  markSeg(); applyUnits(); applyHome(); markWake();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>
