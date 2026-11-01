@@ -86,12 +86,12 @@ button{cursor:pointer}
   grid-template-columns:repeat(8,minmax(0,1fr));
   grid-template-rows:repeat(3,minmax(168px,1fr));
   grid-template-areas:
-    "clu clu clu oil oil cool home home"
-    "clu clu clu oil oil fuel maps music"
-    "clu clu clu trip trip fuel batt spot";
+    "clu clu clu gas gas oil oil cool"
+    "clu clu clu fuel home oil oil batt"
+    "clu clu clu fuel trip trip maps dock";
 }
 .a-clu{grid-area:clu}.a-cool{grid-area:cool}.a-fuel{grid-area:fuel}.a-batt{grid-area:batt}.a-trip{grid-area:trip}
-.a-home{grid-area:home}.a-maps{grid-area:maps}.a-music{grid-area:music}.a-spot{grid-area:spot}.a-oil{grid-area:oil}
+.a-home{grid-area:home}.a-maps{grid-area:maps}.a-dock{grid-area:dock}.a-oil{grid-area:oil}.a-gas{grid-area:gas}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
 
 /* cluster with slow caustic light */
@@ -212,6 +212,33 @@ button{cursor:pointer}
 .oilg{max-width:none!important;margin:auto!important}
 #cardOil .back .big{margin-top:10px}
 #cardOil .back .kv{margin-top:auto!important}
+/* cheapest diesel: the one inverted card on the page, so it reads first after speed */
+.gas .face.front{background:var(--fg);color:var(--bg);border-color:transparent}
+.gas .face.front .lbl{color:color-mix(in srgb,var(--bg) 62%,transparent)}
+.gas .tag{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:color-mix(in srgb,var(--bg) 10%,transparent);color:color-mix(in srgb,var(--bg) 70%,transparent);white-space:nowrap}
+.gas[data-live="true"] .tag{background:var(--dial);color:#10140f}
+.gas[data-live="true"] .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 1.6s ease-in-out infinite}
+.gas .price{display:flex;align-items:baseline;gap:6px;margin-top:auto}
+.gas .price .num{font-size:clamp(50px,5.6vw,80px);font-weight:700;line-height:.85;letter-spacing:-.01em}
+.gas .price .u{font-size:15px;font-weight:600;opacity:.6}
+.gas .where{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gas .meta{font-size:12px;opacity:.62;padding-right:30px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gas .go{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:14px;background:var(--dial);color:#10140f;text-decoration:none;min-height:56px;min-width:0}
+.gas .go b{display:block;font-size:17px}
+.gas .go small{display:block;font-size:12px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gas .go span{min-width:0}
+.gas .go svg{width:22px;height:22px;flex:none}
+.gas .alts{display:grid;gap:2px;padding-right:30px;margin-top:auto}
+.gas .alt{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:baseline;color:var(--fg);text-decoration:none;font-size:13px;padding:5px 0;border-top:1px solid var(--line)}
+.gas .alt b{font-size:18px;font-family:var(--f-display);font-weight:600}
+.gas .alt span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.gas .alt em{font-style:normal;color:var(--muted)}
+.dock{display:grid;grid-template-rows:1fr 1fr;padding:6px;min-width:0}
+.dock a{display:flex;align-items:center;gap:10px;padding:8px;border-radius:14px;color:var(--fg);text-decoration:none;font-weight:600;font-size:16px;min-width:0}
+.dock a:active{background:var(--raise)}
+.dock a + a{border-top:1px solid var(--line);border-radius:0 0 14px 14px}
+.dock .ic{width:38px;height:38px;border-radius:11px;background:var(--raise);display:grid;place-items:center;flex:none}
+.dock .ic svg{width:19px;height:19px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* launch tiles */
@@ -267,15 +294,15 @@ button{cursor:pointer}
   .bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;grid-auto-rows:minmax(160px,auto);
     grid-template-areas:
       "clu clu clu clu"
+      "gas gas home maps"
       "oil oil cool batt"
       "oil oil fuel fuel"
-      "trip trip home home"
-      "maps maps music spot";}
+      "trip trip dock dock";}
   .gauge{width:min(100%,440px)}
 }
 @media (max-width:640px){
   .bento{grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-template-areas:"clu clu" "oil oil" "cool batt" "fuel fuel" "trip trip" "home home" "maps music" "spot spot";}
+    grid-template-areas:"clu clu" "gas gas" "oil oil" "cool batt" "fuel fuel" "trip trip" "home maps" "dock dock";}
   .flip{touch-action:pan-y}
   .clock{font-size:28px}
   .ambient{display:none}
@@ -332,6 +359,27 @@ button{cursor:pointer}
         <div class="barrow"><span class="lbl">Throttle</span><div class="meter"><i id="thrBar"></i></div><span class="val" id="thr">—</span></div>
       </div>
     </section>
+
+    <!-- cheapest diesel nearby -->
+    <div class="flip gas a-gas" id="cardGas" data-face="0" data-state="ok" data-live="false" tabindex="0" role="button" aria-label="Cheapest diesel nearby. Flick or tap for Google Maps directions.">
+      <div class="spin">
+        <div class="face front">
+          <div class="fh"><span class="lbl">Cheapest diesel</span><span class="tag" id="gasTag">Example</span></div>
+          <div class="price"><span class="num" id="gasPrice">—</span><span class="u" id="gasU">¢/L</span></div>
+          <div class="where" id="gasWhere"></div>
+          <div class="meta" id="gasMeta"></div>
+        </div>
+        <div class="face back">
+          <div class="fh"><span class="lbl">Directions</span></div>
+          <a class="go" id="gasGo" href="https://www.google.com/maps/search/diesel+near+me" target="_blank" rel="noopener">
+            <span><b>Drive there</b><small id="gasGoSub">Google Maps</small></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <div class="alts" id="gasAlts"></div>
+        </div>
+      </div>
+      <span class="pips" aria-hidden="true"><i></i><i></i></span>
+    </div>
 
     <!-- engine oil -->
     <div class="flip a-oil" id="cardOil" data-face="0" data-state="none" tabindex="0" role="button" aria-label="Engine oil. Flick or tap for oil change.">
@@ -469,14 +517,10 @@ button{cursor:pointer}
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
       <span><div class="t">Google Maps</div><div class="s">Traffic, search</div></span>
     </a>
-    <a class="launch a-music" href="https://music.apple.com/" target="_blank" rel="noopener">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
-      <span><div class="t">Music</div><div class="s">Via SYNC 3</div></span>
-    </a>
-    <a class="launch a-spot" href="https://open.spotify.com/" target="_blank" rel="noopener">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9c5-2 11-1.5 16 1M5.5 13c4-1.4 9-1 13 .8M7 16.8c3.3-1 6.8-.7 9.8.7"/></svg></span>
-      <span><div class="t">Spotify</div><div class="s">Via SYNC 3</div></span>
-    </a>
+    <nav class="panel dock a-dock" aria-label="Music">
+      <a href="https://music.apple.com/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>Music</a>
+      <a href="https://open.spotify.com/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9c5-2 11-1.5 16 1M5.5 13c4-1.4 9-1 13 .8M7 16.8c3.3-1 6.8-.7 9.8.7"/></svg></span>Spotify</a>
+    </nav>
   </main>
 
   <footer class="strip">
@@ -744,6 +788,7 @@ button{cursor:pointer}
     if (alerts.length) { a.dataset.sev = alerts[0].s; a.textContent = msg[alerts[0].k](alerts[0]); }
     else { a.dataset.sev = 'ok'; a.textContent = S.src === 'gps' ? 'GPS gives speed only. Connect OBD for engine data.' : 'All readings normal'; }
     $('ambient').textContent = T.ambient == null ? '—' : fmtT(T.ambient);
+    renderGas();
   }
 
   // ---------- flip cards ----------
@@ -755,13 +800,16 @@ button{cursor:pointer}
     card.dataset.face = String(face);
     card._since = performance.now();
   }
-  function flip(card, dir){ setAngle(card, card._angle + dir * 180); }
+  function flip(card, dir){
+    setAngle(card, card._angle + dir * 180);
+    if (card.id === 'cardGas' && card.dataset.face === '1') openGas();   // runs inside the gesture, so the browser allows it
+  }
   function flipTo(card, face){ if (card.dataset.face !== String(face)) flip(card, 1); }
   cards.forEach(card => {
     card._spin = card.querySelector('.spin'); card._angle = 0; card._since = 0;
     let y0 = 0, x0 = 0, t0 = 0, pid = null, dragging = false;
     card.addEventListener('pointerdown', e => {
-      if (e.target.closest('button')) return;
+      if (e.target.closest('button, a')) return;
       pid = e.pointerId; y0 = e.clientY; x0 = e.clientX; t0 = performance.now(); dragging = false;
       try { card.setPointerCapture(pid); } catch {}
     });
@@ -955,6 +1003,72 @@ button{cursor:pointer}
     stop(){ this.oilMode = null; this.on = false; try { this.dev && this.dev.gatt.connected && this.dev.gatt.disconnect(); } catch {} this.rx = this.tx = null; this.waiters = []; this.buf = ''; }
   };
 
+  // ---------- cheapest diesel (NSW FuelCheck via Supabase function) ----------
+  const FUEL_URL = 'https://tamwpffuwngukmdbqjmm.supabase.co/functions/v1/fuel-nearby';
+  const EXAMPLE_GAS = [
+    { name:'Example station', brand:'', address:'Example prices, not real', lat:null, lng:null, distance_km:6.4, cents:184.9 },
+    { name:'Example station 2', brand:'', address:'', lat:null, lng:null, distance_km:11.2, cents:187.9 },
+    { name:'Example station 3', brand:'', address:'', lat:null, lng:null, distance_km:23.8, cents:189.5 },
+  ];
+  const gas = { stations:[], state:'idle', msg:'', at:0, pos:null, lastQ:null, watch:null, timer:null, example:false, busy:false };
+  const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  const gasUrl = st => st && st.lat != null
+    ? `https://www.google.com/maps/dir/?api=1&destination=${st.lat},${st.lng}&travelmode=driving&dir_action=navigate`
+    : 'https://www.google.com/maps/search/diesel+near+me';
+  function gasStop(){ if (gas.watch != null) navigator.geolocation.clearWatch(gas.watch); gas.watch = null; clearInterval(gas.timer); gas.timer = null; }
+  function gasStart(){
+    gasStop();
+    if (S.src === 'demo') { Object.assign(gas, { example:true, stations:EXAMPLE_GAS, state:'ok', at:Date.now() }); renderGas(); return; }
+    Object.assign(gas, { example:false, stations:[], state:'locating', lastQ:null, at:0 });
+    if (!('geolocation' in navigator)) { gas.state = 'err'; gas.msg = 'Location is not available on this device.'; renderGas(); return; }
+    gas.watch = navigator.geolocation.watchPosition(p => {
+      gas.pos = { latitude:p.coords.latitude, longitude:p.coords.longitude }; queryGas();
+    }, err => { if (!gas.stations.length) { gas.state = 'err'; gas.msg = err.code === 1 ? 'Allow location for this page to find prices.' : 'Waiting for a location fix.'; renderGas(); } },
+    { enableHighAccuracy:false, maximumAge:60000, timeout:30000 });
+    gas.timer = setInterval(queryGas, 60000);
+    renderGas();
+  }
+  // refresh when you've moved 3 km or every 5 minutes, whichever comes first
+  async function queryGas(){
+    if (!gas.pos || gas.busy || S.src === 'demo') return;
+    const moved = gas.lastQ ? hav(gas.lastQ, gas.pos) / 1000 : Infinity;
+    if (moved < 3 && Date.now() - gas.at < 300000) return;
+    gas.busy = true;
+    if (!gas.stations.length) { gas.state = 'loading'; renderGas(); }
+    try {
+      const r = await fetch(FUEL_URL, { method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ lat:gas.pos.latitude, lng:gas.pos.longitude, radius:70, fuel:'DL' }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) { gas.stations = j.stations || []; gas.state = gas.stations.length ? 'ok' : 'empty'; gas.at = Date.now(); gas.lastQ = { ...gas.pos }; }
+      else if (!gas.stations.length) { gas.state = 'err'; gas.msg = j.code === 'not_configured' ? 'Not connected yet. Add your free FuelCheck key.' : (j.error || 'Could not load prices.'); }
+    } catch { if (!gas.stations.length) { gas.state = 'err'; gas.msg = 'No internet connection.'; } }
+    gas.busy = false; renderGas();
+  }
+  function openGas(){
+    if (gas.example || !gas.stations.length) return;
+    try { window.open(gasUrl(gas.stations[0]), '_blank', 'noopener'); } catch {}
+  }
+  function renderGas(){
+    const st = gas.state === 'ok' ? gas.stations[0] : null, du = imp() ? 'mi' : 'km';
+    $('cardGas').dataset.live = String(!gas.example && !!st);
+    $('gasTag').textContent = gas.example ? 'Example' : st ? 'Live' : '70 km';
+    $('gasPrice').textContent = st ? st.cents.toFixed(1) : '—';
+    $('gasU').hidden = !st;
+    if (st) {
+      const brand = st.brand && !String(st.name).toLowerCase().includes(String(st.brand).toLowerCase()) ? st.brand + ' · ' : '';
+      const mins = Math.round((Date.now() - gas.at) / 60000);
+      $('gasWhere').textContent = brand + st.name;
+      $('gasMeta').textContent = `${dist(st.distance_km || 0).toFixed(1)} ${du} away · ${gas.example ? 'not real prices' : mins < 1 ? 'updated just now' : `updated ${mins} min ago`}`;
+    } else {
+      $('gasWhere').textContent = { idle:'', locating:'Finding your location…', loading:'Checking prices…', empty:'No diesel prices within 70 km', err:gas.msg }[gas.state] || '';
+      $('gasMeta').textContent = 'NSW FuelCheck · NSW and Tasmania';
+    }
+    $('gasGo').href = gasUrl(st);
+    $('gasGoSub').textContent = st ? (gas.example ? 'Searches diesel near you' : st.address || st.name) : 'Search diesel near you';
+    $('gasAlts').innerHTML = (st ? gas.stations.slice(1, 3) : []).map(x =>
+      `<a class="alt" href="${esc(gasUrl(x))}" target="_blank" rel="noopener"><b>${x.cents.toFixed(1)}</b><span>${esc(x.name)}</span><em>${Math.round(dist(x.distance_km || 0))} ${du}</em></a>`).join('');
+  }
+
   // ---------- source switching ----------
   function markSeg(){ document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-checked', String(b.dataset.src === S.src))); app.dataset.live = String(S.src !== 'demo'); }
   function resetSession(src){
@@ -970,7 +1084,7 @@ button{cursor:pointer}
       return;
     }
     stopGPS(); OBD.stop();
-    S.src = src; markSeg(); sheetMsg(''); resetSession(src);
+    S.src = src; markSeg(); sheetMsg(''); resetSession(src); gasStart();
     if (src === 'demo') { sim.phase = 'stop'; sim.t = 3; setStatus('demo', 'Demo drive'); }
     if (src === 'gps') startGPS();
     if (src === 'obd') {
@@ -1113,6 +1227,7 @@ button{cursor:pointer}
       if (moving && S.src !== 'demo') closeSheet();
     }
     if (moving) cards.forEach(c => { if (c.dataset.face === '1' && now - c._since > 8000) flipTo(c, 0); });
+    const gc = $('cardGas'); if (gc.dataset.face === '1' && now - gc._since > 6000) flipTo(gc, 0);
 
     slow += dt; sample += dt;
     if (sample > 5) { sample = 0; if (T.coolant != null) { hist.cool.push(T.coolant); if (hist.cool.length > 120) hist.cool.shift(); } }
@@ -1132,7 +1247,7 @@ button{cursor:pointer}
     setTimeout(() => setAngle(c, c._angle), 420);
   }
 
-  markSeg(); seedDemoHistory(); applyEngine(); applyUnits(); applyHome(); markWake(); render();
+  gasStart(); markSeg(); seedDemoHistory(); applyEngine(); applyUnits(); applyHome(); markWake(); render();
   requestAnimationFrame(frame);
   setTimeout(peek, 1700);
 })();
