@@ -808,7 +808,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
     </div>
     <div>
       <h3 id="authTitle">Sign in to book</h3>
-      <p class="muted msg" style="margin-top:.5rem">Your account keeps your bookings, confirmations and reminders in one place.</p>
+      <p class="muted msg" id="authSub" style="margin-top:.5rem">Your account keeps your bookings, confirmations and reminders in one place.</p>
     </div>
     <div class="tabs" role="tablist">
       <button type="button" role="tab" id="tabIn" aria-selected="true">Sign in</button>
@@ -1522,6 +1522,7 @@ function setMode(m){
   document.getElementById('authForm').hidden = false; document.getElementById('newPassForm').hidden = true;
   document.querySelector('#authDlg .tabs').hidden = false;
   document.getElementById('authTitle').textContent = 'Sign in to book';
+  document.getElementById('authSub').textContent = 'Your account keeps your bookings, confirmations and reminders in one place.';
   document.getElementById('authSubmit').firstChild.textContent = m === 'up' ? 'Create account ' : 'Sign in ';
   document.getElementById('fPass').autocomplete = m === 'up' ? 'new-password' : 'current-password';
   document.getElementById('authMsg').textContent = live ? '' : 'Preview mode: any email and an 8+ character password will do.';
@@ -1566,6 +1567,7 @@ document.getElementById('forgotBtn').onclick = async () => {
 function openNewPass(){
   if (!dlg.open){ if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open',''); }
   document.getElementById('authTitle').textContent = 'Choose a new password';
+  document.getElementById('authSub').textContent = 'At least 8 characters. You’ll stay signed in on this device.';
   document.querySelector('#authDlg .tabs').hidden = true;
   document.getElementById('authForm').hidden = true; document.getElementById('newPassForm').hidden = false;
   setTimeout(() => document.getElementById('nPass').focus(), 50);
