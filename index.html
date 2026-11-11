@@ -429,6 +429,7 @@ dialog[open]{animation:fade .5s var(--ease)}
 .tabs button{background:none;border:0;padding:.4rem 0 .8rem;min-height:44px;cursor:pointer;font-weight:400;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px solid transparent;margin-bottom:-1px}
 .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--kin)}
 .dlg form{display:grid;gap:1.2rem}
+.auth-alt{display:flex;justify-content:space-between;align-items:center;gap:.5rem 1.2rem;flex-wrap:wrap}
 
 /* footer */
 footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
@@ -807,7 +808,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
     </div>
     <div>
       <h3 id="authTitle">Sign in to book</h3>
-      <p class="muted msg" style="margin-top:.5rem">Your account keeps your bookings, confirmations and reminders in one place.</p>
+      <p class="muted msg" id="authSub" style="margin-top:.5rem">Your account keeps your bookings, confirmations and reminders in one place.</p>
     </div>
     <div class="tabs" role="tablist">
       <button type="button" role="tab" id="tabIn" aria-selected="true">Sign in</button>
@@ -821,7 +822,13 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       <div class="field"><label for="fPass">Password</label><input id="fPass" type="password" autocomplete="current-password" minlength="8" required></div>
       <p class="msg" id="authMsg" role="status"></p>
       <button class="btn" type="submit" id="authSubmit">Sign in <span class="arrow" aria-hidden="true"></span></button>
-      <button class="link" type="button" id="magicBtn" style="justify-self:start">Email me a sign-in link instead</button>
+      <div class="auth-alt"><button class="link" type="button" id="magicBtn">Email me a sign-in link instead</button><button class="link" type="button" id="forgotBtn" data-in>Forgot password?</button></div>
+    </form>
+    <form id="newPassForm" novalidate hidden>
+      <div class="field"><label for="nPass">New password</label><input id="nPass" type="password" autocomplete="new-password" minlength="8" required></div>
+      <div class="field"><label for="nPass2">Repeat it</label><input id="nPass2" type="password" autocomplete="new-password" minlength="8" required></div>
+      <p class="msg" id="nMsg" role="status"></p>
+      <button class="btn" type="submit">Save password <span class="arrow" aria-hidden="true"></span></button>
     </form>
   </div>
 </dialog>
@@ -873,6 +880,7 @@ const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xx
 
 /* ---------- data layer ---------- */
 const live = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && window.supabase);
+const RECOVERY = /type=recovery/.test(location.hash);   // read before the client consumes the hash
 const sb = live ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
 
 /** Same pricing the server uses (create-checkout); the server's numbers are the ones charged. */
@@ -977,6 +985,8 @@ const Demo = {
   async signIn(email){ this.user = { id:'demo', email, name: email.split('@')[0] }; safeStore.set('hfj-demo-user', this.user); return this.user; },
   async signUp(email, pass, meta){ this.user = { id:'demo', email, name: meta.full_name || email.split('@')[0], band: meta.band_name, phone: meta.phone }; safeStore.set('hfj-demo-user', this.user); return this.user; },
   async magic(){ return true; },
+  async forgot(){ return true; },
+  async setPassword(){ return true; },
   async signOut(){ this.user = null; safeStore.set('hfj-demo-user', null); }
 };
 
@@ -989,7 +999,7 @@ const Live = {
   user: null,
   async init(){
     const { data } = await sb.auth.getSession(); this.user = toUser(data.session?.user);
-    sb.auth.onAuthStateChange((_e, session) => { const u = toUser(session?.user); const changed = (u?.id || null) !== (this.user?.id || null); this.user = u; if (changed) onAuthChange(); });
+    sb.auth.onAuthStateChange((e, session) => { if (e === 'PASSWORD_RECOVERY') setTimeout(openNewPass, 0); const u = toUser(session?.user); const changed = (u?.id || null) !== (this.user?.id || null); this.user = u; if (changed) onAuthChange(); });
   },
   async settings(){
     const [{ data: s }, { data: rooms }] = await Promise.all([sb.from('settings').select('*').eq('id',1).single(), sb.from('rooms').select('id, rate_cents')]);
@@ -1016,6 +1026,8 @@ const Live = {
     if (error) throw error; if (!data.session) return { pendingConfirm:true }; return toUser(data.user);
   },
   async magic(email){ const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: location.origin + location.pathname + '#book' } }); if (error) throw error; },
+  async forgot(email){ const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }); if (error) throw error; },
+  async setPassword(password){ const { error } = await sb.auth.updateUser({ password }); if (error) throw error; },
   async signOut(){ await sb.auth.signOut(); }
 };
 function toUser(u){ if (!u) return null; const m = u.user_metadata || {}; return { id:u.id, email:u.email, name:m.full_name || u.email.split('@')[0], band:m.band_name || '', phone:m.phone || '' }; }
@@ -1506,6 +1518,11 @@ function setMode(m){
   mode = m;
   document.getElementById('tabIn').setAttribute('aria-selected', m === 'in'); document.getElementById('tabUp').setAttribute('aria-selected', m === 'up');
   document.querySelectorAll('[data-up]').forEach(f => f.hidden = m !== 'up');
+  document.querySelectorAll('[data-in]').forEach(f => f.hidden = m !== 'in');
+  document.getElementById('authForm').hidden = false; document.getElementById('newPassForm').hidden = true;
+  document.querySelector('#authDlg .tabs').hidden = false;
+  document.getElementById('authTitle').textContent = 'Sign in to book';
+  document.getElementById('authSub').textContent = 'Your account keeps your bookings, confirmations and reminders in one place.';
   document.getElementById('authSubmit').firstChild.textContent = m === 'up' ? 'Create account ' : 'Sign in ';
   document.getElementById('fPass').autocomplete = m === 'up' ? 'new-password' : 'current-password';
   document.getElementById('authMsg').textContent = live ? '' : 'Preview mode: any email and an 8+ character password will do.';
@@ -1541,6 +1558,29 @@ document.getElementById('magicBtn').onclick = async () => {
   try { await API.magic(email); authMsg(live ? `Link sent to ${email}. Open it on this device to sign in.` : 'Preview mode: no link is sent. Use a password instead.'); }
   catch(err){ authMsg(err.message || 'Could not send the link. Try again.', true); }
 };
+document.getElementById('forgotBtn').onclick = async () => {
+  const email = document.getElementById('fEmail').value.trim();
+  if (!/^\S+@\S+\.\S+$/.test(email)) return authMsg('Enter your email first, then tap Forgot password.', true);
+  try { await API.forgot(email); authMsg(live ? `If ${email} has an account, a reset link is on its way.` : 'Preview mode: no email is sent.'); }
+  catch(err){ authMsg(err.message || 'Could not send the reset link. Try again.', true); }
+};
+function openNewPass(){
+  if (!dlg.open){ if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open',''); }
+  document.getElementById('authTitle').textContent = 'Choose a new password';
+  document.getElementById('authSub').textContent = 'At least 8 characters. You’ll stay signed in on this device.';
+  document.querySelector('#authDlg .tabs').hidden = true;
+  document.getElementById('authForm').hidden = true; document.getElementById('newPassForm').hidden = false;
+  setTimeout(() => document.getElementById('nPass').focus(), 50);
+}
+document.getElementById('newPassForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const p = document.getElementById('nPass').value, m = document.getElementById('nMsg');
+  const say = (t, err) => { m.textContent = t; m.className = 'msg ' + (err ? 'err' : 'muted'); };
+  if (p.length < 8) return say('Use at least 8 characters.', true);
+  if (p !== document.getElementById('nPass2').value) return say('Those don\'t match.', true);
+  try { await API.setPassword(p); say('Password saved. You\'re signed in.'); setTimeout(() => { closeAuth(); setMode('in'); }, 1200); }
+  catch(err){ say(err.message || 'Couldn\'t save it. Try again.', true); }
+});
 async function onAuthChange(){
   await loadMine(); renderAll();
   if (API.user && state.pendingSubmit){ state.pendingSubmit = false; submit(); }
@@ -1612,6 +1652,7 @@ addEventListener('resize', frame);
 document.getElementById('yr').textContent = today().y;
 (async () => {
   if (live) await Live.init(); else Demo.init();
+  if (RECOVERY && API.user) openNewPass();
   try { await API.settings(); } catch(e){}
   if (SET.payMode === 'full') state.payChoice = 'full';
   const t = today(); state.day = t.k;
