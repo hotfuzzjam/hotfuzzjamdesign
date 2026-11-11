@@ -122,6 +122,9 @@ td.r,th.r{text-align:right}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--on-light);padding:12px 18px;font-size:.85rem;z-index:20;max-width:calc(100vw - 32px)}
 .login{min-height:calc(100vh - 66px);display:grid;place-items:center;padding-block:40px}
 .login form{width:min(380px,100%);display:grid;gap:16px;border:1px solid var(--line);background:var(--ground-2);padding:28px}
+.login .alt{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:-4px}
+.lnk{background:none;border:0;padding:0;color:var(--ink-2);font:inherit;font-size:.8rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.lnk:hover{color:var(--ink)}
 .login h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:2.2rem;text-transform:uppercase;line-height:1}
 .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;letter-spacing:.04em}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
@@ -146,7 +149,16 @@ td.r,th.r{text-align:right}
     <div class="f"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="email" required></div>
     <div class="f"><label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password" required></div>
     <button class="btn" type="submit">Sign in</button>
+    <div class="alt"><button class="lnk" type="button" id="lMagic">Email me a sign-in link</button><button class="lnk" type="button" id="lForgot">Forgot password?</button></div>
     <p class="msg" id="lMsg" role="status"></p>
+  </form>
+  <form id="resetForm" novalidate hidden>
+    <h1>New password</h1>
+    <p class="muted" style="margin:0;font-size:.9rem">Choose a password for <span id="rWho"></span>. At least 8 characters.</p>
+    <div class="f"><label for="rPass">New password</label><input id="rPass" type="password" autocomplete="new-password" minlength="8" required></div>
+    <div class="f"><label for="rPass2">Repeat it</label><input id="rPass2" type="password" autocomplete="new-password" minlength="8" required></div>
+    <button class="btn" type="submit">Save password</button>
+    <p class="msg" id="rMsg" role="status"></p>
   </form>
 </div>
 
@@ -163,6 +175,7 @@ const CONFIG = { SUPABASE_URL: 'https://tamwpffuwngukmdbqjmm.supabase.co', SUPAB
 
 const TZ = 'Australia/Brisbane';
 const live = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && window.supabase);
+const RECOVERY = /type=recovery/.test(location.hash);   // read before the client consumes the hash
 const sb = live ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
 const fmt = o => new Intl.DateTimeFormat('en-AU', { timeZone: TZ, ...o });
 const fDay = fmt({ weekday:'short', day:'numeric', month:'short' }), fTime = fmt({ hour:'2-digit', minute:'2-digit', hour12:false });
@@ -543,8 +556,18 @@ async function start(){
 }
 (async () => {
   if (!live) return start();
+  const $ = id => document.getElementById(id);
+  const say = (el, text, cls) => { el.textContent = text; el.className = 'msg' + (cls ? ' ' + cls : ''); };
+  const here = location.origin + location.pathname;
+  const showReset = (session) => {
+    $('login').hidden = false; $('app').hidden = true; $('loginForm').hidden = true; $('resetForm').hidden = false;
+    $('rWho').textContent = session?.user?.email || 'your account'; $('rPass').focus();
+  };
+  let recovering = RECOVERY;
+  sb.auth.onAuthStateChange((event, session) => { if (event === 'PASSWORD_RECOVERY'){ recovering = true; showReset(session); } });
   const { data } = await sb.auth.getSession();
   const check = async (session) => {
+    if (recovering && session) return showReset(session);
     if (!session){ document.getElementById('login').hidden = false; document.getElementById('app').hidden = true; return; }
     const { data: isAdmin } = await sb.rpc('is_admin');
     document.getElementById('who').textContent = session.user.email;
@@ -555,8 +578,28 @@ async function start(){
   document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault(); const m = document.getElementById('lMsg');
     const { data, error } = await sb.auth.signInWithPassword({ email: document.getElementById('lEmail').value.trim(), password: document.getElementById('lPass').value });
-    if (error){ m.textContent = error.message; m.className = 'msg err'; return; }
+    if (error){ say(m, error.message, 'err'); return; }
     check(data.session);
+  });
+  const needEmail = () => { const v = $('lEmail').value.trim(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ say($('lMsg'), 'Enter your email first.', 'err'); $('lEmail').focus(); return null; } return v; };
+  $('lMagic').addEventListener('click', async () => {
+    const email = needEmail(); if (!email) return;
+    const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: here } });
+    say($('lMsg'), error ? error.message : 'Check your inbox. The link signs you straight in.', error ? 'err' : 'ok');
+  });
+  $('lForgot').addEventListener('click', async () => {
+    const email = needEmail(); if (!email) return;
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: here });
+    say($('lMsg'), error ? error.message : 'If that account exists, a reset link is on its way.', error ? 'err' : 'ok');
+  });
+  $('resetForm').addEventListener('submit', async e => {
+    e.preventDefault(); const m = $('rMsg'), p = $('rPass').value;
+    if (p.length < 8) return say(m, 'Use at least 8 characters.', 'err');
+    if (p !== $('rPass2').value) return say(m, 'Those don\'t match.', 'err');
+    const { data, error } = await sb.auth.updateUser({ password: p });
+    if (error) return say(m, error.message, 'err');
+    recovering = false; $('resetForm').hidden = true; $('loginForm').hidden = false;
+    say($('lMsg'), 'Password saved.', 'ok'); check((await sb.auth.getSession()).data.session);
   });
 })();
 </script>
