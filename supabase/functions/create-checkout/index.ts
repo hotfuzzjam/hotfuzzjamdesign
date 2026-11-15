@@ -25,8 +25,8 @@ Deno.serve(async (req) => {
 
   const hours = hoursBetween(b.starts_at, b.ends_at);
   if (hours < 1) return fail("Sessions run at least one hour.");
-  // three hours is a flat $70 block; hours past three add the hourly rate (matches the site's sessionCents)
-  const amount = hours >= 3 ? 7000 + (hours - 3) * room.rate_cents : room.rate_cents * hours;
+  // block prices: 2 hours $60, 3 hours $70; hours past three add the hourly rate (matches the site's sessionCents)
+  const amount = hours >= 3 ? 7000 + (hours - 3) * room.rate_cents : hours === 2 ? 6000 : room.rate_cents * hours;
 
   // coupon
   let discount = 0; const coupon = b.coupon?.trim().toUpperCase() || null;

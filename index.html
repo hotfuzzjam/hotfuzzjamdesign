@@ -922,9 +922,9 @@ const RECOVERY = /type=recovery/.test(location.hash);   // read before the clien
 const sb = live ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
 
 /** Same pricing the server uses (create-checkout); the server's numbers are the ones charged. */
-/* Three hours is a flat block price; hours past three add the hourly rate. Must match create-checkout. */
-const BLOCK3_CENTS = 7000;
-const sessionCents = (rateCents, hours) => hours >= 3 ? BLOCK3_CENTS + (hours - 3) * rateCents : rateCents * hours;
+/* Block prices: 2 hours $60, 3 hours $70; hours past three add the hourly rate. Must match create-checkout. */
+const BLOCK2_CENTS = 6000, BLOCK3_CENTS = 7000;
+const sessionCents = (rateCents, hours) => hours >= 3 ? BLOCK3_CENTS + (hours - 3) * rateCents : hours === 2 ? BLOCK2_CENTS : rateCents * hours;
 function priceFor({ rateCents, hours, couponCents = 0, giftBalance = 0, payChoice = 'full' }){
   const amount = sessionCents(rateCents, hours);
   const discount = Math.min(amount, couponCents);
@@ -1134,6 +1134,7 @@ function renderRooms(){
         <dl>
           <dt>Floor</dt><dd class="num">${r.size[0]} × ${r.size[1]} m · ${(r.size[0]*r.size[1]).toFixed(0)} m²</dd>
           <dt>Suits</dt><dd>${r.cap}</dd>
+          <dt>Two hours</dt><dd class="num">${money(BLOCK2_CENTS/100)}</dd>
           <dt>Three hours</dt><dd class="num">${money(BLOCK3_CENTS/100)}</dd>
         </dl>
         <div><button type="button" class="link" data-pick-room="${r.id}">Book the room</button></div>
@@ -1304,7 +1305,7 @@ function renderTicket(){
       <div><dt>Room</dt><dd>${r.name}</dd></div>
       <div><dt>Day</dt><dd>${when}</dd></div>
       <div><dt>Time</dt><dd class="num">${ready ? `${hh(state.start)} – ${hh(state.start + state.dur)}` : '—'}</dd></div>
-      <div><dt>Session</dt><dd class="num">${ready && state.dur >= 3 ? `3 hr block${state.dur > 3 ? ` + ${state.dur - 3} hr` : ''} = ${cash(q.amount)}` : `${money(r.rate)} × ${ready ? state.dur : 0} hr${ready ? ` = ${cash(q.amount)}` : ''}`}</dd></div>
+      <div><dt>Session</dt><dd class="num">${ready && state.dur === 2 ? `2 hr block = ${cash(q.amount)}` : ready && state.dur >= 3 ? `3 hr block${state.dur > 3 ? ` + ${state.dur - 3} hr` : ''} = ${cash(q.amount)}` : `${money(r.rate)} × ${ready ? state.dur : 0} hr${ready ? ` = ${cash(q.amount)}` : ''}`}</dd></div>
       ${ready && q.discount ? `<div class="neg"><dt>Code ${escapeHtml(state.coupon.code)}</dt><dd class="num">−${cash(q.discount)}</dd></div>` : ''}
       ${ready && q.gift ? `<div class="neg"><dt>Gift card</dt><dd class="num">−${cash(q.gift)}</dd></div>` : ''}
       ${ready && q.now && q.later ? `<div><dt>At the studio</dt><dd class="num">${cash(q.later)}</dd></div>` : ''}
