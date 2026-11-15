@@ -67,7 +67,9 @@ function form(obj: Record<string, unknown>, prefix = "", out = new URLSearchPara
   }
   return out;
 }
-export async function stripe(path: string, params: Record<string, unknown>, idempotencyKey?: string) {
+/** Stripe API version for embedded (ui_mode "elements") Checkout Sessions; matches js.stripe.com/endive. */
+export const STRIPE_ELEMENTS_VERSION = "2026-10-28.endive";
+export async function stripe(path: string, params: Record<string, unknown>, idempotencyKey?: string, version?: string) {
   const key = env("STRIPE_SECRET_KEY");
   if (!key) throw new Error("Online payments aren't set up yet (STRIPE_SECRET_KEY missing).");
   const res = await fetch(`https://api.stripe.com/v1/${path}`, {
@@ -75,6 +77,7 @@ export async function stripe(path: string, params: Record<string, unknown>, idem
     headers: {
       Authorization: `Bearer ${key}`, "Content-Type": "application/x-www-form-urlencoded",
       ...(idempotencyKey ? { "Idempotency-Key": idempotencyKey } : {}),
+      ...(version ? { "Stripe-Version": version } : {}),
     },
     body: form(params),
   });

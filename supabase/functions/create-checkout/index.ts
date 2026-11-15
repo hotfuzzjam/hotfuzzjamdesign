@@ -1,12 +1,13 @@
 // Creates a booking with server-side pricing (rate × hours − coupon − gift card), then either
 // confirms it straight away (nothing to pay now) or holds the slot and returns a Stripe Checkout URL.
 // Deploy with JWT verification ON: only signed-in clients can book.
-import { admin, caller, cors, dollars, fail, fShort, fTime, hoursBetween, json, SITE_URL, settings, stripe, stripeEnabled, toE164 } from "../_shared/util.ts";
+import { admin, caller, cors, dollars, fail, fShort, fTime, hoursBetween, json, SITE_URL, settings, stripe, STRIPE_ELEMENTS_VERSION, stripeEnabled, toE164 } from "../_shared/util.ts";
 import { BOOKING_SELECT, notify } from "../_shared/email.ts";
 
 type Body = {
   room_id: string; starts_at: string; ends_at: string; band_name?: string; notes?: string;
   coupon?: string; gift_code?: string; pay_choice?: "full" | "deposit"; sms_opt_in?: boolean; phone?: string;
+  embedded?: boolean;   // true: card form inside the site (ui_mode "elements"); otherwise Stripe's hosted page
 };
 
 Deno.serve(async (req) => {
@@ -84,7 +85,9 @@ Deno.serve(async (req) => {
 
   try {
     const start = new Date(b.starts_at), end = new Date(b.ends_at);
+    const embedded = b.embedded === true;
     const session = await stripe("checkout/sessions", {
+      ...(embedded ? { ui_mode: "elements" } : {}),
       mode: "payment",
       customer_email: user.email,
       client_reference_id: booking.id,
@@ -101,11 +104,12 @@ Deno.serve(async (req) => {
       }],
       metadata: { kind: "booking", booking_id: booking.id },
       payment_intent_data: { metadata: { kind: "booking", booking_id: booking.id } },
-      success_url: `${SITE_URL()}/?checkout=success&t=${booking.manage_token}#book`,
-      cancel_url: `${SITE_URL()}/?checkout=cancel&t=${booking.manage_token}#book`,
-    }, `booking-${booking.id}`);
+      ...(embedded
+        ? { return_url: `${SITE_URL()}/?checkout=success&t=${booking.manage_token}#book` }
+        : { success_url: `${SITE_URL()}/?checkout=success&t=${booking.manage_token}#book`, cancel_url: `${SITE_URL()}/?checkout=cancel&t=${booking.manage_token}#book` }),
+    }, `booking-${embedded ? "el-" : ""}${booking.id}`, embedded ? STRIPE_ELEMENTS_VERSION : undefined);
     await db.from("bookings").update({ stripe_session_id: session.id }).eq("id", booking.id);
-    return json({ url: session.url, booking: publicView(booking) });
+    return json(embedded ? { clientSecret: session.client_secret, booking: publicView(booking) } : { url: session.url, booking: publicView(booking) });
   } catch (e) {
     await db.from("bookings").update({ status: "cancelled", cancelled_at: new Date().toISOString() }).eq("id", booking.id);
     await release();
