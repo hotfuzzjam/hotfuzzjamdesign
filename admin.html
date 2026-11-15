@@ -8,15 +8,15 @@
 <link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
 <style>
 /* Layout: a working console. Summary tiles first, then one task per tab; tables collapse to cards on phones. */
 :root{
   color-scheme:dark;
   --ground:#120A06; --ground-2:#1B110B; --ground-3:#271910;
-  --ink:#EEE2D4; --ink-2:#A88F7E; --kin:#F2900F; --shu:#D2643C; --on-light:#120A06;
+  --ink:#F4EADE; --ink-2:#C9B4A4; --kin:#F2900F; --shu:#D2643C; --on-light:#120A06;
   --good:#8FBF7A; --warn:#E8B04A; --bad:#E07058;
-  --line:rgba(238,226,212,.12); --line-strong:rgba(238,226,212,.26);
+  --line:rgba(238,226,212,.16); --line-strong:rgba(238,226,212,.34);
   --f:"Montserrat","Helvetica Neue",Arial,sans-serif;
   --f-display:"HFJ Helvetica Condensed","Helvetica Neue Condensed Bold","Arial Narrow",sans-serif;
 }
@@ -24,34 +24,34 @@
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0}
 [hidden]{display:none!important}
-body{background:var(--ground);color:var(--ink);font:300 15px/1.55 var(--f);-webkit-font-smoothing:antialiased;min-height:100vh}
+body{background:var(--ground);color:var(--ink);font:400 16px/1.55 var(--f);-webkit-font-smoothing:antialiased;min-height:100vh}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--kin);outline-offset:2px}
 .wrap{max-width:1280px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .num{font-variant-numeric:tabular-nums lining-nums}
-.label{font-weight:400;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2)}
+.label{font-weight:500;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
 .muted{color:var(--ink-2)}
 h1,h2,h3{margin:0;font-weight:400}
 header{border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
 header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
 .brand img{width:34px;height:34px}
-.brand b{font-weight:500;font-size:.78rem;letter-spacing:.3em}
-.brand span{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
-.chip{font-weight:400;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--kin);border:1px solid color-mix(in srgb,var(--kin) 55%,transparent);padding:.4em .7em;white-space:nowrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:42px;padding:0 1.1em;border:1px solid var(--ink);background:var(--ink);color:var(--on-light);font-weight:500;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;text-decoration:none;white-space:nowrap}
+.brand b{font-weight:600;font-size:.82rem;letter-spacing:.24em}
+.brand span{font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.chip{font-weight:500;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--kin);border:1px solid color-mix(in srgb,var(--kin) 55%,transparent);padding:.4em .7em;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:42px;padding:0 1.1em;border:1px solid var(--ink);background:var(--ink);color:var(--on-light);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;white-space:nowrap}
 .btn:hover{background:var(--kin);border-color:var(--kin)}
 .btn.ghost{background:none;color:var(--ink);border-color:var(--line-strong)}
 .btn.ghost:hover{border-color:var(--ink);background:none}
-.btn.sm{min-height:34px;padding:0 .8em;font-size:.62rem}
+.btn.sm{min-height:36px;padding:0 .85em;font-size:.72rem}
 .btn.danger{background:none;color:var(--bad);border-color:color-mix(in srgb,var(--bad) 55%,transparent)}
 .btn.danger:hover{background:var(--bad);color:var(--on-light)}
 .btn[disabled]{opacity:.4;cursor:default}
 nav.tabs{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--ground);z-index:5}
 nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
-nav.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:14px 12px 12px;cursor:pointer;font-weight:400;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+nav.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:15px 13px 13px;cursor:pointer;font-weight:500;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
 nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--kin)}
-nav.tabs .count{display:inline-block;min-width:1.6em;margin-left:.4em;padding:0 .4em;background:var(--ground-3);color:var(--ink);font-size:.62rem;border-radius:2px}
+nav.tabs .count{display:inline-block;min-width:1.6em;margin-left:.4em;padding:0 .4em;background:var(--ground-3);color:var(--ink);font-size:.72rem;font-weight:600;border-radius:2px}
 main{padding-block:28px 80px}
 section.view{display:grid;gap:28px}
 .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:14px}
@@ -59,7 +59,7 @@ section.view{display:grid;gap:28px}
 .kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
 .kpi{background:var(--ground);padding:18px 18px 16px;display:grid;gap:6px;min-width:0}
 .kpi .v{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:2.1rem;line-height:1}
-.kpi .s{font-size:.78rem;color:var(--ink-2)}
+.kpi .s{font-size:.86rem;color:var(--ink-2)}
 .meter{height:4px;background:var(--ground-3);margin-top:4px}
 .meter i{display:block;height:100%;background:var(--kin)}
 @media (max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi:last-child{grid-column:1 / -1}}
@@ -71,29 +71,29 @@ section.view{display:grid;gap:28px}
 .list{list-style:none;margin:0;padding:0}
 .list li{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
 .list li:last-child{border-bottom:0}
-.list .t{font-size:.9rem}
+.list .t{font-size:.98rem;font-weight:500}
 .list .who{min-width:0}
-.list .who b{font-weight:400;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.list .who span{font-size:.78rem;color:var(--ink-2)}
-.empty{padding:22px 16px;color:var(--ink-2);font-size:.9rem}
-.pill{display:inline-block;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;padding:.38em .6em;border:1px solid currentColor;white-space:nowrap}
+.list .who b{font-weight:500;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list .who span{font-size:.86rem;color:var(--ink-2)}
+.empty{padding:22px 16px;color:var(--ink-2);font-size:.96rem}
+.pill{display:inline-block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:.38em .6em;border:1px solid currentColor;white-space:nowrap}
 .pill.ok{color:var(--good)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)} .pill.off{color:var(--ink-2)}
 .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .seg{display:inline-flex;border:1px solid var(--line-strong)}
-.seg button{background:none;border:0;padding:0 .9em;min-height:38px;cursor:pointer;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.seg button{background:none;border:0;padding:0 .9em;min-height:40px;cursor:pointer;font-size:.76rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
 .seg button + button{border-left:1px solid var(--line-strong)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--on-light)}
 input.search,.f input,.f select,.f textarea{background:var(--ground);border:1px solid var(--line-strong);padding:.6rem .7rem;min-height:40px;border-radius:0;width:100%;font-size:16px}
 input.search{width:min(280px,100%)}
 .tbl-wrap{overflow-x:auto;border:1px solid var(--line)}
-table{width:100%;border-collapse:collapse;font-size:.88rem}
-th{text-align:left;font-weight:400;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);padding:12px 12px;border-bottom:1px solid var(--line-strong);white-space:nowrap;background:var(--ground-2)}
-td{padding:12px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table{width:100%;border-collapse:collapse;font-size:.96rem}
+th{text-align:left;font-weight:600;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:12px 12px;border-bottom:1px solid var(--line-strong);white-space:nowrap;background:var(--ground-2)}
+td{padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:0}
 td.r,th.r{text-align:right}
-.sub,td .sub{display:block;font-size:.76rem;color:var(--ink-2)}
+.sub,td .sub{display:block;font-size:.85rem;color:var(--ink-2)}
 .acts{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
-.confirm{display:grid;gap:8px;justify-items:end;font-size:.82rem}
+.confirm{display:grid;gap:8px;justify-items:end;font-size:.9rem}
 .confirm label{display:flex;gap:6px;align-items:center}
 @media (max-width:760px){
   .tbl-wrap{border:0;overflow:visible}
@@ -101,7 +101,7 @@ td.r,th.r{text-align:right}
   table.cards,table.cards tbody,table.cards tr,table.cards td{display:block;width:100%}
   table.cards tr{border:1px solid var(--line);background:var(--ground-2);margin-bottom:10px;padding:6px 0}
   table.cards td{border:0;padding:6px 14px;display:flex;justify-content:space-between;gap:12px;text-align:right}
-  table.cards td::before{content:attr(data-l);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);text-align:left;padding-top:.2em}
+  table.cards td::before{content:attr(data-l);font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);text-align:left;padding-top:.2em}
   table.cards td.acts-cell{display:block}
   table.cards td.acts-cell::before{display:none}
   .acts{justify-content:flex-start}
@@ -113,17 +113,17 @@ td.r,th.r{text-align:right}
 .grid-form .full{grid-column:1 / -1}
 @media (max-width:760px){.grid-form{grid-template-columns:1fr 1fr}.grid-form .wide{grid-column:1 / -1}}
 .f{display:grid;gap:6px;min-width:0}
-.f label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);font-weight:400}
-.f .hint{font-size:.74rem;color:var(--ink-2)}
-.check{display:flex;gap:8px;align-items:center;min-height:40px;font-size:.9rem;cursor:pointer}
+.f label{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:500}
+.f .hint{font-size:.84rem;color:var(--ink-2)}
+.check{display:flex;gap:8px;align-items:center;min-height:40px;font-size:.96rem;cursor:pointer}
 .check input{width:18px;height:18px;accent-color:var(--kin)}
-.msg{font-size:.85rem;min-height:1.2em}
+.msg{font-size:.92rem;min-height:1.2em}
 .msg.err{color:var(--bad)} .msg.ok{color:var(--good)}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--on-light);padding:12px 18px;font-size:.85rem;z-index:20;max-width:calc(100vw - 32px)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--on-light);padding:12px 18px;font-size:.94rem;font-weight:500;z-index:20;max-width:calc(100vw - 32px)}
 .login{min-height:calc(100vh - 66px);display:grid;place-items:center;padding-block:40px}
 .login form{width:min(380px,100%);display:grid;gap:16px;border:1px solid var(--line);background:var(--ground-2);padding:28px}
 .login .alt{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:-4px}
-.lnk{background:none;border:0;padding:0;color:var(--ink-2);font:inherit;font-size:.8rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.lnk{background:none;border:0;padding:0;color:var(--ink-2);font:inherit;font-size:.88rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .lnk:hover{color:var(--ink)}
 .login img{background:#fff;padding:10px;display:block}
 .otp{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.4rem!important;letter-spacing:.4em;text-align:center}
@@ -138,7 +138,7 @@ td.r,th.r{text-align:right}
     <a class="brand" href="index.html"><img src="assets/favicon.png" alt=""><div><b>HOTFUZZJAM</b><br><span>Studio admin</span></div></a>
     <div style="display:flex;gap:10px;align-items:center">
       <span class="chip" id="modeChip" hidden>Preview data</span>
-      <span class="muted" id="who" style="font-size:.8rem"></span>
+      <span class="muted" id="who" style="font-size:.88rem"></span>
       <button class="btn ghost sm" id="pwBtn" hidden>Password</button>
       <button class="btn ghost sm" id="twoStep" hidden>2-step</button>
       <button class="btn ghost sm" id="signOut" hidden>Sign out</button>
@@ -149,7 +149,7 @@ td.r,th.r{text-align:right}
 <div class="login wrap" id="login" hidden>
   <form id="loginForm" novalidate>
     <h1>Studio login</h1>
-    <p class="muted" style="margin:0;font-size:.9rem">Owner and staff accounts only.</p>
+    <p class="muted" style="margin:0;font-size:.96rem">Owner and staff accounts only.</p>
     <div class="f"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="email" required></div>
     <div class="f"><label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password" required></div>
     <button class="btn" type="submit">Sign in</button>
@@ -158,7 +158,7 @@ td.r,th.r{text-align:right}
   </form>
   <form id="resetForm" novalidate hidden>
     <h1>New password</h1>
-    <p class="muted" style="margin:0;font-size:.9rem">Choose a password for <span id="rWho"></span>. At least 8 characters.</p>
+    <p class="muted" style="margin:0;font-size:.96rem">Choose a password for <span id="rWho"></span>. At least 8 characters.</p>
     <div class="f"><label for="rPass">New password</label><input id="rPass" type="password" autocomplete="new-password" minlength="8" required></div>
     <div class="f"><label for="rPass2">Repeat it</label><input id="rPass2" type="password" autocomplete="new-password" minlength="8" required></div>
     <button class="btn" type="submit">Save password</button>
@@ -167,7 +167,7 @@ td.r,th.r{text-align:right}
   </form>
   <form id="mfaForm" novalidate hidden>
     <h1>Enter your code</h1>
-    <p class="muted" style="margin:0;font-size:.9rem">Open Passwords on your iPhone and enter the 6-digit code for HOTFUZZJAM.</p>
+    <p class="muted" style="margin:0;font-size:.96rem">Open Passwords on your iPhone and enter the 6-digit code for HOTFUZZJAM.</p>
     <div class="f"><label for="mCode">6-digit code</label><input id="mCode" class="otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" required></div>
     <button class="btn" type="submit">Verify</button>
     <p class="msg" id="mMsg" role="status"></p>
@@ -175,15 +175,15 @@ td.r,th.r{text-align:right}
   <form id="enrolForm" novalidate hidden>
     <h1>2-step sign-in</h1>
     <div id="enrolOff">
-      <p class="muted" style="margin:0 0 14px;font-size:.9rem">Scan this with your iPhone camera and choose <b>Add Verification Code in Passwords</b>. On the iPhone itself, tap the button instead.</p>
+      <p class="muted" style="margin:0 0 14px;font-size:.96rem">Scan this with your iPhone camera and choose <b>Add Verification Code in Passwords</b>. On the iPhone itself, tap the button instead.</p>
       <img id="eQr" alt="QR code for your authenticator" width="200" height="200">
       <a class="btn ghost" id="eLink" href="#" style="margin-top:14px">Open in Passwords</a>
-      <p class="muted" style="margin:14px 0 0;font-size:.78rem">Or enter this key by hand: <span class="code" id="eSecret"></span></p>
+      <p class="muted" style="margin:14px 0 0;font-size:.86rem">Or enter this key by hand: <span class="code" id="eSecret"></span></p>
       <div class="f" style="margin-top:16px"><label for="eCode">Then enter the 6-digit code it shows</label><input id="eCode" class="otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6"></div>
       <button class="btn" type="submit" style="margin-top:16px;width:100%">Turn on</button>
     </div>
     <div id="enrolOn" hidden>
-      <p class="muted" style="margin:0 0 16px;font-size:.9rem">On. Every sign-in asks for a code from your phone.</p>
+      <p class="muted" style="margin:0 0 16px;font-size:.96rem">On. Every sign-in asks for a code from your phone.</p>
       <button class="btn ghost" type="button" id="eOff">Turn off</button>
     </div>
     <button class="lnk" type="button" id="eBack" style="justify-self:start">Back to dashboard</button>
@@ -341,7 +341,7 @@ function vOverview(){
   const liability = D.gifts.filter(g => g.status === 'active').reduce((s,g) => s + g.balance_cents, 0);
   const todays = D.bookings.filter(b => b.status !== 'cancelled' && new Intl.DateTimeFormat('en-CA', { timeZone:TZ }).format(new Date(b.starts_at)) === t);
   const next = D.bookings.filter(b => b.status === 'confirmed' && +new Date(b.starts_at) > now && !todays.includes(b)).slice(0, 8);
-  const li = b => `<li><div class="t">${when(b)}</div><div class="who">${who(b)}</div><div>${statusPill(b)}${owing(b) ? ` <span class="num muted" style="font-size:.8rem;margin-left:6px">${cash(owing(b))} due</span>` : ''}</div></li>`;
+  const li = b => `<li><div class="t">${when(b)}</div><div class="who">${who(b)}</div><div>${statusPill(b)}${owing(b) ? ` <span class="num muted" style="font-size:.88rem;margin-left:6px">${cash(owing(b))} due</span>` : ''}</div></li>`;
   return `<section class="view">
     <div class="head"><h2>${fmt({ weekday:'long', day:'numeric', month:'long' }).format(new Date())}</h2><button class="btn" data-go="new">New booking</button></div>
     <div class="kpis">
@@ -352,7 +352,7 @@ function vOverview(){
       <div class="kpi"><span class="label">Gift card balances</span><span class="v num">${cash(liability)}</span><span class="s">Owed as studio time</span></div>
     </div>
     <div class="cols">
-      <div class="panel"><div class="ph"><span class="label">Today</span><span class="muted num" style="font-size:.8rem">${todays.length} session${todays.length === 1 ? '' : 's'}</span></div>
+      <div class="panel"><div class="ph"><span class="label">Today</span><span class="muted num" style="font-size:.88rem">${todays.length} session${todays.length === 1 ? '' : 's'}</span></div>
         ${todays.length ? `<ul class="list">${todays.map(li).join('')}</ul>` : '<p class="empty">Nothing booked today.</p>'}</div>
       <div class="panel"><div class="ph"><span class="label">Coming up</span><button class="btn ghost sm" data-go="bookings">All bookings</button></div>
         ${next.length ? `<ul class="list">${next.map(li).join('')}</ul>` : '<p class="empty">No upcoming sessions.</p>'}</div>
@@ -409,7 +409,7 @@ function vNew(){
       <label class="check wide"><input type="checkbox" id="nSms"> Text reminder the day before</label>
       <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit">Add booking</button><p class="msg" id="nMsg" role="status"></p></div>
     </form>
-    <p class="muted" style="font-size:.85rem;margin:0">Phone and walk-in bookings skip the online length limit. The balance is paid at the studio; mark it paid from Bookings.</p>
+    <p class="muted" style="font-size:.92rem;margin:0">Phone and walk-in bookings skip the online length limit. The balance is paid at the studio; mark it paid from Bookings.</p>
   </section>`;
 }
 function vBlackouts(){
@@ -451,7 +451,7 @@ function vCoupons(){
   </section>`;
 }
 function vGifts(){
-  return `<section class="view"><div class="head"><h2>Gift cards</h2><span class="muted" style="font-size:.85rem">Sold on the site's Gifts section. Codes activate when payment clears.</span></div>
+  return `<section class="view"><div class="head"><h2>Gift cards</h2><span class="muted" style="font-size:.92rem">Sold on the site's Gifts section. Codes activate when payment clears.</span></div>
     ${D.gifts.length ? `<div class="tbl-wrap"><table class="cards"><thead><tr><th>Code</th><th>For</th><th>From</th><th class="r">Value</th><th class="r">Balance</th><th>Status</th><th></th></tr></thead><tbody>
       ${D.gifts.map(g => `<tr><td data-l="Code"><span class="code">${esc(g.code)}</span><span class="sub">${fDate.format(new Date(g.created_at))}</span></td>
         <td data-l="For">${esc(g.recipient_name || '—')}<span class="sub">${esc(g.recipient_email || '')}</span></td>
@@ -465,7 +465,7 @@ function vGifts(){
 }
 function vWaitlist(){
   const rows = D.waitlist;
-  return `<section class="view"><div class="head"><h2>Waitlist</h2><span class="muted" style="font-size:.85rem">Clients are emailed automatically when their window frees up.</span></div>
+  return `<section class="view"><div class="head"><h2>Waitlist</h2><span class="muted" style="font-size:.92rem">Clients are emailed automatically when their window frees up.</span></div>
     ${rows.length ? `<div class="tbl-wrap"><table class="cards"><thead><tr><th>Day</th><th>Window</th><th>Who</th><th>Status</th><th></th></tr></thead><tbody>
     ${rows.map(w => `<tr><td data-l="Day" class="num">${fDay.format(new Date(w.day + 'T12:00:00+10:00'))}</td>
       <td data-l="Window" class="num">${String(w.from_hour).padStart(2,'0')}:00–${String(w.to_hour).padStart(2,'0')}:00<span class="sub">needs ${w.hours_needed} hr${w.hours_needed > 1 ? 's' : ''}</span></td>
@@ -506,7 +506,7 @@ function vSettings(){
       <label class="check wide"><input type="checkbox" id="stSms" ${s.sms_enabled ? 'checked' : ''}> Offer SMS reminders (Twilio, about 6–8c per text)</label>
       <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit">Save settings</button><p class="msg" id="stMsg" role="status"></p></div>
     </form>
-    <p class="muted" style="font-size:.85rem;margin:0">Changes apply to new bookings straight away. Existing bookings keep their price and payment.</p>
+    <p class="muted" style="font-size:.92rem;margin:0">Changes apply to new bookings straight away. Existing bookings keep their price and payment.</p>
   </section>`;
 }
 const VIEWS = { overview:vOverview, bookings:vBookings, new:vNew, blackouts:vBlackouts, coupons:vCoupons, gifts:vGifts, waitlist:vWaitlist, clients:vClients, settings:vSettings };
