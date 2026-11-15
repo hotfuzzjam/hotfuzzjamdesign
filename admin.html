@@ -125,6 +125,8 @@ td.r,th.r{text-align:right}
 .login .alt{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:-4px}
 .lnk{background:none;border:0;padding:0;color:var(--ink-2);font:inherit;font-size:.8rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .lnk:hover{color:var(--ink)}
+.login img{background:#fff;padding:10px;display:block}
+.otp{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.4rem!important;letter-spacing:.4em;text-align:center}
 .login h1{font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:2.2rem;text-transform:uppercase;line-height:1}
 .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;letter-spacing:.04em}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
@@ -137,6 +139,8 @@ td.r,th.r{text-align:right}
     <div style="display:flex;gap:10px;align-items:center">
       <span class="chip" id="modeChip" hidden>Preview data</span>
       <span class="muted" id="who" style="font-size:.8rem"></span>
+      <button class="btn ghost sm" id="pwBtn" hidden>Password</button>
+      <button class="btn ghost sm" id="twoStep" hidden>2-step</button>
       <button class="btn ghost sm" id="signOut" hidden>Sign out</button>
     </div>
   </div>
@@ -158,7 +162,32 @@ td.r,th.r{text-align:right}
     <div class="f"><label for="rPass">New password</label><input id="rPass" type="password" autocomplete="new-password" minlength="8" required></div>
     <div class="f"><label for="rPass2">Repeat it</label><input id="rPass2" type="password" autocomplete="new-password" minlength="8" required></div>
     <button class="btn" type="submit">Save password</button>
+    <button class="lnk" type="button" id="rBack" style="justify-self:start" hidden>Back to dashboard</button>
     <p class="msg" id="rMsg" role="status"></p>
+  </form>
+  <form id="mfaForm" novalidate hidden>
+    <h1>Enter your code</h1>
+    <p class="muted" style="margin:0;font-size:.9rem">Open Passwords on your iPhone and enter the 6-digit code for HOTFUZZJAM.</p>
+    <div class="f"><label for="mCode">6-digit code</label><input id="mCode" class="otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" required></div>
+    <button class="btn" type="submit">Verify</button>
+    <p class="msg" id="mMsg" role="status"></p>
+  </form>
+  <form id="enrolForm" novalidate hidden>
+    <h1>2-step sign-in</h1>
+    <div id="enrolOff">
+      <p class="muted" style="margin:0 0 14px;font-size:.9rem">Scan this with your iPhone camera and choose <b>Add Verification Code in Passwords</b>. On the iPhone itself, tap the button instead.</p>
+      <img id="eQr" alt="QR code for your authenticator" width="200" height="200">
+      <a class="btn ghost" id="eLink" href="#" style="margin-top:14px">Open in Passwords</a>
+      <p class="muted" style="margin:14px 0 0;font-size:.78rem">Or enter this key by hand: <span class="code" id="eSecret"></span></p>
+      <div class="f" style="margin-top:16px"><label for="eCode">Then enter the 6-digit code it shows</label><input id="eCode" class="otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6"></div>
+      <button class="btn" type="submit" style="margin-top:16px;width:100%">Turn on</button>
+    </div>
+    <div id="enrolOn" hidden>
+      <p class="muted" style="margin:0 0 16px;font-size:.9rem">On. Every sign-in asks for a code from your phone.</p>
+      <button class="btn ghost" type="button" id="eOff">Turn off</button>
+    </div>
+    <button class="lnk" type="button" id="eBack" style="justify-self:start">Back to dashboard</button>
+    <p class="msg" id="eMsg" role="status"></p>
   </form>
 </div>
 
@@ -175,6 +204,7 @@ const CONFIG = { SUPABASE_URL: 'https://tamwpffuwngukmdbqjmm.supabase.co', SUPAB
 
 const TZ = 'Australia/Brisbane';
 const live = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && window.supabase);
+const LINK_ERROR = /error(_code|_description)?=/.test(location.hash);
 const RECOVERY = /type=recovery/.test(location.hash);   // read before the client consumes the hash
 const sb = live ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
 const fmt = o => new Intl.DateTimeFormat('en-AU', { timeZone: TZ, ...o });
@@ -569,12 +599,63 @@ async function start(){
   const check = async (session) => {
     if (recovering && session) return showReset(session);
     if (!session){ document.getElementById('login').hidden = false; document.getElementById('app').hidden = true; return; }
+    const { data: aal } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (aal && aal.nextLevel === 'aal2' && aal.currentLevel !== 'aal2'){ document.getElementById('signOut').hidden = false; return showCard('mfaForm', 'mCode'); }
     const { data: isAdmin } = await sb.rpc('is_admin');
     document.getElementById('who').textContent = session.user.email;
     if (!isAdmin){ document.getElementById('login').hidden = false; const m = document.getElementById('lMsg'); m.textContent = 'This account isn\'t a studio admin. Ask the owner to add it in Supabase.'; m.className = 'msg err'; document.getElementById('signOut').hidden = false; return; }
+    showCard('loginForm'); $('twoStep').hidden = false; $('pwBtn').hidden = false; refreshTwoStep();
     start();
   };
+  /* ---- 2-step sign-in (authenticator app) ---- */
+  const showCard = (id, focus) => {
+    $('login').hidden = false; $('app').hidden = true;
+    for (const f of ['loginForm','resetForm','mfaForm','enrolForm']) $(f).hidden = f !== id;
+    if (focus) setTimeout(() => $(focus).focus(), 50);
+  };
+  const verified = async () => { const { data } = await sb.auth.mfa.listFactors(); return { on: (data?.totp || []).find(f => f.status === 'verified'), all: data?.all || [] }; };
+  const refreshTwoStep = async () => { const { on } = await verified(); $('twoStep').textContent = on ? '2-step on' : 'Set up 2-step'; };
+  let enrolling = null;
+  $('mfaForm').addEventListener('submit', async e => {
+    e.preventDefault(); const m = $('mMsg'), code = $('mCode').value.trim();
+    if (!/^\d{6}$/.test(code)) return say(m, 'Enter the 6 digits.', 'err');
+    const { on } = await verified(); if (!on) return say(m, 'No authenticator is set up on this account.', 'err');
+    const { error } = await sb.auth.mfa.challengeAndVerify({ factorId: on.id, code });
+    if (error) return say(m, 'That code didn\'t work. Wait for the next one and try again.', 'err');
+    $('mCode').value = ''; say(m, ''); check((await sb.auth.getSession()).data.session);
+  });
+  $('twoStep').addEventListener('click', async () => {
+    const m = $('eMsg'); say(m, ''); showCard('enrolForm');
+    const { on, all } = await verified();
+    $('enrolOn').hidden = !on; $('enrolOff').hidden = !!on;
+    if (on) return;
+    for (const f of all) if (f.status !== 'verified') await sb.auth.mfa.unenroll({ factorId: f.id });   // clear abandoned attempts
+    const { data, error } = await sb.auth.mfa.enroll({ factorType: 'totp', friendlyName: 'iPhone Passwords', issuer: 'HOTFUZZJAM Studio' });
+    if (error) return say(m, error.message, 'err');
+    enrolling = data.id; $('eQr').src = data.totp.qr_code; $('eLink').href = data.totp.uri; $('eSecret').textContent = data.totp.secret; $('eCode').value = '';
+  });
+  $('enrolForm').addEventListener('submit', async e => {
+    e.preventDefault(); const m = $('eMsg'), code = $('eCode').value.trim();
+    if (!enrolling) return;
+    if (!/^\d{6}$/.test(code)) return say(m, 'Enter the 6 digits from Passwords.', 'err');
+    const { error } = await sb.auth.mfa.challengeAndVerify({ factorId: enrolling, code });
+    if (error) return say(m, 'That code didn\'t work. Wait for the next one and try again.', 'err');
+    enrolling = null; $('enrolOn').hidden = false; $('enrolOff').hidden = true; say(m, '2-step sign-in is on.', 'ok'); refreshTwoStep();
+  });
+  $('eOff').addEventListener('click', async () => {
+    const { on } = await verified(); if (!on) return;
+    const { error } = await sb.auth.mfa.unenroll({ factorId: on.id });
+    if (error) return say($('eMsg'), error.message, 'err');
+    await sb.auth.refreshSession(); say($('eMsg'), '2-step sign-in is off.', 'ok'); $('enrolOn').hidden = true; refreshTwoStep();
+  });
+  $('pwBtn').addEventListener('click', async () => {
+    const { data } = await sb.auth.getSession(); say($('rMsg'), ''); $('rPass').value = $('rPass2').value = '';
+    $('rWho').textContent = data.session?.user?.email || 'your account'; $('rBack').hidden = false; showCard('resetForm', 'rPass');
+  });
+  $('rBack').addEventListener('click', () => { $('login').hidden = true; $('app').hidden = false; });
+  $('eBack').addEventListener('click', () => { $('login').hidden = true; $('app').hidden = false; });
   await check(data.session);
+  if (LINK_ERROR && !data.session){ say($('lMsg'), 'That link has expired or was already used. Enter your email and request a new one.', 'err'); history.replaceState(null, '', location.pathname); }
   document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault(); const m = document.getElementById('lMsg');
     const { data, error } = await sb.auth.signInWithPassword({ email: document.getElementById('lEmail').value.trim(), password: document.getElementById('lPass').value });

@@ -1,7 +1,7 @@
 // Owner actions that need Stripe or email: phone/walk-in bookings, cancel with or without refund,
 // resend confirmation. Everything else in the dashboard writes directly through admin RLS policies.
 // Deploy with JWT verification ON. Caller must be listed in public.admins.
-import { admin, caller, cors, fail, hoursBetween, json, settings, stripe, toE164 } from "../_shared/util.ts";
+import { admin, caller, callerIsAdmin, cors, fail, hoursBetween, json, settings, stripe, toE164 } from "../_shared/util.ts";
 import { BOOKING_SELECT, notify } from "../_shared/email.ts";
 
 Deno.serve(async (req) => {
@@ -9,8 +9,7 @@ Deno.serve(async (req) => {
   const user = await caller(req);
   if (!user) return fail("Sign in first.", 401);
   const db = admin();
-  const { data: isAdmin } = await db.from("admins").select("user_id").eq("user_id", user.id).maybeSingle();
-  if (!isAdmin) return fail("This account isn't a studio admin.", 403);
+  if (!(await callerIsAdmin(req))) return fail("This account isn't a studio admin, or 2-step sign-in hasn't been completed.", 403);
 
   let b: any; try { b = await req.json(); } catch { return fail("Bad request."); }
   const s = await settings(db);
