@@ -32,6 +32,17 @@ export async function caller(req: Request) {
   return data.user ?? null;
 }
 
+/** True when the caller is a studio admin (and has passed 2-step sign-in, if they have it on). */
+export async function callerIsAdmin(req: Request) {
+  const auth = req.headers.get("Authorization") ?? "";
+  if (!auth.startsWith("Bearer ")) return false;
+  const c = createClient(env("SUPABASE_URL"), env("SUPABASE_ANON_KEY"), {
+    global: { headers: { Authorization: auth } }, auth: { persistSession: false },
+  });
+  const { data } = await c.rpc("is_admin");
+  return data === true;
+}
+
 export type Settings = {
   open_hour: number; close_hour: number; max_hours: number; days_ahead: number; cancel_cutoff_hours: number;
   payment_mode: "full" | "deposit" | "choice" | "on_arrival"; deposit_pct: number; hold_minutes: number;
