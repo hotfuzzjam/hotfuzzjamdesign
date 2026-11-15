@@ -476,8 +476,6 @@ dialog[open]{animation:fade .5s var(--ease)}
 .pay-sum .total{border-bottom:0;padding-top:1rem}
 .pay-sum .total dt{color:var(--ink)}
 .pay-sum .total dd{font-family:"HFJ Roboto Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:900;font-size:1.9rem;line-height:1;color:var(--kin)}
-.pay-el{min-height:220px}
-.pay-loading{padding:1rem 0}
 .pay-btn{width:100%;background:#5A3460;border-color:#5A3460;color:#FBF6F0}
 .pay-btn:hover:not([disabled]){background:#6B3F72;border-color:#6B3F72}
 .pay-btn[disabled]{opacity:.45;cursor:default}
@@ -854,7 +852,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
   <a class="btn" href="#book" id="mbarBtn">Book <span class="arrow" aria-hidden="true"></span></a>
 </div>
 
-<!-- PAY: Stripe's card form, mounted inside our own dialog and themed to the site -->
+<!-- PAY: review before handing over to Stripe's hosted checkout -->
 <dialog id="payDlg" aria-labelledby="payTitle">
   <div class="dlg">
     <div class="top">
@@ -867,10 +865,9 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
     </div>
     <dl class="pay-sum" id="paySum"></dl>
     <form id="payForm" novalidate>
-      <div id="payElement" class="pay-el"><p class="msg muted pay-loading">Loading secure card form…</p></div>
       <p class="msg" id="payMsg" role="alert"></p>
-      <button class="btn pay-btn" type="submit" id="payBtn" disabled><span id="payBtnText">Pay</span><span class="arrow" aria-hidden="true"></span></button>
-      <p class="pay-foot"><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M8 1a3.5 3.5 0 0 0-3.5 3.5V7H3.5A1.5 1.5 0 0 0 2 8.5v5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5v-5A1.5 1.5 0 0 0 12.5 7h-1V4.5A3.5 3.5 0 0 0 8 1Zm2 6H6V4.5a2 2 0 1 1 4 0V7Z"/></svg> Card details go straight to Stripe. We never see or store them.</p>
+      <button class="btn pay-btn" type="submit" id="payBtn"><span id="payBtnText">Pay</span><span class="arrow" aria-hidden="true"></span></button>
+      <p class="pay-foot"><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M8 1a3.5 3.5 0 0 0-3.5 3.5V7H3.5A1.5 1.5 0 0 0 2 8.5v5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5v-5A1.5 1.5 0 0 0 12.5 7h-1V4.5A3.5 3.5 0 0 0 8 1Zm2 6H6V4.5a2 2 0 1 1 4 0V7Z"/></svg> You'll pay on Stripe's secure checkout, then come straight back here.</p>
     </form>
   </div>
 </dialog>
@@ -921,7 +918,6 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
    Leave empty to run in preview mode (local sample data, no emails, no charges).
    ============================================================ */
 const CONFIG = {
-  STRIPE_PK: 'pk_test_51UbR40530gTfjiEIMMy2lnJpz4vlHn5DSM59lfaURbaXlJcNmkFTStHJsQ1G8RiEH5DZmCT0962U1vZNhXy5y9PV007r4L5AZS',   // publishable: safe in the browser
   SUPABASE_URL: 'https://tamwpffuwngukmdbqjmm.supabase.co',
   SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRhbXdwZmZ1d25ndWttZGJxam1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyOTAxODIsImV4cCI6MjEwODg2NjE4Mn0.t2gEx1snfFGH7ljO-47CAtNJt5-1gxSj1bcOXO9oujU'
 };
@@ -1089,7 +1085,7 @@ const Live = {
   async roster(from, to){ const { data, error } = await sb.rpc('get_roster', { p_from: from.toISOString(), p_to: to.toISOString() }); if (error) throw error; return data; },
   async checkCoupon(code, hours, amount){ const { data, error } = await sb.rpc('check_coupon', { p_code: code, p_hours: hours, p_amount_cents: amount }); if (error) throw error; return data[0]; },
   async checkGift(code){ const { data, error } = await sb.rpc('check_gift', { p_code: code }); if (error) throw error; return data[0]; },
-  checkout(b){ return invoke('create-checkout', { ...b, embedded: true }); },
+  checkout(b){ return invoke('create-checkout', b); },
   manage(action, token, extra = {}){ return invoke('manage-booking', { action, token, ...extra }); },
   async myBookings(){
     const { data, error } = await sb.from('bookings').select('id, room_id, starts_at, ends_at, band_name, status, manage_token, paid_cents, due_cents, payment_status')
@@ -1099,7 +1095,7 @@ const Live = {
   async joinWaitlist(w){ const { error } = await sb.from('waitlist').upsert({ ...w, user_id: this.user.id, status:'waiting', notified_at:null }, { onConflict:'user_id,room_id,day' }); if (error) throw error; },
   async myWaitlist(){ const { data } = await sb.from('waitlist').select('*').eq('status','waiting').gte('day', today().k).order('day'); return data || []; },
   async leaveWaitlist(id){ await sb.from('waitlist').delete().eq('id', id); },
-  buyGift(g){ return invoke('buy-gift', { ...g, embedded: true }); },
+  buyGift(g){ return invoke('buy-gift', g); },
   async signIn(email, password){ const { data, error } = await sb.auth.signInWithPassword({ email, password }); if (error) throw error; return toUser(data.user); },
   async signUp(email, password, meta){
     const { data, error } = await sb.auth.signUp({ email, password, options:{ data: meta, emailRedirectTo: location.origin + location.pathname } });
@@ -1464,8 +1460,7 @@ async function submit(){
   state.busy = true; state.err = ''; renderTicket();
   try {
     const res = await API.checkout(payload);
-    if (res.clientSecret){ state.busy = false; renderTicket(); openPay({ kind:'booking', clientSecret: res.clientSecret, token: res.booking?.manage_token, booking: res.booking }); return; }
-    if (res.url){ location.href = res.url; return; }                           // off to Stripe Checkout
+    if (res.url){ state.busy = false; renderTicket(); openPay({ kind:'booking', url: res.url, token: res.booking?.manage_token, booking: res.booking }); return; }   // review, then off to Stripe Checkout
     if (res.demo){ state.checkout = res.booking; }
     else { state.done = res.booking; state.notes = ''; state.coupon = null; state.gift = null; }
   } catch(err){
@@ -1588,41 +1583,14 @@ document.getElementById('giftForm').addEventListener('submit', async e => {
   gift.busy = true; renderGift(); out('');
   try {
     const res = await API.buyGift({ amount_cents: amt, deliver_to: gift.deliver, recipient_name: v('gToName'), recipient_email: v('gToEmail'), message: v('gMsg'), purchaser_name: v('gFromName'), purchaser_email: v('gFromEmail') });
-    if (res.clientSecret){ gift.busy = false; renderGift(); openPay({ kind:'gift', clientSecret: res.clientSecret, amount: amt, to: gift.deliver === 'recipient' ? (v('gToName') || v('gToEmail')) : 'You' }); return; }
-    if (res.url){ location.href = res.url; return; }
+    if (res.url){ gift.busy = false; renderGift(); openPay({ kind:'gift', url: res.url, amount: amt, to: gift.deliver === 'recipient' ? (v('gToName') || v('gToEmail')) : 'You' }); return; }
     gift.code = res.code; out(`Preview mode: no payment taken. Code ${res.code} works in this browser's preview; try it at checkout.`);
   } catch(err){ out(err.message || 'Couldn\'t start the payment. Try again.'); }
   gift.busy = false; renderGift();
 });
 
-/* ---------- pay dialog: Stripe Payment Element in our own frame ---------- */
+/* ---------- pay dialog: review the booking, then pay on Stripe's hosted checkout ---------- */
 const payDlg = document.getElementById('payDlg'); let pay = null;
-const PAY_APPEARANCE = {
-  theme: 'night',
-  variables: {
-    colorPrimary: '#F2900F', colorBackground: '#120A06', colorText: '#EEE2D4', colorTextSecondary: '#BFA897',
-    colorTextPlaceholder: '#7E6A5D', colorDanger: '#E67A50', colorIcon: '#BFA897',
-    fontFamily: 'Montserrat, "Helvetica Neue", Arial, sans-serif', fontSizeBase: '16px', fontWeightNormal: '500',
-    borderRadius: '0px', spacingUnit: '4px', gridRowSpacing: '18px', focusBoxShadow: 'none', focusOutline: 'none'
-  },
-  rules: {
-    '.Label': { fontSize: '11px', fontWeight: '500', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#BFA897' },
-    '.Input': { backgroundColor: '#120A06', border: '1px solid rgba(238,226,212,.26)', boxShadow: 'none', padding: '13px 12px' },
-    '.Input:focus': { borderColor: '#F2900F', boxShadow: 'none' },
-    '.Input--invalid': { borderColor: '#E67A50', boxShadow: 'none' },
-    '.Tab': { backgroundColor: '#1B110B', border: '1px solid rgba(238,226,212,.18)', boxShadow: 'none' },
-    '.Tab:hover': { borderColor: 'rgba(238,226,212,.4)' },
-    '.Tab--selected': { backgroundColor: '#271910', borderColor: '#F2900F', boxShadow: 'none' },
-    '.TabLabel': { fontWeight: '600' },
-    '.Error': { fontSize: '13px' }
-  }
-};
-let stripeJs = null;
-function loadStripeJs(){
-  if (window.Stripe) return Promise.resolve();
-  stripeJs = stripeJs || new Promise((ok, bad) => { const s = document.createElement('script'); s.src = 'https://js.stripe.com/endive/stripe.js'; s.onload = ok; s.onerror = () => bad(new Error('Couldn\'t load the card form. Check your connection and try again.')); document.head.appendChild(s); });
-  return stripeJs;
-}
 function paySummary(o){
   const row = (k, v, cls = '') => `<div class="${cls}"><dt>${k}</dt><dd>${v}</dd></div>`;
   if (o.kind === 'gift') return row('Gift card for', escapeHtml(o.to || 'You')) + row('Total', cash(o.amount), 'total');
@@ -1632,27 +1600,15 @@ function paySummary(o){
   if (b.gift_applied_cents) html += row('Gift card', `−${cash(b.gift_applied_cents)}`);
   return html + row('Pay now', cash(b.charge_now_cents ?? b.due_cents ?? 0), 'total');
 }
-async function openPay(o){
+function openPay(o){
   pay = { ...o, done: false };
   const amount = o.kind === 'gift' ? o.amount : (o.booking?.charge_now_cents ?? o.booking?.due_cents ?? 0);
   document.getElementById('payKicker').textContent = o.kind === 'gift' ? 'Pay for your gift card' : 'Pay for your session';
   document.getElementById('payTitle').textContent = o.kind === 'gift' ? 'Room to be loud.' : 'Lock it in.';
   document.getElementById('paySum').innerHTML = paySummary(o);
   document.getElementById('payBtnText').textContent = `Pay ${cash(amount)}`;
-  document.getElementById('payBtn').disabled = true; document.getElementById('payMsg').textContent = '';
-  document.getElementById('payElement').innerHTML = '<p class="msg muted pay-loading">Loading secure card form…</p>';
+  document.getElementById('payBtn').disabled = false; document.getElementById('payMsg').textContent = '';
   if (typeof payDlg.showModal === 'function') payDlg.showModal(); else payDlg.setAttribute('open','');
-  try {
-    await loadStripeJs();
-    const stripe = window.Stripe(CONFIG.STRIPE_PK);
-    pay.checkout = stripe.initCheckoutElementsSdk({
-      clientSecret: o.clientSecret,
-      elementsOptions: { appearance: PAY_APPEARANCE, fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap' }] }
-    });
-    pay.checkout.on('change', session => { document.getElementById('payBtn').disabled = !session.canConfirm || pay.busy; });
-    document.getElementById('payElement').innerHTML = '';
-    pay.checkout.createPaymentElement({ layout: { type: 'tabs' } }).mount('#payElement');
-  } catch(err){ document.getElementById('payMsg').textContent = err.message || 'Couldn\'t load the card form.'; }
 }
 async function closePay(){
   if (!pay) return; const p = pay; pay = null;
@@ -1665,21 +1621,11 @@ async function closePay(){
 }
 document.getElementById('payClose').onclick = closePay;
 payDlg.addEventListener('cancel', e => { e.preventDefault(); closePay(); });
-document.getElementById('payForm').addEventListener('submit', async e => {
-  e.preventDefault(); if (!pay?.checkout || pay.busy) return;
-  const btn = document.getElementById('payBtn'), msg = document.getElementById('payMsg'), label = document.getElementById('payBtnText'), was = label.textContent;
-  pay.busy = true; btn.disabled = true; label.textContent = 'Processing…'; msg.textContent = '';
-  try {
-    const loaded = await pay.checkout.loadActions();
-    const actions = loaded.actions || loaded;
-    const result = await actions.confirm();          // on success Stripe sends the browser to the return page
-    if (result?.type === 'error'){ msg.textContent = result.error?.message || 'The payment didn\'t go through. Try another card.'; }
-    else {
-      pay.done = true;                                // card paid without a redirect: go to the same return page ourselves
-      location.href = pay.kind === 'gift' ? `${location.pathname}?gift=success#gifts` : `${location.pathname}?checkout=success&t=${pay.token}#book`;
-    }
-  } catch(err){ msg.textContent = err.message || 'The payment didn\'t go through. Try again.'; }
-  if (pay && !pay.done){ pay.busy = false; btn.disabled = false; label.textContent = was; }
+document.getElementById('payForm').addEventListener('submit', e => {
+  e.preventDefault(); if (!pay?.url) return;
+  pay.done = true;                                         // the slot stays held while they pay on Stripe
+  document.getElementById('payBtn').disabled = true; document.getElementById('payBtnText').textContent = 'Opening Stripe…';
+  location.href = pay.url;
 });
 
 /* ---------- auth dialog ---------- */

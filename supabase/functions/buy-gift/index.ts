@@ -1,6 +1,6 @@
 // Starts a Stripe Checkout for a gift card. Anyone can buy one (no account needed).
 // Deploy with JWT verification OFF. The card only activates when the webhook confirms payment.
-import { admin, cors, fail, giftCode, json, SITE_URL, stripe, STRIPE_ELEMENTS_VERSION, stripeEnabled } from "../_shared/util.ts";
+import { admin, cors, fail, giftCode, json, SITE_URL, stripe, stripeEnabled } from "../_shared/util.ts";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -29,17 +29,14 @@ Deno.serve(async (req) => {
     code = giftCode();
   }
 
-  const embedded = b.embedded === true;   // true: card form inside the site (ui_mode "elements")
   const session = await stripe("checkout/sessions", {
-    ...(embedded ? { ui_mode: "elements" } : {}), mode: "payment", customer_email: b.purchaser_email,
+    mode: "payment", customer_email: b.purchaser_email,
     line_items: [{ quantity: 1, price_data: { currency: "aud", unit_amount: cents,
       product_data: { name: "HOTFUZZJAM Studio gift card", description: "Redeemable on any rehearsal booking. Balance carries over." } } }],
     metadata: { kind: "gift", gift_code: code },
     expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
-    ...(embedded
-      ? { return_url: `${SITE_URL()}/?gift=success#gifts` }
-      : { success_url: `${SITE_URL()}/?gift=success#gifts`, cancel_url: `${SITE_URL()}/?gift=cancel#gifts` }),
-  }, `gift-${embedded ? "el-" : ""}${code}`, embedded ? STRIPE_ELEMENTS_VERSION : undefined);
+    success_url: `${SITE_URL()}/?gift=success#gifts`, cancel_url: `${SITE_URL()}/?gift=cancel#gifts`,
+  }, `gift-${code}`);
   await db.from("gift_cards").update({ stripe_session_id: session.id }).eq("code", code);
-  return json(embedded ? { clientSecret: session.client_secret } : { url: session.url });
+  return json({ url: session.url });
 });
