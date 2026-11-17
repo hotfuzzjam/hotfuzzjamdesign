@@ -580,7 +580,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       <div><dt class="label">Hours</dt><dd class="num">10:00 – 23:00</dd></div>
       <div><dt class="label">Open</dt><dd>Seven days</dd></div>
       <div><dt class="label">Booking</dt><dd>By the hour</dd></div>
-      <div><dt class="label">Rate</dt><dd class="num" id="fromRate">$40 / hr</dd></div>
+      <div><dt class="label">Rate</dt><dd class="num" id="fromRate">$30 / hr</dd></div>
     </dl>
   </div>
 
@@ -854,7 +854,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 
 <!-- MOBILE BOOKING BAR -->
 <div class="mbar" id="mbar" aria-live="polite">
-  <div class="sum" id="mbarSum"><b>The Room</b>$40 / hr</div>
+  <div class="sum" id="mbarSum"><b>The Room</b>$30 / hr</div>
   <a class="btn" href="#book" id="mbarBtn">Book <span class="arrow" aria-hidden="true"></span></a>
 </div>
 
@@ -929,7 +929,7 @@ const CONFIG = {
 };
 
 const ROOMS = [
-  { id:'a', name:'The Room', short:'The Room', rate:40, size:[6,5], cap:'Up to 6 players', note:'Full PA, three cabs and drum shells, treated for the full band at stage volume. Writing session or full run-through, it all happens here.',
+  { id:'a', name:'The Room', short:'The Room', rate:30, size:[6,5], cap:'Up to 6 players', note:'Full PA, three cabs and drum shells, treated for the full band at stage volume. Writing session or full run-through, it all happens here.',
     img:'jam', srcset:'assets/duo/jam-800.webp 800w, assets/duo/jam-1536.webp 1536w', pos:'50% 50%', alt:'Engraved illustration of a guitarist and a bass player jamming either side of a drum kit in the HOTFUZZJAM room' }
 ];
 // studio rules — overwritten from the settings table when Supabase is connected
@@ -963,9 +963,8 @@ const RECOVERY = /type=recovery/.test(location.hash);   // read before the clien
 const sb = live ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
 
 /** Same pricing the server uses (create-checkout); the server's numbers are the ones charged. */
-/* Block prices: 2 hours $60, 3 hours $70; hours past three add the hourly rate. Must match create-checkout. */
-const BLOCK2_CENTS = 6000, BLOCK3_CENTS = 7000;
-const sessionCents = (rateCents, hours) => hours >= 3 ? BLOCK3_CENTS + (hours - 3) * rateCents : hours === 2 ? BLOCK2_CENTS : rateCents * hours;
+/* Flat hourly rate: rate × hours. Must match create-checkout. */
+const sessionCents = (rateCents, hours) => rateCents * hours;
 function priceFor({ rateCents, hours, couponCents = 0, giftBalance = 0, payChoice = 'full' }){
   const amount = sessionCents(rateCents, hours);
   const discount = Math.min(amount, couponCents);
@@ -1175,8 +1174,8 @@ function renderRooms(){
         <dl>
           <dt>Floor</dt><dd class="num">${r.size[0]} × ${r.size[1]} m · ${(r.size[0]*r.size[1]).toFixed(0)} m²</dd>
           <dt>Suits</dt><dd>${r.cap}</dd>
-          <dt>Two hours</dt><dd class="num">${money(BLOCK2_CENTS/100)}</dd>
-          <dt>Three hours</dt><dd class="num">${money(BLOCK3_CENTS/100)}</dd>
+          <dt>Two hours</dt><dd class="num">${money(r.rate*2)}</dd>
+          <dt>Three hours</dt><dd class="num">${money(r.rate*3)}</dd>
         </dl>
         <div><button type="button" class="link" data-pick-room="${r.id}">Book the room</button></div>
       </div>
@@ -1346,7 +1345,7 @@ function renderTicket(){
       <div><dt>Room</dt><dd>${r.name}</dd></div>
       <div><dt>Day</dt><dd>${when}</dd></div>
       <div><dt>Time</dt><dd class="num">${ready ? `${hh(state.start)} – ${hh(state.start + state.dur)}` : '—'}</dd></div>
-      <div><dt>Session</dt><dd class="num">${ready && state.dur === 2 ? `2 hr block = ${cash(q.amount)}` : ready && state.dur >= 3 ? `3 hr block${state.dur > 3 ? ` + ${state.dur - 3} hr` : ''} = ${cash(q.amount)}` : `${money(r.rate)} × ${ready ? state.dur : 0} hr${ready ? ` = ${cash(q.amount)}` : ''}`}</dd></div>
+      <div><dt>Session</dt><dd class="num">${money(r.rate)} × ${ready ? state.dur : 0} hr${ready ? ` = ${cash(q.amount)}` : ''}</dd></div>
       ${ready && q.discount ? `<div class="neg"><dt>Code ${escapeHtml(state.coupon.code)}</dt><dd class="num">−${cash(q.discount)}</dd></div>` : ''}
       ${ready && q.gift ? `<div class="neg"><dt>Gift card</dt><dd class="num">−${cash(q.gift)}</dd></div>` : ''}
       ${ready && q.now && q.later ? `<div><dt>At the studio</dt><dd class="num">${cash(q.later)}</dd></div>` : ''}
@@ -1558,8 +1557,8 @@ mgDlg.addEventListener('click', async e => {
 mgDlg.addEventListener('change', e => { if (e.target.id === 'mgDay'){ mg.day = e.target.value; mg.start = null; renderManage(); } if (e.target.id === 'mgStart') mg.start = +e.target.value; });
 
 /* ---------- gift vouchers ---------- */
-const gift = { amount:8000, custom:false, deliver:'recipient', busy:false };
-const GIFT_AMOUNTS = [4000, 8000, 16000, 30000];
+const gift = { amount:9000, custom:false, deliver:'recipient', busy:false };
+const GIFT_AMOUNTS = [6000, 9000, 18000, 30000];
 function renderGift(){
   document.getElementById('gAmounts').innerHTML = GIFT_AMOUNTS.map(c => `<button type="button" class="num" data-amt="${c}" aria-pressed="${!gift.custom && gift.amount === c}">${cash(c)}</button>`).join('')
     + `<button type="button" data-amt="custom" aria-pressed="${gift.custom}">Other</button>`;

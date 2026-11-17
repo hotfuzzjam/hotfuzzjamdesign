@@ -17,7 +17,7 @@ drop policy if exists "rooms are public" on public.rooms;
 create policy "rooms are public" on public.rooms for select to anon, authenticated using (true);
 
 insert into public.rooms (id, name, rate_cents, capacity, sort) values
-  ('a', 'The Room', 4000, 'Up to 6 players', 1)
+  ('a', 'The Room', 3000, 'Up to 6 players', 1)
 on conflict (id) do update set name = excluded.name, rate_cents = excluded.rate_cents, capacity = excluded.capacity;
 
 -- ---------- profiles ----------

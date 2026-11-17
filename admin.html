@@ -255,7 +255,7 @@ function demoData(){
                { id:'w2', day:plus(5), from_hour:12, to_hour:18, hours_needed:3, name:'Kofi Mensah', email:'kofi@example.com', status:'notified', notified_at:new Date().toISOString(), created_at:new Date().toISOString() }],
     profiles: names.map((n,i) => ({ id:'p'+i, full_name:n[0], band_name:n[1], phone:i % 2 ? '0412 345 678' : null, created_at:new Date(Date.now()-(30+i*9)*864e5).toISOString() })),
     settings: { open_hour:10, close_hour:23, max_hours:4, days_ahead:60, cancel_cutoff_hours:24, payment_mode:'choice', deposit_pct:50, hold_minutes:30, followup_delay_hours:2, sms_enabled:true },
-    rate_cents: 4000
+    rate_cents: 3000
   };
 }
 let D = null;
