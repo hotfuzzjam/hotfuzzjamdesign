@@ -255,7 +255,7 @@ function demoData(){
                { id:'w2', day:plus(5), from_hour:12, to_hour:18, hours_needed:3, name:'Kofi Mensah', email:'kofi@example.com', status:'notified', notified_at:new Date().toISOString(), created_at:new Date().toISOString() }],
     profiles: names.map((n,i) => ({ id:'p'+i, full_name:n[0], band_name:n[1], phone:i % 2 ? '0412 345 678' : null, created_at:new Date(Date.now()-(30+i*9)*864e5).toISOString() })),
     settings: { open_hour:10, close_hour:23, max_hours:4, days_ahead:60, cancel_cutoff_hours:24, payment_mode:'choice', deposit_pct:50, hold_minutes:30, followup_delay_hours:2, sms_enabled:true },
-    rate_cents: 4000
+    rate_cents: 3000
   };
 }
 let D = null;
@@ -290,7 +290,7 @@ const Store = live ? {
   async load(){ if (!D) D = demoData(); },
   async action(body){
     if (body.action === 'create_booking'){
-      const amount = Number.isFinite(body.amount_cents) ? body.amount_cents : D.rate_cents * Math.round((new Date(body.ends_at) - new Date(body.starts_at))/36e5);
+      const hrs = Math.round((new Date(body.ends_at) - new Date(body.starts_at))/36e5); const amount = Number.isFinite(body.amount_cents) ? body.amount_cents : hrs === 1 ? 4000 : D.rate_cents * hrs;
       if (D.bookings.some(b => b.status === 'confirmed' && new Date(b.starts_at) < new Date(body.ends_at) && new Date(b.ends_at) > new Date(body.starts_at))) throw new Error('That time overlaps another booking or a block-out.');
       D.bookings.push({ id:'n'+Date.now(), manage_token:'tn', room_id:'a', starts_at:body.starts_at, ends_at:body.ends_at, status:'confirmed', contact_name:body.contact_name, band_name:body.band_name, contact_email:body.contact_email, phone:body.phone, amount_cents:amount, discount_cents:0, gift_applied_cents:0, due_cents:amount, paid_cents:0, refunded_cents:0, studio_paid_cents:0, pay_mode:'on_arrival', payment_status:'unpaid', source:'admin', notes:body.notes, created_at:new Date().toISOString(), rooms:{ name:'The Room' } });
       D.bookings.sort((a,b) => a.starts_at.localeCompare(b.starts_at)); return {};
@@ -399,7 +399,7 @@ function vNew(){
       <div class="f"><label for="nDay">Day</label><input id="nDay" type="date" min="${t}" value="${t}" required></div>
       <div class="f"><label for="nStart">Start</label><select id="nStart">${hOpts}</select></div>
       <div class="f"><label for="nLen">Hours</label><select id="nLen">${[1,2,3,4,5,6,8].map(n => `<option ${n === 2 ? 'selected':''}>${n}</option>`).join('')}</select></div>
-      <div class="f"><label for="nAmt">Price (AUD)</label><input id="nAmt" type="number" min="0" step="1" placeholder="Rate × hours"><span class="hint">Leave empty for ${cash(D.rate_cents)}/hr</span></div>
+      <div class="f"><label for="nAmt">Price (AUD)</label><input id="nAmt" type="number" min="0" step="1" placeholder="Standard price"><span class="hint">Leave empty for the standard price: $40 for one hour, ${cash(D.rate_cents)}/hr for two or more</span></div>
       <div class="f wide"><label for="nName">Contact name</label><input id="nName" autocomplete="off"></div>
       <div class="f wide"><label for="nBand">Band or project</label><input id="nBand" autocomplete="off"></div>
       <div class="f wide"><label for="nEmail">Email</label><input id="nEmail" type="email" autocomplete="off"></div>
