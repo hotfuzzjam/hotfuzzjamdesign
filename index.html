@@ -448,10 +448,17 @@ section.band{padding-block:var(--space) 0}
 @media (max-width:520px){.amounts{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 @media (max-width:520px){.two{grid-template-columns:1fr}}
-.voucher{aspect-ratio:1.6;max-width:100%;background:var(--kin);color:var(--on-light);padding:clamp(1.2rem,1rem + 1vw,1.8rem);display:grid;grid-template-rows:auto 1fr auto;position:relative;overflow:hidden}
+.voucher{aspect-ratio:1.6;max-width:100%;background:var(--kin);color:var(--on-light);padding:var(--vpad);display:grid;grid-template-rows:auto 1fr auto;position:relative;overflow:hidden}
 .voucher::after{content:"";position:absolute;right:-18%;bottom:-38%;width:78%;aspect-ratio:1;background:currentColor;opacity:.12;-webkit-mask:var(--hfj-mark) center/contain no-repeat;mask:var(--hfj-mark) center/contain no-repeat}
+/* the hero character in the background, bleeding off the left and bottom, under a soft vignette */
+.voucher::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:url("assets/hero/voucher-ink-640.webp") left -22% bottom -46% / auto 104% no-repeat;opacity:.38}
+.voucher .vig{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 95% at 62% 42%, transparent 48%, rgba(18,10,6,.16) 78%, rgba(18,10,6,.34) 100%)}
+.voucher > :not(.vig){position:relative;z-index:1}
 .voucher .top{display:flex;justify-content:space-between;align-items:center;font-weight:400;font-size:.64rem;letter-spacing:.26em;text-transform:uppercase}
-.voucher .top .mark{width:30px}
+.voucher{--vpad:clamp(1.2rem,1rem + 1vw,1.8rem)}
+.voucher .top .mark{position:absolute;top:0;right:0;width:39px}   /* 30% larger; .top starts at the padding, so the gap to the top and right edges is equal */
 .voucher .amt{align-self:center;font-family:var(--f-display);font-weight:700;font-stretch:condensed;font-size:clamp(3rem,2rem + 4vw,4.6rem);line-height:.9}
 /* details panel: a lighter tint of the card orange, so the copy and code sit clear of the stamp */
 .voucher .to{font-size:.85rem;line-height:1.35;max-width:30ch;justify-self:start;position:relative;z-index:1;background:rgba(251,246,240,.2);padding:.7rem .9rem;margin-left:-.2rem}
@@ -1571,6 +1578,7 @@ function renderGift(){
   const amt = gift.custom ? Math.round((+document.getElementById('gCustom').value || 0) * 100) : gift.amount;
   const hours = amt ? Math.floor(amt / (ROOMS[0].rate * 100)) : 0;
   document.getElementById('gCard').innerHTML = `
+    <i class="vig" aria-hidden="true"></i>
     <div class="top"><span>Gift voucher</span><div class="mark" aria-hidden="true"></div></div>
     <div class="amt num">${amt ? cash(amt) : '$—'}</div>
     <div class="to">${to ? `For ${escapeHtml(to)}` : 'Studio time at HOTFUZZJAM'}${from ? ` · from ${escapeHtml(from)}` : ''}${msg ? `<br><span style="opacity:.8">“${escapeHtml(msg.slice(0,80))}${msg.length > 80 ? '…' : ''}”</span>` : ''}<br><span class="code">${gift.code || 'HFJ-XXXX-XXXX'}</span>${hours ? ` <span style="opacity:.75">· about ${hours} hr${hours > 1 ? 's' : ''} in the room</span>` : ''}</div>`;
