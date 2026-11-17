@@ -25,8 +25,8 @@ Deno.serve(async (req) => {
 
   const hours = hoursBetween(b.starts_at, b.ends_at);
   if (hours < 1) return fail("Sessions run at least one hour.");
-  // flat hourly rate (matches the site's sessionCents)
-  const amount = room.rate_cents * hours;
+  // a single hour is $40; two hours or more are the hourly rate × hours (matches the site's sessionCents)
+  const amount = hours === 1 ? 4000 : room.rate_cents * hours;
 
   // coupon
   let discount = 0; const coupon = b.coupon?.trim().toUpperCase() || null;

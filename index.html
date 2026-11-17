@@ -580,7 +580,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       <div><dt class="label">Hours</dt><dd class="num">10:00 – 23:00</dd></div>
       <div><dt class="label">Open</dt><dd>Seven days</dd></div>
       <div><dt class="label">Booking</dt><dd>By the hour</dd></div>
-      <div><dt class="label">Rate</dt><dd class="num" id="fromRate">$30 / hr</dd></div>
+      <div><dt class="label">Rate</dt><dd class="num" id="fromRate">From $30 / hr</dd></div>
     </dl>
   </div>
 
@@ -590,7 +590,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
       <div class="grid sec-head">
         <span class="label">The room</span>
         <h2 class="rise">One room, built for the whole band.</h2>
-        <p class="muted rise">The rate is per hour, in AUD, including GST and all supplied backline. Minimum booking is one hour.</p>
+        <p class="muted rise">Prices are in AUD, including GST and all supplied backline. A single hour is $40; book two hours or more and every hour is $30.</p>
       </div>
       <div class="rooms" id="roomList"></div>
     </div>
@@ -854,7 +854,7 @@ footer{margin-top:var(--space);border-top:1px solid var(--line);overflow:hidden}
 
 <!-- MOBILE BOOKING BAR -->
 <div class="mbar" id="mbar" aria-live="polite">
-  <div class="sum" id="mbarSum"><b>The Room</b>$30 / hr</div>
+  <div class="sum" id="mbarSum"><b>The Room</b>From $30 / hr</div>
   <a class="btn" href="#book" id="mbarBtn">Book <span class="arrow" aria-hidden="true"></span></a>
 </div>
 
@@ -963,8 +963,9 @@ const RECOVERY = /type=recovery/.test(location.hash);   // read before the clien
 const sb = live ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
 
 /** Same pricing the server uses (create-checkout); the server's numbers are the ones charged. */
-/* Flat hourly rate: rate × hours. Must match create-checkout. */
-const sessionCents = (rateCents, hours) => rateCents * hours;
+/* A single hour is $40; two hours or more are the hourly rate ($30) × hours. Must match create-checkout. */
+const ONE_HOUR_CENTS = 4000;
+const sessionCents = (rateCents, hours) => hours === 1 ? ONE_HOUR_CENTS : rateCents * hours;
 function priceFor({ rateCents, hours, couponCents = 0, giftBalance = 0, payChoice = 'full' }){
   const amount = sessionCents(rateCents, hours);
   const discount = Math.min(amount, couponCents);
@@ -1169,18 +1170,19 @@ function renderRooms(){
       </div></div>
       <div class="body rise">
         <div class="idx"><h3>${r.name}</h3></div>
-        <span class="rate num">${money(r.rate)}<small>per hour</small></span>
+        <span class="rate num">${money(r.rate)}<small>per hour, 2+ hours</small></span>
         <p class="muted">${r.note}</p>
         <dl>
           <dt>Floor</dt><dd class="num">${r.size[0]} × ${r.size[1]} m · ${(r.size[0]*r.size[1]).toFixed(0)} m²</dd>
           <dt>Suits</dt><dd>${r.cap}</dd>
+          <dt>One hour</dt><dd class="num">${money(ONE_HOUR_CENTS/100)}</dd>
           <dt>Two hours</dt><dd class="num">${money(r.rate*2)}</dd>
           <dt>Three hours</dt><dd class="num">${money(r.rate*3)}</dd>
         </dl>
         <div><button type="button" class="link" data-pick-room="${r.id}">Book the room</button></div>
       </div>
     </article>`).join('');
-  document.getElementById('fromRate').textContent = `${money(Math.min(...ROOMS.map(r=>r.rate)))} / hr`;
+  document.getElementById('fromRate').textContent = `From ${money(Math.min(...ROOMS.map(r=>r.rate)))} / hr`;
   pars = [...document.querySelectorAll('img[data-par]')]; collectDepth();
 }
 
@@ -1345,7 +1347,7 @@ function renderTicket(){
       <div><dt>Room</dt><dd>${r.name}</dd></div>
       <div><dt>Day</dt><dd>${when}</dd></div>
       <div><dt>Time</dt><dd class="num">${ready ? `${hh(state.start)} – ${hh(state.start + state.dur)}` : '—'}</dd></div>
-      <div><dt>Session</dt><dd class="num">${money(r.rate)} × ${ready ? state.dur : 0} hr${ready ? ` = ${cash(q.amount)}` : ''}</dd></div>
+      <div><dt>Session</dt><dd class="num">${ready && state.dur === 1 ? `1 hr = ${cash(q.amount)}` : `${money(r.rate)} × ${ready ? state.dur : 0} hr${ready ? ` = ${cash(q.amount)}` : ''}`}</dd></div>
       ${ready && q.discount ? `<div class="neg"><dt>Code ${escapeHtml(state.coupon.code)}</dt><dd class="num">−${cash(q.discount)}</dd></div>` : ''}
       ${ready && q.gift ? `<div class="neg"><dt>Gift card</dt><dd class="num">−${cash(q.gift)}</dd></div>` : ''}
       ${ready && q.now && q.later ? `<div><dt>At the studio</dt><dd class="num">${cash(q.later)}</dd></div>` : ''}
@@ -1779,7 +1781,7 @@ function updateBar(heroBottom){
     sum.innerHTML = `<b>${ROOMS[0].short} · ${fDay.format(noonOf(state.day))}</b><span class="num">${hh(state.start)}–${hh(state.start + state.dur)} · ${cash(q.now || q.due)}${q.now && q.later ? ' now' : ''}</span>`;
     btn.firstChild.textContent = 'Review '; btn.setAttribute('href','#ticket');
   } else {
-    sum.innerHTML = `<b>The Room</b><span class="num">${money(ROOMS[0].rate)} / hr</span>`;
+    sum.innerHTML = `<b>The Room</b><span class="num">From ${money(ROOMS[0].rate)} / hr</span>`;
     btn.firstChild.textContent = 'Book '; btn.setAttribute('href','#book');
   }
 }

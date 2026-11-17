@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
     const { data: room } = await db.from("rooms").select("id, rate_cents").eq("id", b.room_id ?? "a").single();
     if (!room) return fail("That room doesn't exist.");
     const hours = hoursBetween(b.starts_at, b.ends_at);
-    const amount = Number.isFinite(b.amount_cents) ? Math.max(0, Math.round(b.amount_cents)) : room.rate_cents * hours;
+    const amount = Number.isFinite(b.amount_cents) ? Math.max(0, Math.round(b.amount_cents)) : hours === 1 ? 4000 : room.rate_cents * hours;   // single hour $40, 2+ hours at the hourly rate
     const phone = b.phone ? toE164(b.phone) : null;
     const { data, error } = await db.from("bookings").insert({
       user_id: null, source: "admin", room_id: room.id, starts_at: b.starts_at, ends_at: b.ends_at, status: "confirmed",
